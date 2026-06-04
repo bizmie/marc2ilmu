@@ -394,15 +394,15 @@
                 
                 <div class="modal-body">
                     <div class="preset-box">
-                        <div class="preset-title">💾 Profil Simpanan (Tempatan)</div>
+                        <div class="preset-title" style="color: #0058e6; text-shadow: 0px 1px 1px rgba(0,0,0,0.1);">☁️ Profil Simpanan (Awan / Firebase)</div>
                         <div class="preset-item">
                             <div class="preset-item-name">
                                 <span>Preset 1: P. Sumber MTIB 1</span>
                                 <span id="status-preset-1" class="preset-status"></span>
                             </div>
                             <div class="preset-actions">
-                                <button class="btn-secondary btn-micro" style="color: green" onclick="muatPreset(1)" title="Guna tetapan ini">Guna</button>
-                                <button class="btn-secondary btn-micro" style="color: blue" onclick="simpanPreset(1)" title="Simpan ke profil ini">Simpan</button>
+                                <button id="btn-muat-1" class="btn-secondary btn-micro" style="color: #107c41; display:flex; align-items:center; gap:4px;" onclick="muatPreset(1)" title="Muat turun profil dari awan">⬇️ Muat</button>
+                                <button id="btn-simpan-1" class="btn-secondary btn-micro" style="color: #0058e6; display:flex; align-items:center; gap:4px;" onclick="simpanPreset(1)" title="Simpan ke awan">⬆️ Simpan</button>
                             </div>
                         </div>
                         <div class="preset-item">
@@ -411,8 +411,8 @@
                                 <span id="status-preset-2" class="preset-status"></span>
                             </div>
                             <div class="preset-actions">
-                                <button class="btn-secondary btn-micro" style="color: green" onclick="muatPreset(2)" title="Guna tetapan ini">Guna</button>
-                                <button class="btn-secondary btn-micro" style="color: blue" onclick="simpanPreset(2)" title="Simpan ke profil ini">Simpan</button>
+                                <button id="btn-muat-2" class="btn-secondary btn-micro" style="color: #107c41; display:flex; align-items:center; gap:4px;" onclick="muatPreset(2)" title="Muat turun profil dari awan">⬇️ Muat</button>
+                                <button id="btn-simpan-2" class="btn-secondary btn-micro" style="color: #0058e6; display:flex; align-items:center; gap:4px;" onclick="simpanPreset(2)" title="Simpan ke awan">⬆️ Simpan</button>
                             </div>
                         </div>
                     </div>
@@ -644,19 +644,19 @@
                 } else { detailClean = trimmedEndLine.substring(3).trim(); }
 
                 const escapedDetail = detailClean.replace(/"/g, '&quot;');
+                
+                // Warnakan kod submedan (contoh: |a, |b, |c) dengan warna biru dan tebal untuk visual jadual
+                const detailHtml = detailClean.replace(/\|([a-z0-9])/gi, '<span style="color: #0058e6; font-weight: bold;">|$1</span>');
 
                 htmlRows += `<tr>
                     <td class="col-tag">${tag}</td>
                     <td class="col-ind">${ind1Clean}</td>
                     <td class="col-ind">${ind2Clean}</td>
-                    <td style="white-space: pre-wrap;">${detailClean}</td>
+                    <td style="white-space: pre-wrap;">${detailHtml}</td>
                     <td style="text-align: center; vertical-align: top;">
                         <button class="btn-secondary btn-micro" 
-                                data-tag="${tag}" 
-                                data-ind1="${ind1Clean}" 
-                                data-ind2="${ind2Clean}" 
                                 data-detail="${escapedDetail}"
-                                onclick="copyRow(this)" title="Salin baris ini" style="padding: 4px 8px;">📋</button>
+                                onclick="copyRow(this)" title="Salin maklumat bibliografi sahaja" style="padding: 4px 8px;">📋</button>
                     </td>
                 </tr>`;
                 tsvData += `${tag}\t${ind1Clean}\t${ind2Clean}\t${detailClean}\n`;
@@ -683,11 +683,8 @@
         }
 
         window.copyRow = function(btn) {
-            const tag = btn.getAttribute('data-tag');
-            const ind1 = btn.getAttribute('data-ind1');
-            const ind2 = btn.getAttribute('data-ind2');
             const detail = btn.getAttribute('data-detail');
-            const rowData = `${tag}\t${ind1}\t${ind2}\t${detail}`;
+            const rowData = detail; // Hanya ambil maklumat bibliografi
             
             const tempTextArea = document.createElement("textarea");
             tempTextArea.value = rowData; 
@@ -763,28 +760,64 @@
             const statusEl = document.getElementById(`status-preset-${nombor}`);
             statusEl.textContent = teks;
             statusEl.classList.add('show');
-            setTimeout(() => { statusEl.classList.remove('show'); }, 2000);
+            setTimeout(() => { statusEl.classList.remove('show'); }, 3000); // Dipanjangkan sikit ke 3 saat
         }
 
         window.simpanPreset = async function(nombor) {
+            const btn = document.getElementById(`btn-simpan-${nombor}`);
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '⏳ Menyimpan...';
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
+
             let hiddenForPreset = [];
-            document.querySelectorAll('.tag-checkbox').forEach(cb => { if (!cb.checked) hiddenForPreset.push(cb.value); });
+            // Semak checkbox yang TIDAK DITANDA sahaja untuk disembunyikan
+            document.querySelectorAll('.tag-checkbox').forEach(cb => { 
+                if (!cb.checked) {
+                    hiddenForPreset.push(cb.value);
+                } 
+            });
             
             userPresets[`preset${nombor}`] = hiddenForPreset;
             
-            paparStatusPreset(nombor, "Menyimpan ☁️...");
+            paparStatusPreset(nombor, "Menyimpan ke awan ☁️...");
             await simpanKeAwan({ presets: userPresets });
-            paparStatusPreset(nombor, "✓ Tersimpan Awan");
+            paparStatusPreset(nombor, "✓ Berjaya Disimpan");
+            
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            btn.style.opacity = '1';
         }
 
-        window.muatPreset = function(nombor) {
+        window.muatPreset = async function(nombor) {
+            const btn = document.getElementById(`btn-muat-${nombor}`);
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '⏳ Memuat...';
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
+            paparStatusPreset(nombor, "Memuat turun ☁️...");
+
+            // Simulasi sela masa visual bagi rasa "awan"
+            await new Promise(resolve => setTimeout(resolve, 600));
+
             const hiddenForPreset = userPresets[`preset${nombor}`];
+            
             if (hiddenForPreset) {
-                document.querySelectorAll('.tag-checkbox').forEach(cb => { cb.checked = !hiddenForPreset.includes(cb.value); });
-                paparStatusPreset(nombor, "✓ Dimuatkan dari Awan");
+                // Berjaya mendapat data. Kemaskini checkbox.
+                // Jika tag ADA dalam senarai hiddenForPreset -> JANGAN TANDA
+                // Jika tag TIADA dalam senarai hiddenForPreset -> TANDA
+                document.querySelectorAll('.tag-checkbox').forEach(cb => { 
+                    cb.checked = !hiddenForPreset.includes(cb.value); 
+                });
+                paparStatusPreset(nombor, "✓ Berjaya Dimuat");
             } else { 
                 alert(`Tiada tetapan dijumpai untuk Profil ${nombor} di pangkalan data awan.`); 
+                paparStatusPreset(nombor, "❌ Tiada Rekod");
             }
+            
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            btn.style.opacity = '1';
         }
         
         function kemaskiniIndikatorTetapan() {
