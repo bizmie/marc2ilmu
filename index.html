@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penukar Data MARC (Windows XP Luna + Win 11)</title>
+    <style>
+        :root {
+            /* Tema Hibrid: Windows XP Luna + Windows 11 */
+            --luna-bg: #ece9d8;
+            --luna-blue-titlebar: linear-gradient(to bottom, #0058e6 0%, #3a93ff 8%, #288eff 40%, #127dff 88%, #0366e8 100%);
+            --luna-blue-dark: #003399;
+            --luna-blue-border: #0055ea;
+            --luna-green-start: linear-gradient(180deg, #4ba52e 0%, #35821c 100%);
+            --luna-green-hover: linear-gradient(180deg, #59b844 0%, #439630 100%);
+            --luna-red: #e55246;
+            
+            --card-bg: #ffffff;
+            --text-main: #000000;
+            --text-secondary: #4a4a4a;
+            
+            /* Struktur Windows 11 */
+            --radius-window: 8px;
+            --radius-control: 5px;
+            --shadow-win11: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Segoe UI Variable', 'Segoe UI', 'Segoe UI Web Regular', sans-serif;
+            background-color: var(--luna-bg);
+            color: var(--text-main);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .font-mono { font-family: 'Consolas', 'Courier New', monospace; font-size: 13px; }
+
+        header {
+            background: var(--luna-blue-titlebar);
+            border-bottom: 2px solid var(--luna-blue-dark);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .header-left { display: flex; align-items: center; }
+        .header-right { display: flex; align-items: center; gap: 16px; }
+
+        header .app-icon {
+            background-color: transparent;
+            color: white;
+            font-size: 22px;
+            margin-right: 12px;
+            filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));
+        }
+        header .titles { display: flex; flex-direction: column; }
+        header h1 { 
+            font-size: 20px; 
+            font-weight: 700; 
+            color: white; 
+            margin: 0; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+            letter-spacing: 0.5px;
+        }
+        header p { 
+            font-size: 12px; 
+            color: #d6e8ff; 
+            margin: 0; 
+            display: none; 
+            font-weight: 500;
+        }
+        @media (min-width: 768px) { header p { display: block; } }
+
+        .date-display { 
+            color: white; 
+            font-size: 14px; 
+            font-weight: 600; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.6); 
+        }
+        
+        .btn-header-settings {
+            background: transparent;
+            border: 1px solid transparent;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: var(--radius-control);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-header-settings:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.4);
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .input-text {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #7f9db9;
+            border-radius: var(--radius-control);
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            transition: border 0.2s;
+        }
+        .input-text:focus {
+            border: 2px solid var(--luna-blue-border);
+            padding: 7px 11px;
+        }
+
+        main {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 24px;
+            flex-grow: 1;
+            width: 100%;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        @media (min-width: 1024px) {
+            .grid-container { grid-template-columns: 1fr 1fr; }
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: var(--radius-window);
+            box-shadow: var(--shadow-win11);
+            border: 1px solid var(--luna-blue-border);
+            border-top: 4px solid var(--luna-blue-border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 8px;
+        }
+        .card-title { font-size: 16px; font-weight: 700; color: var(--luna-blue-dark); display: flex; align-items: center; }
+        .subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; margin-top: 8px; }
+
+        button {
+            cursor: pointer;
+            border-radius: var(--radius-control);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.15s ease-in-out;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            outline: none;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(180deg, #ffffff 0%, #ebebeb 45%, #dddddd 50%, #cfcfcf 100%);
+            color: #000;
+            border: 1px solid #8e8f8f;
+            padding: 6px 16px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .btn-secondary:hover { background: linear-gradient(180deg, #fafafa 0%, #f0f0f0 45%, #e6e6e6 50%, #dcdcdc 100%); border-color: var(--luna-blue-border); }
+        .btn-secondary:active { background: #dcdcdc; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
+        
+        .btn-primary { 
+            background: var(--luna-green-start); color: white; border: 1px solid #285c1b;
+            padding: 10px 20px; width: 100%; margin-top: 16px; 
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 2px 5px rgba(0,0,0,0.2); text-shadow: 1px 1px 1px rgba(0,0,0,0.4);
+        }
+        .btn-primary:hover { background: var(--luna-green-hover); }
+        .btn-primary:active { box-shadow: inset 0 2px 4px rgba(0,0,0,0.5); }
+        
+        .btn-copy {
+            background: linear-gradient(180deg, #3a93ff 0%, #127dff 100%); color: white; border: 1px solid var(--luna-blue-dark);
+            padding: 6px 16px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 1px 2px rgba(0,0,0,0.2); text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+        }
+        .btn-copy:hover { background: linear-gradient(180deg, #5bb0ff 0%, #2581ff 100%); }
+        .btn-copy:active { box-shadow: inset 0 2px 4px rgba(0,0,0,0.4); }
+
+        .btn-icon { padding: 6px 12px; font-size: 14px; }
+        .btn-icon-only { padding: 6px 10px; }
+        .action-buttons { display: flex; gap: 8px; }
+
+        textarea {
+            width: 100%; height: 400px; padding: 12px; background: #ffffff; color: var(--text-main);
+            border: 1px solid #7f9db9; border-radius: var(--radius-control); resize: none; outline: none; transition: border 0.2s;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
+        textarea:focus { border: 2px solid var(--luna-blue-border); padding: 11px; }
+
+        .table-container {
+            height: 400px; overflow: auto; border: 1px solid #7f9db9; border-radius: var(--radius-control); background: #ffffff; position: relative;
+        }
+        
+        .table-container::-webkit-scrollbar { width: 12px; height: 12px; }
+        .table-container::-webkit-scrollbar-track { background: #f1f1f1; border-left: 1px solid #e0e0e0; }
+        .table-container::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 6px; border: 2px solid #f1f1f1; }
+        .table-container::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        thead { position: sticky; top: 0; z-index: 10; }
+        th { 
+            background: linear-gradient(180deg, #f2f2f2 0%, #ebebeb 45%, #dddddd 50%, #cfcfcf 100%);
+            border-bottom: 2px solid #8e8f8f; border-right: 1px solid #d4d0c8; padding: 8px 12px; 
+            font-weight: 600; font-size: 13px; color: #000; text-align: center; 
+        }
+        th:last-child { text-align: left; border-right: none; }
+        
+        td { padding: 8px 12px; border-bottom: 1px solid #e0e0e0; color: var(--text-main); word-break: break-word; vertical-align: top; }
+        .col-tag { width: 60px; text-align: center; color: var(--luna-blue-dark); font-weight: bold; }
+        .col-ind { width: 50px; text-align: center; color: var(--text-secondary); background-color: #fafafa; }
+        tbody tr:hover { background-color: #e5f3ff; }
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-secondary); }
+
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(2px); z-index: 50; justify-content: center; align-items: center;
+        }
+        .modal-overlay.active { display: flex; }
+        
+        .modal-content {
+            background: var(--luna-bg); border-radius: var(--radius-window); box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--luna-blue-dark); overflow: hidden; display: flex; flex-direction: column;
+            width: 90%; max-width: 480px; /* Default for smaller modals */
+        }
+        
+        /* Modifikasi untuk Modal Tetapan Tag memandangkan maklumat lebih lebar */
+        #tetapanModal .modal-content { max-width: 800px; }
+
+        .modal-header { 
+            background: var(--luna-blue-titlebar); padding: 10px 16px; display: flex; justify-content: space-between; 
+            align-items: center; border-bottom: 1px solid var(--luna-blue-dark);
+        }
+        .modal-title { font-size: 16px; font-weight: 700; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.6); }
+        .close-btn { 
+            background: var(--luna-red); border: 1px solid white; color: white; font-size: 16px; font-weight: bold;
+            padding: 0px 8px 2px 8px; border-radius: 4px; line-height: 1.2; box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        .close-btn:hover { background: #ff6659; }
+
+        .modal-body { padding: 20px; }
+
+        .preset-box { background: white; padding: 16px; border-radius: var(--radius-control); border: 1px solid #7f9db9; margin-bottom: 16px; }
+        .preset-title { font-size: 13px; font-weight: 700; color: var(--luna-blue-dark); margin-bottom: 12px; }
+        .preset-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; position: relative; }
+        .preset-item:last-child { margin-bottom: 0; }
+        .preset-item-name { display: flex; align-items: center; gap: 10px; }
+        .preset-item-name span { font-size: 13px; color: var(--text-main); font-weight: 600; }
+        .preset-status { font-size: 12px; font-weight: bold; color: #107c41; opacity: 0; transition: opacity 0.3s ease; }
+        .preset-status.show { opacity: 1; }
+        
+        .preset-actions { display: flex; gap: 6px; }
+        .btn-micro { padding: 4px 10px; font-size: 11px; }
+
+        .tag-controls { display: flex; gap: 8px; margin-bottom: 12px; }
+        
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 8px;
+            max-height: 350px;
+            overflow-y: auto;
+            padding: 12px;
+            background: #ffffff;
+            border: 1px solid #7f9db9;
+            border-radius: var(--radius-control);
+            margin-bottom: 20px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 6px;
+            cursor: pointer;
+            border-radius: 4px;
+            border: 1px solid transparent;
+        }
+        .checkbox-item:hover { background: #e5f3ff; border-color: #99c9ff; }
+        
+        .checkbox-item input { 
+            margin-top: 3px;
+            margin-right: 10px; 
+            cursor: pointer; 
+            width: 14px; height: 14px;
+            accent-color: var(--luna-blue-border);
+        }
+        .tag-info { display: flex; flex-direction: column; }
+        .tag-info .tag-code { font-size: 14px; font-family: 'Consolas', monospace; color: var(--luna-blue-dark); font-weight: bold; line-height: 1; margin-bottom: 2px;}
+        .tag-info .tag-desc { font-size: 11px; color: #666; line-height: 1.2;}
+
+        .red-dot {
+            display: none; position: absolute; top: -5px; right: -5px; width: 12px; height: 12px;
+            background-color: var(--luna-red); border: 2px solid white; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        .red-dot.active { display: block; }
+        .btn-wrapper { position: relative; display: inline-block; }
+
+        footer { text-align: center; padding: 20px; font-size: 12px; color: #777; margin-top: auto; font-weight: 500; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <div class="app-icon">📚</div>
+            <div class="titles">
+                <h1 id="appTitleDisplay">Penukar Data MARC</h1>
+                <p>Aplikasi Luar Talian</p>
+            </div>
+        </div>
+        <div class="header-right">
+            <div id="currentDateDisplay" class="date-display"></div>
+            <button class="btn-header-settings" onclick="bukaTetapanAplikasi()" title="Tetapan Aplikasi">⚙️</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="grid-container">
+            <!-- Bahagian Kiri: Input -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Sumber Data MARC</div>
+                    <button class="btn-secondary btn-icon" onclick="masukkanContoh()">💡 Guna Contoh</button>
+                </div>
+                <div class="subtitle">Tampal teks MARC mentah ke dalam ruangan di bawah.</div>
+                <textarea id="inputData" class="font-mono" spellcheck="false" placeholder="LEADER 00000pam a22000008i 4500&#10;001 1393005&#10;..."></textarea>
+                <button class="btn-primary" onclick="prosesMARC()">⚙️ Proses & Terjemah</button>
+            </div>
+
+            <!-- Bahagian Kanan: Output -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Hasil Jadual Bibliografi</div>
+                    <div class="action-buttons">
+                        <div class="btn-wrapper">
+                            <button class="btn-secondary btn-icon-only" onclick="bukaTetapan()" title="Tetapan Paparan Tag">
+                                ⚙️
+                                <span class="red-dot" id="dotTetapan"></span>
+                            </button>
+                        </div>
+                        <button class="btn-copy btn-icon" id="btnCopy" onclick="copyTable()">📋 Salin Teks</button>
+                    </div>
+                </div>
+                <div class="subtitle">Sedia untuk disalin dan ditampal ke hamparan Excel/Word.</div>
+                
+                <div class="table-container">
+                    <table id="outputTable">
+                        <thead>
+                            <tr>
+                                <th>Tag</th>
+                                <th>Ind1</th>
+                                <th>Ind2</th>
+                                <th>Maklumat Bibliografi</th>
+                                <th style="width: 50px; text-align: center;" title="Salin Baris">📋</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody" class="font-mono">
+                            <tr>
+                                <td colspan="5" class="empty-state">
+                                    <div style="font-size: 32px; margin-bottom: 12px;">📋</div>
+                                    Menunggu data untuk diproses.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Tetapan Tag -->
+        <div id="tetapanModal" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">Tetapan Tag MARC & Profil</div>
+                    <button class="close-btn" onclick="tutupTetapan()" title="Tutup">✕</button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="preset-box">
+                        <div class="preset-title">💾 Profil Simpanan (Tempatan)</div>
+                        <div class="preset-item">
+                            <div class="preset-item-name">
+                                <span>Preset 1: P. Sumber MTIB 1</span>
+                                <span id="status-preset-1" class="preset-status"></span>
+                            </div>
+                            <div class="preset-actions">
+                                <button class="btn-secondary btn-micro" style="color: green" onclick="muatPreset(1)" title="Guna tetapan ini">Guna</button>
+                                <button class="btn-secondary btn-micro" style="color: blue" onclick="simpanPreset(1)" title="Simpan ke profil ini">Simpan</button>
+                            </div>
+                        </div>
+                        <div class="preset-item">
+                            <div class="preset-item-name">
+                                <span>Preset 2: P. Sumber MTIB 2</span>
+                                <span id="status-preset-2" class="preset-status"></span>
+                            </div>
+                            <div class="preset-actions">
+                                <button class="btn-secondary btn-micro" style="color: green" onclick="muatPreset(2)" title="Guna tetapan ini">Guna</button>
+                                <button class="btn-secondary btn-micro" style="color: blue" onclick="simpanPreset(2)" title="Simpan ke profil ini">Simpan</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                        <div style="font-size: 13px; color: var(--text-secondary);">
+                            Nyahtanda tag yang anda tidak mahu ia disalin.
+                        </div>
+                        <div class="tag-controls" style="margin-bottom:0;">
+                            <button class="btn-secondary btn-micro" onclick="pilihSemuaTag()">Pilih Semua</button>
+                            <button class="btn-secondary btn-micro" onclick="buangSemuaTag()">Kosongkan</button>
+                        </div>
+                    </div>
+
+                    <div id="tagCheckboxContainer" class="checkbox-grid">
+                        <!-- Checkboxes dijana menggunakan JS -->
+                    </div>
+                    
+                    <button class="btn-primary" onclick="simpanTetapan()" style="margin-top: 0; width: 100%;">💾 Gunakan & Tutup</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Tetapan Aplikasi -->
+        <div id="appSettingsModal" class="modal-overlay">
+            <div class="modal-content" style="max-width: 400px;">
+                <div class="modal-header">
+                    <div class="modal-title">Tetapan Aplikasi</div>
+                    <button class="close-btn" onclick="tutupTetapanAplikasi()" title="Tutup">✕</button>
+                </div>
+                
+                <div class="modal-body">
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; font-size: 13px; font-weight: bold; color: var(--luna-blue-dark); margin-bottom: 8px;">Tajuk Aplikasi:</label>
+                        <input type="text" id="inputAppTitle" class="input-text" placeholder="Cth: Penukar Data MARC" autocomplete="off">
+                        <p style="font-size: 11px; color: var(--text-secondary); margin-top: 6px;">Tajuk ini akan dipaparkan pada bar atas aplikasi dan disimpan ke dalam komputer anda.</p>
+                    </div>
+                    <button class="btn-primary" onclick="simpanTetapanAplikasi()" style="margin-top: 0; width: 100%;">💾 Simpan Tetapan</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        Peralatan Utiliti Pustakawan — Gaya Hibrid (Windows 11 x XP Luna)
+    </footer>
+
+    <!-- JavaScript dengan Integrasi Firebase Awan -->
+    <script type="module">
+        // Import Modul Firebase (Versi 11.6.1)
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Konfigurasi Firebase dari Pengguna
+        const firebaseConfig = {
+            apiKey: "AIzaSyDSqblFdWXAIg9IFV3EZN-iLKXhfkL0c2g",
+            authDomain: "mysmartapps.firebaseapp.com",
+            projectId: "mysmartapps",
+            storageBucket: "mysmartapps.firebasestorage.app",
+            messagingSenderId: "329775742642",
+            appId: "1:329775742642:web:9beac36a9bdac940bcd3ab",
+            measurementId: "G-K4BGGB72TS"
+        };
+
+        // Permulaan Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // Parameter persekitaran (Global)
+        const appIdParam = typeof __app_id !== 'undefined' ? __app_id : 'marc-converter-app';
+        let userId = null;
+
+        // Pembolehubah Aplikasi
+        let tsvData = "";
+        let hiddenTags = [];
+        let appCustomTitle = "Penukar Data MARC";
+        let userPresets = {};
+
+        // --- KAMUS DESKRIPSI MARC ---
+        const marcDescriptions = {
+            "001": "No. Kawalan", "005": "Tarikh Transaksi", "008": "Maklumat Tetap", "010": "No. LC", "020": "ISBN",
+            "022": "ISSN", "035": "No. Kawalan Sistem", "040": "Sumber Pengkatalogan", "041": "Kod Bahasa",
+            "049": "Pegangan / Lokasi", "050": "No. Panggilan LC", "082": "No. Panggilan DDC", "090": "No. Panggilan Tempatan",
+            "100": "Pengarang Utama (Individu)", "110": "Pengarang Utama (Badan)", "130": "Judul Seragam (Utama)",
+            "240": "Judul Seragam", "245": "Pernyataan Judul & Pengarang", "246": "Rupa Bentuk Judul Lain", 
+            "250": "Pernyataan Edisi", "260": "Penerbitan (Format Lama)", "264": "Penerbitan, Pengedaran (RDA)", 
+            "300": "Deskripsi Fizikal", "336": "Jenis Kandungan (RDA)", "337": "Jenis Media (RDA)", "338": "Jenis Pembawa (RDA)", 
+            "490": "Pernyataan Siri", "500": "Nota Umum", "504": "Nota Bibliografi / Rujukan", 
+            "505": "Nota Kandungan Tersusun", "520": "Ringkasan / Anotasi", "590": "Nota Tempatan", 
+            "594": "Status / Nota Dalaman", "600": "Subjek (Individu)", "610": "Subjek (Badan)", 
+            "630": "Subjek (Judul Seragam)", "650": "Subjek (Topik Utama)", "651": "Subjek (Geografi)", 
+            "655": "Istilah Genre / Bentuk", "700": "Entri Tambahan (Individu)", "710": "Entri Tambahan (Badan)", 
+            "720": "Tambahan (Nama Tak Terkawal)", "730": "Tambahan (Judul)", "740": "Tambahan (Judul Lain)", 
+            "800": "Siri Tambahan (Individu)", "830": "Siri Tambahan (Judul)", "856": "Lokasi Elektronik / URL", 
+            "900": "Kategori Tempatan", "997": "Kod Perpustakaan", "998": "Koleksi / Status / DDC"
+        };
+
+        // --- Logik Pengesahan dan Muat Turun Data dari Awan ---
+        async function initFirebase() {
+            try {
+                // Proses Pengesahan (Auth) wajib sebelum pangkalan data
+                // Abaikan __initial_auth_token kerana ia bercanggah dengan konfigurasi Firebase peribadi anda
+                await signInAnonymously(auth);
+                userId = auth.currentUser.uid;
+
+                // Muat turun tetapan dari laluan peribadi di Firestore
+                const userRef = doc(db, 'artifacts', appIdParam, 'users', userId, 'settings', 'preferences');
+                const docSnap = await getDoc(userRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    hiddenTags = data.hiddenTags || [];
+                    appCustomTitle = data.appCustomTitle || "Penukar Data MARC";
+                    userPresets = data.presets || {};
+                }
+
+                // Kemaskini Paparan Antaramuka
+                kemaskiniIndikatorTetapan();
+                muatTajukAplikasi();
+            } catch (error) {
+                console.error("Ralat Sambungan Firebase Awan:", error);
+                // Teruskan secara asas jika gagal (offline fallback)
+                kemaskiniIndikatorTetapan();
+                muatTajukAplikasi();
+            }
+        }
+
+        // --- Fungsi Sehenti untuk Simpan ke Firestore ---
+        async function simpanKeAwan(dataObj) {
+            if (!userId) return; // Pengawal keselamatan
+            try {
+                const userRef = doc(db, 'artifacts', appIdParam, 'users', userId, 'settings', 'preferences');
+                await setDoc(userRef, dataObj, { merge: true }); // Merge: Update spesifik fields
+            } catch (error) {
+                console.error("Gagal menyimpan ke pangkalan data awan:", error);
+            }
+        }
+
+        // --- Proses Kitaran Hidup Aplikasi ---
+        window.addEventListener('DOMContentLoaded', () => {
+            initFirebase();
+            kemaskiniTarikh();
+            setInterval(kemaskiniTarikh, 60000); // Semak minit kalendar
+        });
+
+        function kemaskiniTarikh() {
+            const hari = ["Ahad", "Isnin", "Selasa", "Rabu", "Khamis", "Jumaat", "Sabtu"];
+            const bulan = ["Januari", "Februari", "Mac", "April", "Mei", "Jun", "Julai", "Ogos", "September", "Oktober", "November", "Disember"];
+            const sekarang = new Date();
+            const rentetanTarikh = `${hari[sekarang.getDay()]}, ${sekarang.getDate()} ${bulan[sekarang.getMonth()]} ${sekarang.getFullYear()}`;
+            document.getElementById('currentDateDisplay').textContent = rentetanTarikh;
+        }
+
+        function muatTajukAplikasi() {
+            document.getElementById('appTitleDisplay').textContent = appCustomTitle;
+            document.title = `${appCustomTitle} (Awan Aktif)`;
+        }
+
+        // Memeta fungsi kepada objek tetingkap (Window) untuk diakses dari interaksi HTML (onclick)
+        window.bukaTetapanAplikasi = function() {
+            document.getElementById('inputAppTitle').value = appCustomTitle;
+            document.getElementById('appSettingsModal').classList.add('active');
+        }
+
+        window.tutupTetapanAplikasi = function() { document.getElementById('appSettingsModal').classList.remove('active'); }
+
+        window.simpanTetapanAplikasi = async function() {
+            const titleInput = document.getElementById('inputAppTitle').value.trim();
+            appCustomTitle = titleInput || "Penukar Data MARC";
+            
+            document.getElementById('appTitleDisplay').textContent = "Menyimpan ☁️...";
+            
+            // Simpan perubahan ke awan
+            await simpanKeAwan({ appCustomTitle: appCustomTitle });
+            
+            muatTajukAplikasi();
+            window.tutupTetapanAplikasi();
+        }
+
+        window.masukkanContoh = function() {
+            const contohData = `LEADER 00000pam a22000008i 4500\n001 1393005\n005 20251229124111.0\n008 251118s2025    my      g     f000 0 eng\n020    $a 9789672810940 $q hardback\n035    $a 1392915\n040    $a BNM $b eng $c BNM $e rda\n049    $a mal\n082 04 $a 582.160959521 $2 23\n245 00 $a TREE FLORA of SABAH AND SARAWAK. $n Volume Nine / $c edited by R.C.K. Chung, R. Kiew, L.G. Saw, Y.H. Cheah and E. Soepadmo\n264  1 $a Kepong, Selangor : $b Forest Research Institute Malaysia, $c 2025\n336    $a text $2 rdacontent\n337    $a unmediated $2 rdamedia\n338    $a volume $2 rdacarrier\n594    $a DALAM PROSES PENERBITAN\n650 10 $a Trees $z Sabah $x Identification\n650 20 $a Trees $z Sarawak $x Identification\n650 20 $a Government publications $z Malaysia\n700  1 $a Chung, R. C. K., $e editor.\n700  1 $a Kiew, R., $e editor.\n700  1 $a Saw, L. G., $e editor.\n700  1 $a Cheah, Y. H., $e editor.\n700  1 $a Soepadmo, E., $e editor\n710  2 $a Institut Penyelidikan Perhutanan Malaysia, $e issuing body.\n997    $a PNM\n998    $d 1 $p 582.160959521`;
+            document.getElementById('inputData').value = contohData;
+        }
+
+        window.prosesMARC = function() {
+            const inputText = document.getElementById('inputData').value;
+            const tbody = document.getElementById('tableBody');
+            if (!inputText.trim()) { alert("Sila masukkan teks data MARC terlebih dahulu."); return; }
+
+            const lines = inputText.split('\n');
+            let htmlRows = '';
+            tsvData = "Tag\tInd1\tInd2\tBibliographic Details\n";
+
+            lines.forEach(line => {
+                const trimmedEndLine = line.trimEnd();
+                if (!trimmedEndLine || trimmedEndLine.startsWith("LEADER")) return;
+                
+                const tagMatch = trimmedEndLine.match(/^(\d{3})/);
+                if (!tagMatch) return;
+                
+                const tag = tagMatch[1];
+                if (hiddenTags.includes(tag)) return;
+
+                let ind1Clean = ''; let ind2Clean = ''; let detailClean = '';
+                const firstDollarIdx = trimmedEndLine.indexOf('$');
+
+                if (firstDollarIdx !== -1) {
+                    const prefix = trimmedEndLine.substring(0, firstDollarIdx);
+                    const content = trimmedEndLine.substring(firstDollarIdx);
+                    let afterTag = prefix.substring(3);
+                    
+                    if (afterTag.startsWith(' ') || afterTag.startsWith('\t')) afterTag = afterTag.substring(1);
+                    
+                    let ind1 = afterTag.charAt(0) || ' ';
+                    let ind2 = afterTag.charAt(1) || ' ';
+                    ind1Clean = ind1 === ' ' ? '' : ind1;
+                    ind2Clean = ind2 === ' ' ? '' : ind2;
+
+                    const parts = content.split('$');
+                    let subfields = [];
+                    parts.forEach((part, index) => {
+                        if (index === 0) { if (part.trim() !== '') subfields.push(part.trim()); } 
+                        else if (part.length > 0) { subfields.push(`|${part.charAt(0)}${part.substring(1).trim()}`); }
+                    });
+                    detailClean = subfields.join('');
+                } else { detailClean = trimmedEndLine.substring(3).trim(); }
+
+                const escapedDetail = detailClean.replace(/"/g, '&quot;');
+
+                htmlRows += `<tr>
+                    <td class="col-tag">${tag}</td>
+                    <td class="col-ind">${ind1Clean}</td>
+                    <td class="col-ind">${ind2Clean}</td>
+                    <td style="white-space: pre-wrap;">${detailClean}</td>
+                    <td style="text-align: center; vertical-align: top;">
+                        <button class="btn-secondary btn-micro" 
+                                data-tag="${tag}" 
+                                data-ind1="${ind1Clean}" 
+                                data-ind2="${ind2Clean}" 
+                                data-detail="${escapedDetail}"
+                                onclick="copyRow(this)" title="Salin baris ini" style="padding: 4px 8px;">📋</button>
+                    </td>
+                </tr>`;
+                tsvData += `${tag}\t${ind1Clean}\t${ind2Clean}\t${detailClean}\n`;
+            });
+
+            if (htmlRows === '') { htmlRows = '<tr><td colspan="5" class="empty-state"><div style="font-size: 32px; margin-bottom: 12px;">📋</div>Tiada data MARC yang sah ditemui.</td></tr>'; tsvData = ""; }
+            tbody.innerHTML = htmlRows;
+        }
+
+        window.copyTable = function() {
+            if (!tsvData || tsvData === "Tag\tInd1\tInd2\tBibliographic Details\n") { alert("Tiada data untuk disalin."); return; }
+            const tempTextArea = document.createElement("textarea");
+            tempTextArea.value = tsvData; document.body.appendChild(tempTextArea); tempTextArea.select();
+            try {
+                document.execCommand('copy');
+                const btn = document.getElementById('btnCopy');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '✓ Disalin!';
+                btn.style.background = 'linear-gradient(180deg, #107c41 0%, #0b5c30 100%)';
+                btn.style.borderColor = '#0b5c30';
+                setTimeout(() => { btn.innerHTML = originalText; btn.style.background = ''; btn.style.borderColor = ''; }, 2000);
+            } catch (err) { alert("Ralat: Gagal menyalin data."); }
+            document.body.removeChild(tempTextArea);
+        }
+
+        window.copyRow = function(btn) {
+            const tag = btn.getAttribute('data-tag');
+            const ind1 = btn.getAttribute('data-ind1');
+            const ind2 = btn.getAttribute('data-ind2');
+            const detail = btn.getAttribute('data-detail');
+            const rowData = `${tag}\t${ind1}\t${ind2}\t${detail}`;
+            
+            const tempTextArea = document.createElement("textarea");
+            tempTextArea.value = rowData; 
+            document.body.appendChild(tempTextArea); 
+            tempTextArea.select();
+            
+            try {
+                document.execCommand('copy');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '✓';
+                btn.style.color = '#107c41';
+                btn.style.fontWeight = 'bold';
+                setTimeout(() => { btn.innerHTML = originalText; btn.style.color = ''; btn.style.fontWeight = ''; }, 1500);
+            } catch (err) { alert("Ralat: Gagal menyalin data baris."); }
+            document.body.removeChild(tempTextArea);
+        }
+
+        window.bukaTetapan = function() {
+            const inputText = document.getElementById('inputData').value;
+            const lines = inputText.split('\n');
+            const tagsSet = new Set(Object.keys(marcDescriptions));
+            
+            lines.forEach(line => {
+                const match = line.trimEnd().match(/^(\d{3}) /);
+                if (match) tagsSet.add(match[1]);
+            });
+            hiddenTags.forEach(t => tagsSet.add(t));
+            
+            const sortedTags = Array.from(tagsSet).sort();
+            const container = document.getElementById('tagCheckboxContainer');
+            container.innerHTML = '';
+            
+            sortedTags.forEach(tag => {
+                const isChecked = !hiddenTags.includes(tag);
+                const descText = marcDescriptions[tag] ? marcDescriptions[tag] : "Maklumat Tambahan";
+                container.innerHTML += `
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="${tag}" class="tag-checkbox" ${isChecked ? 'checked' : ''}>
+                        <div class="tag-info">
+                            <span class="tag-code">${tag}</span>
+                            <span class="tag-desc">${descText}</span>
+                        </div>
+                    </label>
+                `;
+            });
+            
+            document.getElementById('tetapanModal').classList.add('active');
+        }
+
+        window.tutupTetapan = function() { document.getElementById('tetapanModal').classList.remove('active'); }
+
+        window.simpanTetapan = async function() {
+            hiddenTags = [];
+            document.querySelectorAll('.tag-checkbox').forEach(cb => { if (!cb.checked) hiddenTags.push(cb.value); });
+            
+            // Maklum balas visual awan
+            const saveBtn = document.querySelector('#tetapanModal .btn-primary');
+            saveBtn.innerHTML = "Menyimpan ☁️...";
+            
+            await simpanKeAwan({ hiddenTags: hiddenTags });
+            
+            saveBtn.innerHTML = "💾 Gunakan & Tutup";
+            window.tutupTetapan();
+            kemaskiniIndikatorTetapan();
+            
+            if (document.getElementById('inputData').value.trim() !== '') window.prosesMARC();
+        }
+        
+        window.pilihSemuaTag = function() { document.querySelectorAll('.tag-checkbox').forEach(cb => cb.checked = true); }
+        window.buangSemuaTag = function() { document.querySelectorAll('.tag-checkbox').forEach(cb => cb.checked = false); }
+        
+        function paparStatusPreset(nombor, teks) {
+            const statusEl = document.getElementById(`status-preset-${nombor}`);
+            statusEl.textContent = teks;
+            statusEl.classList.add('show');
+            setTimeout(() => { statusEl.classList.remove('show'); }, 2000);
+        }
+
+        window.simpanPreset = async function(nombor) {
+            let hiddenForPreset = [];
+            document.querySelectorAll('.tag-checkbox').forEach(cb => { if (!cb.checked) hiddenForPreset.push(cb.value); });
+            
+            userPresets[`preset${nombor}`] = hiddenForPreset;
+            
+            paparStatusPreset(nombor, "Menyimpan ☁️...");
+            await simpanKeAwan({ presets: userPresets });
+            paparStatusPreset(nombor, "✓ Tersimpan Awan");
+        }
+
+        window.muatPreset = function(nombor) {
+            const hiddenForPreset = userPresets[`preset${nombor}`];
+            if (hiddenForPreset) {
+                document.querySelectorAll('.tag-checkbox').forEach(cb => { cb.checked = !hiddenForPreset.includes(cb.value); });
+                paparStatusPreset(nombor, "✓ Dimuatkan dari Awan");
+            } else { 
+                alert(`Tiada tetapan dijumpai untuk Profil ${nombor} di pangkalan data awan.`); 
+            }
+        }
+        
+        function kemaskiniIndikatorTetapan() {
+            const dot = document.getElementById('dotTetapan');
+            if (hiddenTags.length > 0) { dot.classList.add('active'); } else { dot.classList.remove('active'); }
+        }
+    </script>
+</body>
+</html>
