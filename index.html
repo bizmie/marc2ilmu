@@ -308,7 +308,10 @@
                         <div class="w-2 h-6 bg-blue-500 rounded-full"></div>
                         <h2 class="text-sm font-bold text-gray-800 tracking-tight">1. SUMBER DATA MARC</h2>
                     </div>
-                    <button class="mac-btn-secondary !text-[11px] !py-1 !px-3" onclick="masukkanContoh()">💡 Guna Contoh</button>
+                    <div class="flex gap-2">
+                        <button class="mac-btn-secondary !text-[11px] !py-1 !px-3" onclick="bukaSejarah()">🕒 Sejarah</button>
+                        <button class="mac-btn-secondary !text-[11px] !py-1 !px-3" onclick="masukkanContoh()">💡 Guna Contoh</button>
+                    </div>
                 </div>
                 <p class="text-xs text-gray-500 mb-4 ml-4">Tampal teks MARC mentah dari sistem pangkalan ke ruangan ini.</p>
                 
@@ -382,6 +385,27 @@
 
     </main>
 
+    <!-- Modal Sejarah Terjemahan (Gaya Tetingkap Kaca) -->
+    <div id="sejarahModal" class="modal-overlay">
+        <div class="mac-modal-content modal-animate-pop !max-w-[600px]">
+            <div class="mac-titlebar">
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <span class="font-bold text-sm text-gray-800">🕒 Sejarah Terjemahan</span>
+                </div>
+                <button class="btn-close-minimal" onclick="tutupSejarah()" title="Tutup">✕</button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto" style="max-height: 70vh;">
+                <p class="text-xs text-gray-500 mb-4">Menyimpan 20 rekod terakhir yang pernah diproses. Data ini disimpan secara berpusat di Awan Firebase.</p>
+                
+                <!-- Bekas senarai sejarah -->
+                <div id="sejarahContainer" class="space-y-3">
+                    <!-- Item sejarah akan dijana oleh JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Tetapan Tag (Gaya Tetingkap Kaca) -->
     <div id="tetapanModal" class="modal-overlay">
         <div class="mac-modal-content modal-animate-pop">
@@ -404,13 +428,10 @@
                         <div class="preset-item border border-blue-200" style="background: #f0f7ff;">
                             <div class="flex items-center gap-2 flex-1 min-w-0">
                                 <span class="preset-name-text text-blue-700 font-black">MARC Ilmu (Kekal)</span>
-                                <!-- Tiada input form untuk elak diedit -->
                             </div>
                             <div class="flex items-center gap-2 flex-shrink-0">
                                 <span id="status-preset-1" class="text-[10px] font-bold text-blue-600 mr-2"></span>
-                                <!-- Butang ditekankan secara visual -->
                                 <button id="btn-muat-1" class="mac-btn-primary !text-xs !py-1 !px-3" onclick="muatPreset(1)">⬇️ Muat</button>
-                                <!-- Tiada butang simpan (Read-only) -->
                             </div>
                         </div>
 
@@ -516,9 +537,11 @@
         window.hiddenTags = JSON.parse(localStorage.getItem('local_hiddenTags')) || [];
         window.appCustomTitle = localStorage.getItem('local_appTitle') || "Sistem Penukar Data MARC";
         window.userPresets = JSON.parse(localStorage.getItem('local_presets')) || {};
-        window.isSubfieldFilterActive = true; // Diubah kepada true (Aktif secara lalai)
+        window.isSubfieldFilterActive = true;
         
-        // Perhatian: Preset 1 dibiarkan, cuma Profil 2 & 3 sahaja ditarik datanya untuk dipapar
+        // Pangkalan Data Sejarah
+        window.marcHistory = JSON.parse(localStorage.getItem('local_history')) || [];
+        
         window.presetNames = JSON.parse(localStorage.getItem('local_presetNames')) || {
             2: "P. Sumber MTIB 2", 3: "Profil Baharu"
         };
@@ -559,6 +582,7 @@
                     window.appCustomTitle = data.appCustomTitle || window.appCustomTitle;
                     window.userPresets = data.presets || window.userPresets;
                     window.presetNames = data.presetNames || window.presetNames;
+                    window.marcHistory = data.history || window.marcHistory;
                 }
                 
                 isCloudActive = true;
@@ -571,8 +595,12 @@
                         window.presetNames = data.presetNames || window.presetNames;
                         window.userPresets = data.presets || window.userPresets;
                         window.appCustomTitle = data.appCustomTitle || window.appCustomTitle;
+                        window.marcHistory = data.history || window.marcHistory;
                         window.muatTajukAplikasi();
                         window.muatNamaPreset();
+                        if(document.getElementById('sejarahModal').classList.contains('active')) {
+                            window.renderSejarah();
+                        }
                     }
                 });
                 
@@ -594,6 +622,7 @@
             if (dataObj.appCustomTitle !== undefined) localStorage.setItem('local_appTitle', dataObj.appCustomTitle);
             if (dataObj.presets !== undefined) localStorage.setItem('local_presets', JSON.stringify(dataObj.presets));
             if (dataObj.presetNames !== undefined) localStorage.setItem('local_presetNames', JSON.stringify(dataObj.presetNames));
+            if (dataObj.history !== undefined) localStorage.setItem('local_history', JSON.stringify(dataObj.history));
 
             if (isCloudActive && authUid) {
                 try {
@@ -617,7 +646,6 @@
         window.muatTajukAplikasi = function() { document.getElementById('appTitleDisplay').textContent = window.appCustomTitle; }
         
         window.muatNamaPreset = function() {
-            // Preset 1 adalah kebal & statik pada HTML
             for (let i = 2; i <= 3; i++) {
                 const display = document.getElementById(`preset-name-display-${i}`);
                 if (display) display.textContent = window.presetNames[i] || `Preset ${i}`;
@@ -671,6 +699,96 @@
             document.getElementById('inputData').value = contohData;
         }
 
+        // --- FUNGSI SEJARAH TERJEMAHAN ---
+        window.bukaSejarah = function() {
+            window.renderSejarah();
+            document.getElementById('sejarahModal').classList.add('active');
+        }
+
+        window.tutupSejarah = function() {
+            document.getElementById('sejarahModal').classList.remove('active');
+        }
+
+        window.renderSejarah = function() {
+            const container = document.getElementById('sejarahContainer');
+            if (window.marcHistory.length === 0) {
+                container.innerHTML = '<div class="text-center py-10 text-gray-400 text-sm">Tiada sejarah terjemahan direkodkan.</div>';
+                return;
+            }
+
+            let htmlStr = '';
+            window.marcHistory.forEach(item => {
+                const tarikhObj = new Date(item.date);
+                const formatTarikh = tarikhObj.toLocaleDateString('ms-MY') + ' ' + tarikhObj.toLocaleTimeString('ms-MY', {hour: '2-digit', minute:'2-digit'});
+                
+                htmlStr += `
+                <div class="preset-item hover:border-blue-300 transition-colors">
+                    <div class="flex-1 min-w-0 pr-4">
+                        <div class="font-bold text-gray-800 text-sm truncate" title="${item.title}">${item.title}</div>
+                        <div class="text-[11px] text-gray-500">${formatTarikh}</div>
+                    </div>
+                    <div class="flex items-center gap-2 flex-shrink-0">
+                        <button class="mac-btn-secondary !text-[11px] !py-1 !px-3" onclick="muatSejarah('${item.id}')">⬇️ Muat Semula</button>
+                        <button class="mac-btn-secondary !text-[11px] !py-1 !px-2 !text-red-500 hover:!bg-red-50" onclick="padamSejarah('${item.id}')" title="Padam Rekod Ini">🗑️</button>
+                    </div>
+                </div>
+                `;
+            });
+            container.innerHTML = htmlStr;
+        }
+
+        window.simpanSejarah = async function(teks) {
+            if(!teks || !teks.trim()) return;
+            
+            // Ekstrak tajuk dari Tag 245
+            const lines = teks.split('\n');
+            let tajukBuku = "Koleksi Tanpa Tajuk";
+            
+            for (let line of lines) {
+                if (line.trim().startsWith('245 ')) {
+                    const bahagian = line.split('$');
+                    const partA = bahagian.find(p => p.startsWith('a'));
+                    if (partA) {
+                        tajukBuku = partA.substring(1).replace(/[\/\\]/g, '').trim();
+                        if (tajukBuku.length > 60) tajukBuku = tajukBuku.substring(0, 60) + '...';
+                    }
+                    break;
+                }
+            }
+
+            // Halang pertindihan spam jika teks yang sama diproses berturut-turut
+            if(window.marcHistory.length > 0 && window.marcHistory[0].rawData === teks) return;
+
+            const rekodBaru = {
+                id: Date.now().toString(),
+                title: tajukBuku,
+                rawData: teks,
+                date: new Date().getTime()
+            };
+
+            window.marcHistory.unshift(rekodBaru); // Masukkan ke bahagian teratas
+            if (window.marcHistory.length > 20) {
+                window.marcHistory.pop(); // Buang yang paling lama jika lebih 20
+            }
+
+            await simpanDataTerpusat({ history: window.marcHistory });
+        }
+
+        window.muatSejarah = function(id) {
+            const item = window.marcHistory.find(h => h.id === id);
+            if (item) {
+                document.getElementById('inputData').value = item.rawData;
+                window.tutupSejarah();
+                window.prosesMARC();
+            }
+        }
+
+        window.padamSejarah = async function(id) {
+            window.marcHistory = window.marcHistory.filter(h => h.id !== id);
+            window.renderSejarah(); // Kemaskini UI serta merta
+            await simpanDataTerpusat({ history: window.marcHistory }); // Sinkronkan ke awan
+        }
+
         // FUNGSI TOGGLE PENAPIS SUBMEDAN (FORMAT ILMU)
         window.toggleSubfieldFilter = function() {
             window.isSubfieldFilterActive = !window.isSubfieldFilterActive;
@@ -702,6 +820,7 @@
 
             const lines = inputText.split('\n');
             let htmlRows = '';
+            let validRowsCount = 0;
             window.tsvData = "Tag\tInd1\tInd2\tMaklumat Bibliografi\n";
 
             lines.forEach(line => {
@@ -794,11 +913,15 @@
                     </tr>
                 `;
                 window.tsvData += `${tag}\t${ind1Clean}\t${ind2Clean}\t${detailClean}\n`;
+                validRowsCount++;
             });
 
             if (htmlRows === '') {
                 htmlRows = '<tr><td colspan="5" class="empty-state">Tiada data MARC yang sah.</td></tr>';
                 window.tsvData = "";
+            } else if (validRowsCount > 0) {
+                // Simpan sejarah hanya jika terdapat data yang berjaya di proses
+                window.simpanSejarah(inputText);
             }
             tbody.innerHTML = htmlRows;
         }
