@@ -154,7 +154,8 @@
         .table-container::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; border: 2px solid transparent; background-clip: padding-box; }
         .table-container::-webkit-scrollbar-thumb:hover { background-color: rgba(0,0,0,0.3); }
 
-        table { width: 100%; border-collapse: separate; border-spacing: 0; text-align: left; }
+        /* DITAMBAH: table-layout: fixed; untuk memastikan ruangan dibahagi dengan tepat dan wrap teks berfungsi */
+        table { width: 100%; border-collapse: separate; border-spacing: 0; text-align: left; table-layout: fixed; }
         thead { position: sticky; top: 0; z-index: 10; }
         th { 
             background: rgba(245, 245, 247, 0.95); 
@@ -168,12 +169,14 @@
             transition: background 0.2s;
             font-weight: 500; /* Teks jadual separa tebal */
             font-family: 'Aptos', 'Segoe UI Semibold', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; 
+            word-wrap: break-word; /* Wajib untuk pemotongan teks */
+            overflow-wrap: break-word; /* Wajib untuk pemotongan teks */
         }
         tbody tr:hover td { background: rgba(255,255,255,0.9); }
         
         .col-tag { width: 60px; text-align: center; color: var(--accent-color); font-weight: 800; font-family: 'SF Mono', 'Consolas', monospace;}
         .col-ind { width: 45px; text-align: center; color: var(--text-secondary); font-size: 13px; font-weight: 600; }
-        .row-action-td { width: 50px; text-align: center; }
+        .row-action-td { width: 70px; text-align: center; } /* Dibesarkan sedikit untuk muat butang */
         
         .btn-row-copy {
             background: #ffffff; border: 1px solid #d2d2d7; border-radius: 6px;
@@ -368,11 +371,11 @@
                     <table id="outputTable">
                         <thead>
                             <tr>
-                                <th>Tag</th>
-                                <th>Ind1</th>
-                                <th>Ind2</th>
+                                <th class="col-tag">Tag</th>
+                                <th class="col-ind">Ind1</th>
+                                <th class="col-ind">Ind2</th>
                                 <th>Maklumat Bibliografi</th>
-                                <th>Tindakan</th>
+                                <th class="row-action-td">Tindakan</th>
                             </tr>
                         </thead>
                         <tbody id="tableBody" class="font-mono text-sm">
@@ -969,7 +972,7 @@
                         <td class="col-tag">${tag}</td>
                         <td class="col-ind">${ind1Clean}</td>
                         <td class="col-ind">${ind2Clean}</td>
-                        <td style="white-space: pre-wrap;">${formattedDetail}</td>
+                        <td style="white-space: pre-wrap; word-break: break-word; overflow-wrap: break-word;">${formattedDetail}</td>
                         <td class="row-action-td">
                             <div class="relative flex justify-center group">
                                 <button class="btn-row-copy relative" onclick="salinBaris(this, '${escapedDetailForCopy}')">📋</button>
