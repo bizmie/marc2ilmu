@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Penukar Data MARC</title>
-    <!-- Tailwind CSS (Diperlukan untuk struktur dan utiliti seperti shadow, flex, spacing) -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
@@ -17,7 +17,7 @@
             --text-main: #1d1d1f;
             --text-secondary: #86868b;
             
-            /* XP Start Button Green (Diminta oleh pengguna sebelum ini) */
+            /* XP Start Button Green */
             --btn-process-bg: linear-gradient(to bottom, #4cb034 0%, #3a9c22 100%);
             --btn-process-hover: linear-gradient(to bottom, #54c23a 0%, #40ad26 100%);
             
@@ -129,12 +129,14 @@
             border: 1px solid #d2d2d7;
             border-radius: 10px;
             padding: 14px;
-            font-size: 14px;
-            font-weight: 500;
             outline: none;
             color: #1d1d1f;
             transition: all 0.2s;
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.03);
+            
+            /* Saiz lalai yang kecil dan tebal mengikut permintaan */
+            font-size: 12px;
+            font-weight: 700;
         }
         .mac-input:focus { border-color: var(--accent-color); box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15); background: #ffffff; }
 
@@ -164,11 +166,13 @@
             padding: 10px 12px; border-bottom: 1px solid rgba(0,0,0,0.05); 
             background: rgba(255,255,255,0.5);
             transition: background 0.2s;
+            font-weight: 500; /* Teks jadual separa tebal */
+            font-family: 'Aptos', 'Segoe UI Semibold', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; 
         }
         tbody tr:hover td { background: rgba(255,255,255,0.9); }
         
-        .col-tag { width: 60px; text-align: center; color: var(--accent-color); font-weight: 700; }
-        .col-ind { width: 45px; text-align: center; color: var(--text-secondary); font-size: 12px; }
+        .col-tag { width: 60px; text-align: center; color: var(--accent-color); font-weight: 800; font-family: 'SF Mono', 'Consolas', monospace;}
+        .col-ind { width: 45px; text-align: center; color: var(--text-secondary); font-size: 13px; font-weight: 600; }
         .row-action-td { width: 50px; text-align: center; }
         
         .btn-row-copy {
@@ -244,13 +248,12 @@
         
         /* Keadaan Kotak Dipilih (Active / Checked) - Kelabu Gelap Invert */
         .checkbox-item.active {
-            background-color: #374151; /* Dark grey */
+            background-color: #374151;
             border-color: #1f2937;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
         .checkbox-item.active .tag-name { color: #ffffff; }
         .checkbox-item.active .tag-desc { color: #d1d5db; }
-        /* ------------------------------------------- */
 
         .checkbox-item input[type="checkbox"] { 
             margin-top: 3px; margin-right: 12px; width: 16px; height: 16px; 
@@ -309,6 +312,7 @@
                 </div>
                 <p class="text-xs text-gray-500 mb-4 ml-4">Tampal teks MARC mentah dari sistem pangkalan ke ruangan ini.</p>
                 
+                <!-- Kotak Input dengan font kecil dan bold -->
                 <textarea id="inputData" class="mac-input font-mono flex-grow mb-4" spellcheck="false" placeholder="LEADER 00000pam a22000008i 4500&#10;001 1393005&#10;..."></textarea>
                 
                 <!-- Butang Animasi Widget Mac/XP -->
@@ -330,7 +334,10 @@
                         <h2 class="text-sm font-bold text-gray-800 tracking-tight">2. JADUAL BIBLIOGRAFI</h2>
                     </div>
                     
-                    <div class="flex gap-2">
+                    <div class="flex gap-2 flex-wrap justify-end">
+                        <button id="btnSubfieldFilter" class="mac-btn-secondary gap-2 transition-all duration-300" onclick="toggleSubfieldFilter()" title="Hanya paparkan submedan tertentu mengikut format ILMU Lama">
+                            ✂️ Penapis Submedan
+                        </button>
                         <div class="relative">
                             <button class="mac-btn-secondary gap-2" onclick="bukaTetapan()" title="Penapis Tag MARC">
                                 🎛️ Penapis Tag
@@ -393,17 +400,17 @@
                     
                     <!-- Dinamik Preset Profile List -->
                     <div id="presetContainer" class="space-y-2">
-                        <!-- Profile 1 -->
-                        <div class="preset-item">
+                        <!-- Profile 1 (Kekal / Hardcoded) -->
+                        <div class="preset-item border border-blue-200" style="background: #f0f7ff;">
                             <div class="flex items-center gap-2 flex-1 min-w-0">
-                                <span id="preset-name-display-1" class="preset-name-text">Preset 1</span>
-                                <input type="text" id="preset-name-input-1" class="preset-name-input hidden">
-                                <button id="btn-edit-name-1" class="text-gray-400 hover:text-blue-500 transition-colors" onclick="editNamaPreset(1)" title="Edit Nama Profil">✏️</button>
+                                <span class="preset-name-text text-blue-700 font-black">MARC Ilmu (Kekal)</span>
+                                <!-- Tiada input form untuk elak diedit -->
                             </div>
                             <div class="flex items-center gap-2 flex-shrink-0">
-                                <span id="status-preset-1" class="text-[10px] font-bold text-green-600 mr-2"></span>
-                                <button id="btn-muat-1" class="mac-btn-secondary !text-xs !py-1 !px-3" onclick="muatPreset(1)">⬇️ Muat</button>
-                                <button id="btn-simpan-1" class="mac-btn-primary !text-xs !py-1 !px-3 !bg-gray-800 hover:!bg-black" onclick="simpanPreset(1)">⬆️ Simpan</button>
+                                <span id="status-preset-1" class="text-[10px] font-bold text-blue-600 mr-2"></span>
+                                <!-- Butang ditekankan secara visual -->
+                                <button id="btn-muat-1" class="mac-btn-primary !text-xs !py-1 !px-3" onclick="muatPreset(1)">⬇️ Muat</button>
+                                <!-- Tiada butang simpan (Read-only) -->
                             </div>
                         </div>
 
@@ -483,8 +490,9 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+        // Konfigurasi Firebase dari Pengguna
         const firebaseConfig = {
             apiKey: "AIzaSyDSqblFdWXAIg9IFV3EZN-iLKXhfkL0c2g",
             authDomain: "mysmartapps.firebaseapp.com",
@@ -501,15 +509,18 @@
         const auth = getAuth(app);
 
         const appIdParam = typeof __app_id !== 'undefined' ? __app_id : 'marc-converter-app';
-        let userId = null;
-        let isCloudActive = false; 
+        let isCloudActive = false;
+        let authUid = null; 
 
         window.tsvData = "";
         window.hiddenTags = JSON.parse(localStorage.getItem('local_hiddenTags')) || [];
         window.appCustomTitle = localStorage.getItem('local_appTitle') || "Sistem Penukar Data MARC";
         window.userPresets = JSON.parse(localStorage.getItem('local_presets')) || {};
+        window.isSubfieldFilterActive = false; // Status untuk Penapis Submedan
+        
+        // Perhatian: Preset 1 dibiarkan, cuma Profil 2 & 3 sahaja ditarik datanya untuk dipapar
         window.presetNames = JSON.parse(localStorage.getItem('local_presetNames')) || {
-            1: "P. Sumber MTIB 1", 2: "P. Sumber MTIB 2", 3: "Profil Baharu"
+            2: "P. Sumber MTIB 2", 3: "Profil Baharu"
         };
 
         const marcDescriptions = {
@@ -530,14 +541,17 @@
             "900": "Kategori Tempatan", "997": "Kod Perpustakaan", "998": "Koleksi / Status / DDC"
         };
 
+        const getGlobalSettingsRef = () => {
+            return doc(db, 'artifacts', appIdParam, 'public', 'data', 'tetapan_koleksi', 'marc_preset');
+        };
+
         async function initFirebase() {
             const statusEl = document.getElementById('cloudStatus');
             try {
-                await signInAnonymously(auth);
-                userId = auth.currentUser.uid;
+                const userCredential = await signInAnonymously(auth);
+                authUid = userCredential.user.uid;
 
-                const userRef = doc(db, 'artifacts', appIdParam, 'users', userId, 'settings', 'marc');
-                const docSnap = await getDoc(userRef);
+                const docSnap = await getDoc(getGlobalSettingsRef());
 
                 if (docSnap.exists()) {
                     const data = docSnap.data();
@@ -550,12 +564,23 @@
                 isCloudActive = true;
                 statusEl.innerHTML = 'Awan Aktif 🟢';
                 statusEl.className = 'text-xs font-bold text-green-700 bg-green-100 px-2 py-1 rounded-md shadow-inner';
+
+                onSnapshot(getGlobalSettingsRef(), (docSnapshot) => {
+                    if(docSnapshot.exists()) {
+                        const data = docSnapshot.data();
+                        window.presetNames = data.presetNames || window.presetNames;
+                        window.userPresets = data.presets || window.userPresets;
+                        window.appCustomTitle = data.appCustomTitle || window.appCustomTitle;
+                        window.muatTajukAplikasi();
+                        window.muatNamaPreset();
+                    }
+                });
                 
             } catch (error) {
-                console.warn("Lokal:", error);
+                console.warn("Ralat Firebase:", error);
                 isCloudActive = false;
-                statusEl.innerHTML = 'Lokal (Awan Gagal) 🟠';
-                statusEl.className = 'text-xs font-bold text-amber-700 bg-amber-100 px-2 py-1 rounded-md shadow-inner';
+                statusEl.innerHTML = 'Lokal (Awan Gagal) 🔴';
+                statusEl.className = 'text-xs font-bold text-red-700 bg-red-100 px-2 py-1 rounded-md shadow-inner';
             } finally {
                 window.kemaskiniIndikatorTetapan();
                 window.muatTajukAplikasi();
@@ -570,12 +595,14 @@
             if (dataObj.presets !== undefined) localStorage.setItem('local_presets', JSON.stringify(dataObj.presets));
             if (dataObj.presetNames !== undefined) localStorage.setItem('local_presetNames', JSON.stringify(dataObj.presetNames));
 
-            if (isCloudActive && userId) {
+            if (isCloudActive && authUid) {
                 try {
-                    const userRef = doc(db, 'artifacts', appIdParam, 'users', userId, 'settings', 'marc');
-                    await setDoc(userRef, dataObj, { merge: true }); 
-                    return true; 
-                } catch (e) { return false; }
+                    await setDoc(getGlobalSettingsRef(), dataObj, { merge: true }); 
+                    return true;
+                } catch (e) { 
+                    console.error("Gagal tulis ke Cloud:", e);
+                    return false;
+                }
             }
             return false;
         }
@@ -590,7 +617,8 @@
         window.muatTajukAplikasi = function() { document.getElementById('appTitleDisplay').textContent = window.appCustomTitle; }
         
         window.muatNamaPreset = function() {
-            for (let i = 1; i <= 3; i++) {
+            // Preset 1 adalah kebal & statik pada HTML
+            for (let i = 2; i <= 3; i++) {
                 const display = document.getElementById(`preset-name-display-${i}`);
                 if (display) display.textContent = window.presetNames[i] || `Preset ${i}`;
             }
@@ -612,6 +640,8 @@
         }
 
         window.editNamaPreset = function(nombor) {
+            if (nombor === 1) return; // Lindungi preset 1
+
             const display = document.getElementById(`preset-name-display-${nombor}`);
             const input = document.getElementById(`preset-name-input-${nombor}`);
             const btn = document.getElementById(`btn-edit-name-${nombor}`);
@@ -639,6 +669,31 @@
         window.masukkanContoh = function() {
             const contohData = `LEADER 00000pam a22000008i 4500\n001 1393005\n005 20251229124111.0\n008 251118s2025    my      g     f000 0 eng\n020    $a 9789672810940 $q hardback\n035    $a 1392915\n040    $a BNM $b eng $c BNM $e rda\n049    $a mal\n082 04 $a 582.160959521 $2 23\n245 00 $a TREE FLORA of SABAH AND SARAWAK. $n Volume Nine / $c edited by R.C.K. Chung, R. Kiew, L.G. Saw, Y.H. Cheah and E. Soepadmo\n264  1 $a Kepong, Selangor : $b Forest Research Institute Malaysia, $c 2025\n336    $a text $2 rdacontent\n337    $a unmediated $2 rdamedia\n338    $a volume $2 rdacarrier\n594    $a DALAM PROSES PENERBITAN\n650 10 $a Trees $z Sabah $x Identification\n650 20 $a Trees $z Sarawak $x Identification\n650 20 $a Government publications $z Malaysia\n700  1 $a Chung, R. C. K., $e editor.\n700  1 $a Kiew, R., $e editor.\n700  1 $a Saw, L. G., $e editor.\n700  1 $a Cheah, Y. H., $e editor.\n700  1 $a Soepadmo, E., $e editor\n710  2 $a Institut Penyelidikan Perhutanan Malaysia, $e issuing body.\n997    $a PNM\n998    $d 1 $p 582.160959521`;
             document.getElementById('inputData').value = contohData;
+        }
+
+        // FUNGSI TOGGLE PENAPIS SUBMEDAN (FORMAT ILMU)
+        window.toggleSubfieldFilter = function() {
+            window.isSubfieldFilterActive = !window.isSubfieldFilterActive;
+            const btn = document.getElementById('btnSubfieldFilter');
+
+            if (window.isSubfieldFilterActive) {
+                btn.innerHTML = '✂️ Penapis Submedan (Aktif)';
+                btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
+                btn.style.backgroundColor = '#e0f2fe';
+                btn.style.borderColor = '#93c5fd';
+                btn.style.color = '#1d4ed8';
+            } else {
+                btn.innerHTML = '✂️ Penapis Submedan';
+                btn.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-700');
+                btn.style.backgroundColor = '';
+                btn.style.borderColor = '';
+                btn.style.color = '';
+            }
+
+            // Memproses semula data jika kotak teks tidak kosong
+            if (document.getElementById('inputData').value.trim() !== '') {
+                window.prosesMARC();
+            }
         }
 
         window.prosesMARC = function() {
@@ -693,6 +748,28 @@
                             if (part.length > 0) {
                                 const subCode = part.charAt(0);
                                 const subValue = part.substring(1).trim(); 
+                                
+                                // LOGIK PENAPIS SUBMEDAN (Hanya jalankan jika ia aktif)
+                                const formatIlmuRules = {
+                                    "020": ['a', 'c', 'z'],
+                                    "040": ['a', 'b'],
+                                    "090": ['a'],
+                                    "100": ['a'],
+                                    "245": ['a', 'c'],
+                                    "246": ['a'],
+                                    "260": ['a', 'b', 'c'],
+                                    "300": ['a'],
+                                    "500": ['a'],
+                                    "650": ['a', 'v', 'x', 'y', 'z'],
+                                    "700": ['a']
+                                };
+
+                                if (window.isSubfieldFilterActive && formatIlmuRules[tag]) {
+                                    if (!formatIlmuRules[tag].includes(subCode)) {
+                                        return; // Jika subkod ini tiada dalam senarai yang dibenarkan, abaikan.
+                                    }
+                                }
+
                                 subfields.push(`|${subCode}${subValue}`);
                                 subfieldsHTML.push(`<span class="subfield-code">|${subCode}</span>${subValue}`);
                             }
@@ -767,7 +844,6 @@
             document.body.removeChild(tempTextArea);
         }
 
-        // FUNGSI GAYA DINAMIK CHECKBOX (KELABU GELAP INVERT)
         window.toggleCheckboxStyle = function(cb) {
             if(cb.checked) {
                 cb.closest('.checkbox-item').classList.add('active');
@@ -798,7 +874,6 @@
                 const activeClass = isChecked ? 'active' : '';
                 const desc = marcDescriptions[tag] || "Tag Tersuai";
                 
-                // onchange diletakkan untuk terus ubah gaya bila ditekan
                 container.innerHTML += `
                     <label class="checkbox-item ${activeClass}">
                         <input type="checkbox" value="${tag}" class="tag-checkbox" ${isChecked ? 'checked' : ''} onchange="toggleCheckboxStyle(this)">
@@ -848,11 +923,15 @@
         
         window.paparStatusPreset = function(nombor, mesej) {
             const statusEl = document.getElementById(`status-preset-${nombor}`);
-            statusEl.textContent = mesej;
-            setTimeout(() => { statusEl.textContent = ""; }, 3000);
+            if(statusEl) {
+                statusEl.textContent = mesej;
+                setTimeout(() => { statusEl.textContent = ""; }, 3000);
+            }
         }
 
         window.simpanPreset = async function(nombor) {
+            if (nombor === 1) return; // Perlindungan Preset 1
+
             const btn = document.getElementById(`btn-simpan-${nombor}`);
             const originalText = btn.innerHTML;
             btn.innerHTML = '⏳...';
@@ -864,9 +943,15 @@
             });
             
             window.userPresets[`preset${nombor}`] = hiddenForPreset;
-            await simpanDataTerpusat({ presets: window.userPresets });
             
-            window.paparStatusPreset(nombor, "✓ Disimpan");
+            let berjayaAwan = await simpanDataTerpusat({ presets: window.userPresets });
+            
+            if (berjayaAwan) {
+                window.paparStatusPreset(nombor, "✓ Disimpan (Awan)");
+            } else {
+                window.paparStatusPreset(nombor, "✓ Disimpan (Lokal)");
+            }
+            
             btn.innerHTML = originalText;
             btn.disabled = false;
         }
@@ -877,14 +962,13 @@
             btn.innerHTML = '⏳...';
             btn.disabled = true;
             
-            await new Promise(resolve => setTimeout(resolve, 500));
+            await new Promise(resolve => setTimeout(resolve, 300));
 
-            const hiddenForPreset = window.userPresets[`preset${nombor}`];
-            
-            if (hiddenForPreset) {
+            // Logik KHAS untuk Profil 1 (MARC Ilmu)
+            if (nombor === 1) {
+                const marcIlmuTags = ["008", "020", "040", "090", "100", "245", "246", "260", "300", "500", "650", "700"];
                 document.querySelectorAll('.tag-checkbox').forEach(cb => { 
-                    cb.checked = !hiddenForPreset.includes(cb.value);
-                    // Laksanakan pertukaran warna untuk memaparkan apa yang aktif
+                    cb.checked = marcIlmuTags.includes(cb.value);
                     if(cb.checked) {
                         cb.closest('.checkbox-item').classList.add('active');
                     } else {
@@ -892,9 +976,25 @@
                     }
                 });
                 window.paparStatusPreset(nombor, "✓ Dimuat");
-            } else { 
-                window.paparStatusPreset(nombor, "❌ Kosong");
+            } 
+            // Logik untuk Profil 2 & 3
+            else {
+                const hiddenForPreset = window.userPresets[`preset${nombor}`];
+                if (hiddenForPreset) {
+                    document.querySelectorAll('.tag-checkbox').forEach(cb => { 
+                        cb.checked = !hiddenForPreset.includes(cb.value);
+                        if(cb.checked) {
+                            cb.closest('.checkbox-item').classList.add('active');
+                        } else {
+                            cb.closest('.checkbox-item').classList.remove('active');
+                        }
+                    });
+                    window.paparStatusPreset(nombor, "✓ Dimuat");
+                } else { 
+                    window.paparStatusPreset(nombor, "❌ Kosong");
+                }
             }
+
             btn.innerHTML = originalText;
             btn.disabled = false;
         }
