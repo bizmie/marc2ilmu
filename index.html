@@ -335,8 +335,8 @@
                     </div>
                     
                     <div class="flex gap-2 flex-wrap justify-end">
-                        <button id="btnSubfieldFilter" class="mac-btn-secondary gap-2 transition-all duration-300" onclick="toggleSubfieldFilter()" title="Hanya paparkan submedan tertentu mengikut format ILMU Lama">
-                            ✂️ Penapis Submedan
+                        <button id="btnSubfieldFilter" class="mac-btn-secondary gap-2 transition-all duration-300 bg-blue-50 border-blue-300 text-blue-700" style="background-color: #e0f2fe; border-color: #93c5fd; color: #1d4ed8;" onclick="toggleSubfieldFilter()" title="Hanya paparkan submedan tertentu mengikut format ILMU Lama">
+                            ✂️ Submedan Ilmu
                         </button>
                         <div class="relative">
                             <button class="mac-btn-secondary gap-2" onclick="bukaTetapan()" title="Penapis Tag MARC">
@@ -516,7 +516,7 @@
         window.hiddenTags = JSON.parse(localStorage.getItem('local_hiddenTags')) || [];
         window.appCustomTitle = localStorage.getItem('local_appTitle') || "Sistem Penukar Data MARC";
         window.userPresets = JSON.parse(localStorage.getItem('local_presets')) || {};
-        window.isSubfieldFilterActive = false; // Status untuk Penapis Submedan
+        window.isSubfieldFilterActive = true; // Diubah kepada true (Aktif secara lalai)
         
         // Perhatian: Preset 1 dibiarkan, cuma Profil 2 & 3 sahaja ditarik datanya untuk dipapar
         window.presetNames = JSON.parse(localStorage.getItem('local_presetNames')) || {
@@ -677,13 +677,11 @@
             const btn = document.getElementById('btnSubfieldFilter');
 
             if (window.isSubfieldFilterActive) {
-                btn.innerHTML = '✂️ Penapis Submedan (Aktif)';
                 btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
                 btn.style.backgroundColor = '#e0f2fe';
                 btn.style.borderColor = '#93c5fd';
                 btn.style.color = '#1d4ed8';
             } else {
-                btn.innerHTML = '✂️ Penapis Submedan';
                 btn.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-700');
                 btn.style.backgroundColor = '';
                 btn.style.borderColor = '';
