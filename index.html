@@ -894,6 +894,8 @@
                 const tag = tagMatch[1];
                 if (window.hiddenTags.includes(tag)) return;
 
+                const tagDesc = marcDescriptions[tag] || "Tag Tersuai"; // Tarik deskripsi tag untuk tooltip
+
                 let ind1Clean = ''; let ind2Clean = ''; let detailClean = ''; let formattedDetail = '';
                 const firstDollarIdx = trimmedEndLine.indexOf('$');
 
@@ -969,7 +971,12 @@
                         <td class="col-ind">${ind2Clean}</td>
                         <td style="white-space: pre-wrap;">${formattedDetail}</td>
                         <td class="row-action-td">
-                            <button class="btn-row-copy" onclick="salinBaris(this, '${escapedDetailForCopy}')" title="Salin">📋</button>
+                            <div class="relative flex justify-center group">
+                                <button class="btn-row-copy relative" onclick="salinBaris(this, '${escapedDetailForCopy}')">📋</button>
+                                <div class="absolute right-full mr-2 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 bg-[#e0f2fe] text-[#1d4ed8] text-[11px] font-bold px-3 py-1.5 rounded shadow-sm whitespace-nowrap z-50 border border-[#bfdbfe]">
+                                    Salin: ${tagDesc}
+                                </div>
+                            </div>
                         </td>
                     </tr>
                 `;
