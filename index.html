@@ -8,20 +8,18 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
-            /* Warna Tema Teras (Diinspirasi oleh Luna XP tetapi diringankan untuk Mac Style) */
-            --bg-gradient-start: #eaeff5; /* Windows 11 base */
+            /* Warna Tema Teras */
+            --bg-gradient-start: #eaeff5; 
             --bg-gradient-end: #d8e2ed;
-            --accent-color: #007aff; /* Mac OS Blue */
+            --accent-color: #007aff; 
             --accent-hover: #0062cc;
-            --success-color: #34c759; /* Mac OS Green */
+            --success-color: #34c759; 
             --text-main: #1d1d1f;
             --text-secondary: #86868b;
             
             /* XP Start Button Green */
             --btn-process-bg: linear-gradient(to bottom, #4cb034 0%, #3a9c22 100%);
             --btn-process-hover: linear-gradient(to bottom, #54c23a 0%, #40ad26 100%);
-            
-            --border-light: rgba(0,0,0,0.1);
         }
 
         /* 1. Tipografi */
@@ -36,7 +34,7 @@
 
         .font-mono { font-family: 'SF Mono', 'Consolas', 'Courier New', monospace; font-size: 13px; }
 
-        /* 2. Kotak Tetingkap Kaca (Glassmorphism Mac OS Style) */
+        /* 2. Kotak Tetingkap Kaca */
         .mac-window {
             background: rgba(255, 255, 255, 0.75);
             backdrop-filter: blur(24px);
@@ -216,7 +214,7 @@
         }
         .animate-pulse-aqua { animation: pulse-light-aqua 2s infinite; }
 
-        /* Modal Preset */
+        /* Modal Preset & Tab */
         .preset-box { 
             background: rgba(245, 245, 247, 0.6); padding: 16px; border-radius: 12px; 
             border: 1px solid rgba(0,0,0,0.05); margin-bottom: 20px; 
@@ -252,7 +250,38 @@
         .red-dot { display: none; position: absolute; top: -4px; right: -4px; width: 12px; height: 12px; background-color: #ff3b30; border: 2px solid white; border-radius: 50%; box-shadow: 0 2px 4px rgba(255,59,48,0.4); }
         .red-dot.active { display: block; }
         
-        /* 7. Gaya Editor Nota */
+        /* 7. Gaya Index Divider & Editor Nota */
+        .nota-tab {
+            padding: 12px 14px;
+            cursor: pointer;
+            border-left: 5px solid transparent;
+            border-bottom: 1px solid #e5e7eb;
+            background: #f9fafb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+            position: relative;
+        }
+        .nota-tab:hover { background: #f3f4f6; }
+        .nota-tab.active {
+            background: #ffffff;
+            box-shadow: -3px 0 10px rgba(0,0,0,0.03);
+        }
+        /* Penyamaran garisan kanan untuk tab aktif (smooth overlap) */
+        .nota-tab.active::after {
+            content: ''; position: absolute; right: -1px; top: 0; bottom: 0; width: 2px; background: #ffffff;
+        }
+        
+        .nota-tab-title { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; color: #4b5563; font-weight: 500; }
+        .nota-tab.active .nota-tab-title { color: #111827; font-weight: 800; }
+        
+        .nota-action-btns { display: none; gap: 2px; }
+        .nota-tab:hover .nota-action-btns, .nota-tab.active .nota-action-btns { display: flex; z-index: 10; }
+        .nota-btn-icon { font-size: 11px; padding: 4px; color: #9ca3af; border-radius: 4px; cursor: pointer; background: transparent; border: none; }
+        .nota-btn-icon:hover { background: #e5e7eb; color: #1f2937; }
+        .nota-btn-delete:hover { color: #ef4444; background: #fee2e2; }
+
         .editor-toolbar button {
             background: #ffffff; border: 1px solid #d2d2d7; border-radius: 6px;
             padding: 6px 10px; font-size: 13px; font-weight: 600; cursor: pointer;
@@ -260,11 +289,7 @@
         }
         .editor-toolbar button:hover { background: #f5f5f7; border-color: var(--accent-color); color: var(--accent-color); }
         
-        #notaEditor {
-            min-height: 40vh; outline: none; font-size: 14px; font-weight: normal; font-family: 'Segoe UI', sans-serif;
-            background: #ffffff; border: 1px solid #d2d2d7; border-radius: 10px; padding: 16px;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.03); overflow-y: auto; max-height: 65vh;
-        }
+        #notaEditor { outline: none; }
         #notaEditor:focus { border-color: var(--accent-color); box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15); }
         #notaEditor ul { list-style-type: disc; padding-left: 24px; margin-bottom: 8px; }
         #notaEditor ol { list-style-type: decimal; padding-left: 24px; margin-bottom: 8px; }
@@ -279,7 +304,7 @@
 
     <main class="max-w-[1400px] mx-auto space-y-6">
         
-        <!-- Header Utama (Gaya Window) -->
+        <!-- Header Utama -->
         <header class="mac-window mac-window-hover flex justify-between items-center px-6 py-4">
             <div class="flex items-center gap-3" onclick="bukaTetapanAplikasi()">
                 <div class="text-2xl drop-shadow-md">📚</div>
@@ -394,63 +419,78 @@
 
     </main>
 
-    <!-- Modal Nota Editor -->
-    <!-- DITUKAR: !max-w-[700px] kepada !max-w-[95vw] dan lg:!max-w-[1200px] supaya tetingkap melebar mengikut skrin -->
+    <!-- Modal Nota Editor dengan Index Divider Layout -->
     <div id="notaModal" class="modal-overlay">
-        <div class="mac-modal-content modal-animate-pop !max-w-[95vw] lg:!max-w-[1200px]">
-            <div class="mac-titlebar">
+        <div class="mac-modal-content modal-animate-pop !max-w-[95vw] lg:!max-w-[1200px] flex flex-col h-[85vh]">
+            <div class="mac-titlebar flex-shrink-0">
                 <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <span class="font-bold text-sm text-gray-800">📝 Editor Nota</span>
                 </div>
                 <button class="btn-close-minimal" onclick="tutupNota()" title="Tutup">✕</button>
             </div>
             
-            <div class="p-5 flex flex-col gap-3">
-                <div class="text-xs text-gray-500 px-1">Gunakan editor ini untuk membuat catatan tambahan. Data disimpan secara automatik.</div>
-                
-                <!-- Toolbar Format Nota -->
-                <div class="editor-toolbar flex flex-wrap gap-2 p-2 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
-                    <button onclick="formatNota('bold')" title="Tebal (Bold)"><span class="font-bold">B</span></button>
-                    <button onclick="formatNota('italic')" title="Italic"><span class="italic">I</span></button>
-                    <button onclick="formatNota('underline')" title="Garis Bawah"><span class="underline">U</span></button>
-                    <button onclick="formatNota('strikeThrough')" title="Garis Tengah (Strikethrough)"><span class="line-through">S</span></button>
+            <div class="flex flex-col sm:flex-row flex-1 overflow-hidden relative bg-white">
+                <!-- Bar Sisi (Sidebar Tab/Index Divider) -->
+                <div class="w-full sm:w-[240px] bg-gray-50 border-b sm:border-b-0 sm:border-r border-gray-200 flex flex-col flex-shrink-0 z-10 h-[150px] sm:h-auto">
+                    <div class="p-3 text-[11px] font-bold text-gray-500 uppercase tracking-wider border-b border-gray-200 bg-gray-100 flex-shrink-0">Indeks Nota</div>
                     
-                    <div class="w-px h-6 bg-gray-300 mx-1 self-center"></div>
-                    
-                    <label class="flex items-center gap-1 cursor-pointer hover:bg-gray-100 p-1 rounded" title="Warna Font">
-                        🎨 <input type="color" id="notaWarna" onchange="formatNota('foreColor', this.value)" class="w-6 h-6 border-0 p-0 bg-transparent cursor-pointer">
-                    </label>
-                    
-                    <div class="relative">
-                        <button onclick="toggleEmojiPicker()" title="Emoticon">😀</button>
-                        <!-- Popup Palet Emoji -->
-                        <div id="emojiPickerBox" class="hidden absolute top-full left-0 mt-1 bg-white border border-gray-200 p-2 rounded-lg shadow-lg flex flex-wrap gap-1 w-48 z-50">
-                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('😀')">😀</span>
-                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('😂')">😂</span>
-                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('😊')">😊</span>
-                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('😍')">😍</span>
-                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('🙏')">🙏</span>
-                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('👍')">👍</span>
-                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('💡')">💡</span>
-                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('📌')">📌</span>
-                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('📚')">📚</span>
-                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('📝')">📝</span>
-                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('⚠️')">⚠️</span>
-                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('✅')">✅</span>
-                        </div>
+                    <div id="notaTabsList" class="flex-1 overflow-y-auto">
+                        <!-- Tab Senarai Nota Dijana Melalui JS -->
                     </div>
-
-                    <div class="w-px h-6 bg-gray-300 mx-1 self-center"></div>
                     
-                    <button onclick="formatNota('insertUnorderedList')" title="Senarai (Bullet)">• Bullet</button>
-                    <button onclick="insertTableNota()" title="Masukkan Jadual">Tabel ▦</button>
+                    <div class="p-3 border-t border-gray-200 bg-gray-50 flex-shrink-0">
+                        <button class="w-full py-2 bg-white border border-gray-300 rounded text-sm font-bold text-blue-600 hover:bg-blue-50 transition-colors shadow-sm" onclick="tambahNota()">+ Nota Baru</button>
+                    </div>
                 </div>
                 
-                <!-- Ruang Editor Rich Text -->
-                <div id="notaEditor" contenteditable="true" placeholder="Mula menaip nota di sini..."></div>
+                <!-- Kawasan Editor Utama -->
+                <div class="flex-1 flex flex-col bg-white p-4 sm:p-6 relative z-0 overflow-hidden">
+                    <div class="text-xs text-gray-500 px-1 mb-2 flex-shrink-0">Data ini disimpan secara automatik ke Awan Firebase mengikut tab pilihan.</div>
+                    
+                    <!-- Toolbar Format Nota -->
+                    <div class="editor-toolbar flex flex-wrap gap-2 p-2 bg-gray-50 rounded-lg border border-gray-200 shadow-sm mb-3 flex-shrink-0">
+                        <button onclick="formatNota('bold')" title="Tebal (Bold)"><span class="font-bold">B</span></button>
+                        <button onclick="formatNota('italic')" title="Italic"><span class="italic">I</span></button>
+                        <button onclick="formatNota('underline')" title="Garis Bawah"><span class="underline">U</span></button>
+                        <button onclick="formatNota('strikeThrough')" title="Garis Tengah (Strikethrough)"><span class="line-through">S</span></button>
+                        
+                        <div class="w-px h-6 bg-gray-300 mx-1 self-center"></div>
+                        
+                        <label class="flex items-center gap-1 cursor-pointer hover:bg-gray-100 p-1 rounded" title="Warna Font">
+                            🎨 <input type="color" id="notaWarna" onchange="formatNota('foreColor', this.value)" class="w-6 h-6 border-0 p-0 bg-transparent cursor-pointer">
+                        </label>
+                        
+                        <div class="relative">
+                            <button onclick="toggleEmojiPicker()" title="Emoticon">😀</button>
+                            <div id="emojiPickerBox" class="hidden absolute top-full left-0 mt-1 bg-white border border-gray-200 p-2 rounded-lg shadow-lg flex flex-wrap gap-1 w-48 z-50">
+                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('😀')">😀</span>
+                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('😂')">😂</span>
+                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('😊')">😊</span>
+                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('😍')">😍</span>
+                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('🙏')">🙏</span>
+                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('👍')">👍</span>
+                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('💡')">💡</span>
+                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('📌')">📌</span>
+                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('📚')">📚</span>
+                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('📝')">📝</span>
+                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('⚠️')">⚠️</span>
+                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('✅')">✅</span>
+                            </div>
+                        </div>
+
+                        <div class="w-px h-6 bg-gray-300 mx-1 self-center"></div>
+                        
+                        <button onclick="formatNota('insertUnorderedList')" title="Senarai (Bullet)">• Bullet</button>
+                        <button onclick="insertTableNota()" title="Masukkan Jadual">Tabel ▦</button>
+                    </div>
+                    
+                    <!-- Ruang Editor Rich Text -->
+                    <div id="notaEditor" contenteditable="true" placeholder="Mula menaip nota di sini..." class="flex-1 w-full text-[14px] font-sans p-4 border border-gray-200 rounded-lg shadow-inner overflow-y-auto bg-white"></div>
+                </div>
             </div>
             
-            <div class="bg-gray-50/80 backdrop-blur-md p-4 border-t border-gray-200 flex justify-end gap-3">
+            <!-- Footer Editor -->
+            <div class="bg-gray-50/80 backdrop-blur-md p-4 border-t border-gray-200 flex justify-end gap-3 flex-shrink-0">
                 <span id="notaStatus" class="self-center text-xs font-bold text-green-600 mr-auto"></span>
                 <button class="mac-btn-primary" onclick="simpanNotaTutup()">💾 Simpan & Tutup</button>
             </div>
@@ -569,7 +609,6 @@
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Konfigurasi Firebase dari Pengguna
         const firebaseConfig = {
             apiKey: "AIzaSyDSqblFdWXAIg9IFV3EZN-iLKXhfkL0c2g",
             authDomain: "mysmartapps.firebaseapp.com",
@@ -595,13 +634,26 @@
         window.userPresets = JSON.parse(localStorage.getItem('local_presets')) || {};
         window.isSubfieldFilterActive = true;
         
-        // Data Tambahan (Sejarah & Nota)
         window.marcHistory = JSON.parse(localStorage.getItem('local_history')) || [];
-        window.appNota = localStorage.getItem('local_nota') || "";
-        
         window.presetNames = JSON.parse(localStorage.getItem('local_presetNames')) || {
             2: "P. Sumber MTIB 2", 3: "Profil Baharu"
         };
+
+        // --- SISTEM INDEKS NOTA ---
+        const tabColors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#06b6d4', '#3b82f6', '#8b5cf6', '#ec4899'];
+        window.appNotaLama = localStorage.getItem('local_nota') || "";
+        window.appNotes = JSON.parse(localStorage.getItem('local_notes')) || [];
+        
+        // Pindah data legasi jika array kosong
+        if (window.appNotes.length === 0) {
+            window.appNotes.push({
+                id: Date.now().toString(),
+                title: "Nota Utama",
+                color: tabColors[0],
+                content: window.appNotaLama
+            });
+        }
+        window.activeNoteId = window.appNotes[0].id;
 
         const marcDescriptions = {
             "001": "No. Kawalan", "005": "Tarikh Transaksi", "008": "Maklumat Tetap", "010": "No. LC", "020": "ISBN",
@@ -640,7 +692,15 @@
                     window.userPresets = data.presets || window.userPresets;
                     window.presetNames = data.presetNames || window.presetNames;
                     window.marcHistory = data.history || window.marcHistory;
-                    window.appNota = data.nota || window.appNota; // Muat Nota
+                    
+                    if (data.notes) {
+                        window.appNotes = data.notes;
+                    } else if (data.nota) {
+                        window.appNotes = [{ id: Date.now().toString(), title: "Nota Utama", color: tabColors[0], content: data.nota }];
+                    }
+                    if (!window.appNotes.find(n => n.id === window.activeNoteId) && window.appNotes.length > 0) {
+                        window.activeNoteId = window.appNotes[0].id;
+                    }
                 }
                 
                 isCloudActive = true;
@@ -654,15 +714,25 @@
                         window.userPresets = data.presets || window.userPresets;
                         window.appCustomTitle = data.appCustomTitle || window.appCustomTitle;
                         window.marcHistory = data.history || window.marcHistory;
-                        window.appNota = data.nota || window.appNota;
                         
+                        if (data.notes) window.appNotes = data.notes;
+                        if (!window.appNotes.find(n => n.id === window.activeNoteId) && window.appNotes.length > 0) {
+                            window.activeNoteId = window.appNotes[0].id;
+                        }
+
                         window.muatTajukAplikasi();
                         window.muatNamaPreset();
                         if(document.getElementById('sejarahModal').classList.contains('active')) {
                             window.renderSejarah();
                         }
-                        if(document.getElementById('notaEditor') && document.getElementById('notaEditor').innerHTML !== window.appNota) {
-                            document.getElementById('notaEditor').innerHTML = window.appNota;
+                        
+                        // Sync Note Tabs if Modal is open
+                        if(document.getElementById('notaModal').classList.contains('active')) {
+                            window.renderNotaTabs();
+                            const aktif = window.appNotes.find(n => n.id === window.activeNoteId);
+                            if(aktif && document.getElementById('notaEditor').innerHTML !== aktif.content) {
+                                document.getElementById('notaEditor').innerHTML = aktif.content || "";
+                            }
                         }
                     }
                 });
@@ -677,9 +747,6 @@
                 window.muatTajukAplikasi();
                 window.paparTarikhSemasa();
                 window.muatNamaPreset();
-                if(document.getElementById('notaEditor')) {
-                    document.getElementById('notaEditor').innerHTML = window.appNota;
-                }
             }
         }
 
@@ -689,7 +756,7 @@
             if (dataObj.presets !== undefined) localStorage.setItem('local_presets', JSON.stringify(dataObj.presets));
             if (dataObj.presetNames !== undefined) localStorage.setItem('local_presetNames', JSON.stringify(dataObj.presetNames));
             if (dataObj.history !== undefined) localStorage.setItem('local_history', JSON.stringify(dataObj.history));
-            if (dataObj.nota !== undefined) localStorage.setItem('local_nota', dataObj.nota);
+            if (dataObj.notes !== undefined) localStorage.setItem('local_notes', JSON.stringify(dataObj.notes));
 
             if (isCloudActive && authUid) {
                 try {
@@ -703,15 +770,130 @@
             return false;
         }
 
-        // --- FUNGSI EDITOR NOTA ---
+        // --- PENGURUSAN EDITOR NOTA BERBILANG TAB ---
+        window.renderNotaTabs = function() {
+            const list = document.getElementById('notaTabsList');
+            if (!list) return;
+            
+            let htmlStr = '';
+            window.appNotes.forEach(nota => {
+                const isActive = nota.id === window.activeNoteId;
+                const activeClass = isActive ? 'active' : '';
+                htmlStr += `
+                    <div class="nota-tab ${activeClass}" style="border-left-color: ${nota.color};" onclick="pilihNota('${nota.id}')">
+                        <div class="nota-tab-title" title="${nota.title}">${nota.title}</div>
+                        <div class="nota-action-btns">
+                            <button class="nota-btn-icon" onclick="editTajukNota('${nota.id}', event)" title="Ubah Nama Nota">✏️</button>
+                            <button class="nota-btn-icon nota-btn-delete" onclick="padamNota('${nota.id}', event)" title="Padam Nota">✕</button>
+                        </div>
+                    </div>
+                `;
+            });
+            list.innerHTML = htmlStr;
+        }
+
+        window.pilihNota = function(id) {
+            // Simpan nota lama sebelum lompat ke tab baharu
+            const notaSemasa = window.appNotes.find(n => n.id === window.activeNoteId);
+            if (notaSemasa) {
+                notaSemasa.content = document.getElementById('notaEditor').innerHTML;
+            }
+            
+            window.activeNoteId = id;
+            const notaBaru = window.appNotes.find(n => n.id === id);
+            document.getElementById('notaEditor').innerHTML = notaBaru ? (notaBaru.content || "") : "";
+            
+            window.renderNotaTabs();
+        }
+
+        window.tambahNota = function() {
+            const notaSemasa = window.appNotes.find(n => n.id === window.activeNoteId);
+            if (notaSemasa) {
+                notaSemasa.content = document.getElementById('notaEditor').innerHTML;
+            }
+
+            const newId = Date.now().toString();
+            const color = tabColors[window.appNotes.length % tabColors.length];
+            const newTitle = "Nota " + (window.appNotes.length + 1);
+            
+            window.appNotes.push({ id: newId, title: newTitle, color: color, content: "" });
+            window.activeNoteId = newId;
+            
+            window.renderNotaTabs();
+            document.getElementById('notaEditor').innerHTML = "";
+            document.getElementById('notaEditor').focus();
+            
+            simpanDataTerpusat({ notes: window.appNotes });
+        }
+
+        window.padamNota = function(id, event) {
+            event.stopPropagation();
+            if(confirm("Anda pasti mahu memadam rekod nota ini secara kekal?")) {
+                window.appNotes = window.appNotes.filter(n => n.id !== id);
+                
+                // Wajib ada minimum 1 nota
+                if(window.appNotes.length === 0) {
+                    window.appNotes.push({ id: Date.now().toString(), title: "Nota Utama", color: tabColors[0], content: "" });
+                }
+                
+                if(window.activeNoteId === id) {
+                    window.activeNoteId = window.appNotes[0].id;
+                    document.getElementById('notaEditor').innerHTML = window.appNotes[0].content || "";
+                }
+                
+                window.renderNotaTabs();
+                simpanDataTerpusat({ notes: window.appNotes });
+            }
+        }
+
+        window.editTajukNota = function(id, event) {
+            event.stopPropagation();
+            const nota = window.appNotes.find(n => n.id === id);
+            if(nota) {
+                const newTitle = prompt("Masukkan nama baharu untuk nota ini:", nota.title);
+                if(newTitle && newTitle.trim() !== "") {
+                    nota.title = newTitle.trim();
+                    window.renderNotaTabs();
+                    simpanDataTerpusat({ notes: window.appNotes });
+                }
+            }
+        }
+
         window.bukaNota = function() {
+            window.renderNotaTabs();
+            const notaSemasa = window.appNotes.find(n => n.id === window.activeNoteId);
+            document.getElementById('notaEditor').innerHTML = notaSemasa ? (notaSemasa.content || "") : "";
             document.getElementById('notaModal').classList.add('active');
             document.getElementById('notaEditor').focus();
         }
 
         window.tutupNota = function() {
+            // Simpan sebelum tutup untuk keselamatan
+            const notaSemasa = window.appNotes.find(n => n.id === window.activeNoteId);
+            if (notaSemasa) {
+                notaSemasa.content = document.getElementById('notaEditor').innerHTML;
+                simpanDataTerpusat({ notes: window.appNotes });
+            }
             document.getElementById('notaModal').classList.remove('active');
             document.getElementById('emojiPickerBox').classList.add('hidden');
+        }
+
+        window.simpanNotaTutup = async function() {
+            const statusLabel = document.getElementById('notaStatus');
+            statusLabel.textContent = "Menyimpan...";
+            
+            const notaSemasa = window.appNotes.find(n => n.id === window.activeNoteId);
+            if (notaSemasa) {
+                notaSemasa.content = document.getElementById('notaEditor').innerHTML;
+            }
+            
+            await simpanDataTerpusat({ notes: window.appNotes });
+            
+            statusLabel.textContent = "✓ Disimpan ke Awan";
+            setTimeout(() => {
+                statusLabel.textContent = "";
+                window.tutupNota();
+            }, 800);
         }
 
         window.formatNota = function(command, value = null) {
@@ -735,8 +917,8 @@
                 <br>
                 <table style="width:100%; border-collapse:collapse;">
                     <tr>
-                        <th style="border: 1px solid #d2d2d7; padding: 6px;">Tajuk 1</th>
-                        <th style="border: 1px solid #d2d2d7; padding: 6px;">Tajuk 2</th>
+                        <th style="border: 1px solid #d2d2d7; padding: 6px; background-color: #f9fafb;">Tajuk 1</th>
+                        <th style="border: 1px solid #d2d2d7; padding: 6px; background-color: #f9fafb;">Tajuk 2</th>
                     </tr>
                     <tr>
                         <td style="border: 1px solid #d2d2d7; padding: 6px;">Data A</td>
@@ -747,22 +929,6 @@
             `;
             document.execCommand('insertHTML', false, tableHTML);
             document.getElementById('notaEditor').focus();
-        }
-
-        window.simpanNotaTutup = async function() {
-            const statusLabel = document.getElementById('notaStatus');
-            statusLabel.textContent = "Menyimpan...";
-            
-            const htmlNota = document.getElementById('notaEditor').innerHTML;
-            window.appNota = htmlNota;
-            
-            await simpanDataTerpusat({ nota: window.appNota });
-            
-            statusLabel.textContent = "✓ Disimpan ke Awan";
-            setTimeout(() => {
-                statusLabel.textContent = "";
-                window.tutupNota();
-            }, 800);
         }
 
         // --- FUNGSI GLOBAL LAIN ---
@@ -1020,10 +1186,6 @@
                     let ind1 = afterTag.charAt(0) || ' ';
                     let ind2 = afterTag.charAt(1) || ' ';
 
-                    ind1Clean = ind1 === ' ' ? '' : ind1;
-                    ind2Clean = ind2 === ' ' ? '' : ind2;
-
-                    // KEMASKINI: Paksa tetapan Indikator mengikut piawaian Standard MARC, kecuali yang ditapis ILMU
                     const standardMarcInds = {
                         "010": ['', ''], "020": ['', ''], "022": ['', ''], "035": ['', ''],
                         "040": ['', ''], "041": ['0', ''], "049": ['', ''], "050": ['', '4'], 
@@ -1045,13 +1207,11 @@
                     };
                     const ilmuBlankInds = ["040", "090", "246", "300", "500"];
 
-                    // 1. Terapkan Standard MARC sebagai lalai (default)
                     if (standardMarcInds[tag]) {
                         ind1Clean = standardMarcInds[tag][0];
                         ind2Clean = standardMarcInds[tag][1];
                     }
 
-                    // 2. Tindih dengan ILMU jika penapis aktif
                     if (window.isSubfieldFilterActive) {
                         if (ilmuInds[tag]) {
                             ind1Clean = ilmuInds[tag][0];
@@ -1103,7 +1263,6 @@
                     formattedDetail = detailClean;
                 }
 
-                // KEMASKINI: Logik ILMU KHAS untuk Tag 008 (Memaparkan tarikh semasa format YYMMDD)
                 if (window.isSubfieldFilterActive && tag === "008") {
                     const today = new Date();
                     const yy = String(today.getFullYear()).slice(-2);
@@ -1304,7 +1463,6 @@
             await new Promise(resolve => setTimeout(resolve, 300));
 
             if (nombor === 1) {
-                // Ditambah Tag 250 & 504 mengikut penambahan senarai terbaru
                 const marcIlmuTags = ["008", "020", "040", "090", "100", "245", "246", "250", "260", "300", "500", "504", "650", "700"];
                 document.querySelectorAll('.tag-checkbox').forEach(cb => { 
                     cb.checked = marcIlmuTags.includes(cb.value);
