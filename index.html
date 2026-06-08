@@ -1023,6 +1023,45 @@
                     ind1Clean = ind1 === ' ' ? '' : ind1;
                     ind2Clean = ind2 === ' ' ? '' : ind2;
 
+                    // KEMASKINI: Paksa tetapan Indikator mengikut piawaian Standard MARC, kecuali yang ditapis ILMU
+                    const standardMarcInds = {
+                        "010": ['', ''], "020": ['', ''], "022": ['', ''], "035": ['', ''],
+                        "040": ['', ''], "041": ['0', ''], "049": ['', ''], "050": ['', '4'], 
+                        "082": ['0', '4'], "090": ['', ''], "100": ['1', ''], "110": ['2', ''], 
+                        "130": ['0', ''], "240": ['1', '0'], "245": ['1', '0'], "246": ['1', ''], 
+                        "250": ['', ''], "260": ['', ''], "264": ['', '1'], "300": ['', ''], 
+                        "336": ['', ''], "337": ['', ''], "338": ['', ''], "490": ['1', ''], 
+                        "500": ['', ''], "504": ['', ''], "505": ['0', ''], "520": ['', ''], 
+                        "590": ['', ''], "594": ['', ''], "600": ['1', '0'], "610": ['2', '0'], 
+                        "630": ['0', '0'], "650": ['', '0'], "651": ['', '0'], "655": ['', '7'], 
+                        "700": ['1', ''], "710": ['2', ''], "720": ['', ''], "730": ['0', ''], 
+                        "740": ['0', '2'], "800": ['1', ''], "830": ['', '0'], "856": ['4', '0'],
+                        "900": ['', ''], "997": ['', ''], "998": ['', '']
+                    };
+
+                    const ilmuInds = {
+                        "020": ['0', '0'], "100": ['1', '0'], "245": ['1', '0'], "250": ['0', '0'],
+                        "260": ['0', '0'], "504": ['0', '0'], "650": ['0', '0'], "700": ['1', '1']
+                    };
+                    const ilmuBlankInds = ["040", "090", "246", "300", "500"];
+
+                    // 1. Terapkan Standard MARC sebagai lalai (default)
+                    if (standardMarcInds[tag]) {
+                        ind1Clean = standardMarcInds[tag][0];
+                        ind2Clean = standardMarcInds[tag][1];
+                    }
+
+                    // 2. Tindih dengan ILMU jika penapis aktif
+                    if (window.isSubfieldFilterActive) {
+                        if (ilmuInds[tag]) {
+                            ind1Clean = ilmuInds[tag][0];
+                            ind2Clean = ilmuInds[tag][1];
+                        } else if (ilmuBlankInds.includes(tag)) {
+                            ind1Clean = ''; 
+                            ind2Clean = '';
+                        }
+                    }
+
                     const parts = content.split('$');
                     let subfields = [];
                     let subfieldsHTML = [];
@@ -1041,8 +1080,9 @@
                                 const formatIlmuRules = {
                                     "020": ['a', 'c', 'z'], "040": ['a', 'b'], "090": ['a'],
                                     "100": ['a'], "245": ['a', 'c'], "246": ['a'],
-                                    "260": ['a', 'b', 'c'], "300": ['a'], "500": ['a'],
-                                    "650": ['a', 'v', 'x', 'y', 'z'], "700": ['a']
+                                    "250": ['a'], "260": ['a', 'b', 'c'], 
+                                    "300": ['a'], "500": ['a'], "504": ['a'],
+                                    "650": ['a', 'x', 'y', 'z'], "700": ['a']
                                 };
 
                                 if (window.isSubfieldFilterActive && formatIlmuRules[tag]) {
@@ -1060,6 +1100,16 @@
                     formattedDetail = subfieldsHTML.join('');
                 } else {
                     detailClean = trimmedEndLine.substring(3).trim();
+                    formattedDetail = detailClean;
+                }
+
+                // KEMASKINI: Logik ILMU KHAS untuk Tag 008 (Memaparkan tarikh semasa format YYMMDD)
+                if (window.isSubfieldFilterActive && tag === "008") {
+                    const today = new Date();
+                    const yy = String(today.getFullYear()).slice(-2);
+                    const mm = String(today.getMonth() + 1).padStart(2, '0');
+                    const dd = String(today.getDate()).padStart(2, '0');
+                    detailClean = `${yy}${mm}${dd}`;
                     formattedDetail = detailClean;
                 }
 
@@ -1254,7 +1304,8 @@
             await new Promise(resolve => setTimeout(resolve, 300));
 
             if (nombor === 1) {
-                const marcIlmuTags = ["008", "020", "040", "090", "100", "245", "246", "260", "300", "500", "650", "700"];
+                // Ditambah Tag 250 & 504 mengikut penambahan senarai terbaru
+                const marcIlmuTags = ["008", "020", "040", "090", "100", "245", "246", "250", "260", "300", "500", "504", "650", "700"];
                 document.querySelectorAll('.tag-checkbox').forEach(cb => { 
                     cb.checked = marcIlmuTags.includes(cb.value);
                     if(cb.checked) {
