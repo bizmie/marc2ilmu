@@ -261,9 +261,9 @@
         .editor-toolbar button:hover { background: #f5f5f7; border-color: var(--accent-color); color: var(--accent-color); }
         
         #notaEditor {
-            min-height: 250px; outline: none; font-size: 14px; font-weight: normal; font-family: 'Segoe UI', sans-serif;
+            min-height: 40vh; outline: none; font-size: 14px; font-weight: normal; font-family: 'Segoe UI', sans-serif;
             background: #ffffff; border: 1px solid #d2d2d7; border-radius: 10px; padding: 16px;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.03); overflow-y: auto; max-height: 400px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.03); overflow-y: auto; max-height: 65vh;
         }
         #notaEditor:focus { border-color: var(--accent-color); box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15); }
         #notaEditor ul { list-style-type: disc; padding-left: 24px; margin-bottom: 8px; }
@@ -395,8 +395,9 @@
     </main>
 
     <!-- Modal Nota Editor -->
+    <!-- DITUKAR: !max-w-[700px] kepada !max-w-[95vw] dan lg:!max-w-[1200px] supaya tetingkap melebar mengikut skrin -->
     <div id="notaModal" class="modal-overlay">
-        <div class="mac-modal-content modal-animate-pop !max-w-[700px]">
+        <div class="mac-modal-content modal-animate-pop !max-w-[95vw] lg:!max-w-[1200px]">
             <div class="mac-titlebar">
                 <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <span class="font-bold text-sm text-gray-800">📝 Editor Nota</span>
