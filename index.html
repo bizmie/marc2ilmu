@@ -106,7 +106,7 @@
         .mac-btn-secondary:hover { background-color: #f5f5f7; border-color: #c6c6c8; }
         .mac-btn-secondary:active { transform: scale(0.97); }
 
-        /* Butang Khas: Proses (Gabungan XP Color & Mac Bounce) */
+        /* Butang Khas: Proses */
         .btn-process {
             background: var(--btn-process-bg);
             border: 1px solid #2f801a;
@@ -133,8 +133,6 @@
             color: #1d1d1f;
             transition: all 0.2s;
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.03);
-            
-            /* Saiz lalai yang kecil dan tebal mengikut permintaan */
             font-size: 12px;
             font-weight: 700;
         }
@@ -154,7 +152,6 @@
         .table-container::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; border: 2px solid transparent; background-clip: padding-box; }
         .table-container::-webkit-scrollbar-thumb:hover { background-color: rgba(0,0,0,0.3); }
 
-        /* DITAMBAH: table-layout: fixed; untuk memastikan ruangan dibahagi dengan tepat dan wrap teks berfungsi */
         table { width: 100%; border-collapse: separate; border-spacing: 0; text-align: left; table-layout: fixed; }
         thead { position: sticky; top: 0; z-index: 10; }
         th { 
@@ -167,16 +164,16 @@
             padding: 10px 12px; border-bottom: 1px solid rgba(0,0,0,0.05); 
             background: rgba(255,255,255,0.5);
             transition: background 0.2s;
-            font-weight: 500; /* Teks jadual separa tebal */
+            font-weight: 500;
             font-family: 'Aptos', 'Segoe UI Semibold', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; 
-            word-wrap: break-word; /* Wajib untuk pemotongan teks */
-            overflow-wrap: break-word; /* Wajib untuk pemotongan teks */
+            word-wrap: break-word; 
+            overflow-wrap: break-word; 
         }
         tbody tr:hover td { background: rgba(255,255,255,0.9); }
         
         .col-tag { width: 60px; text-align: center; color: var(--accent-color); font-weight: 800; font-family: 'SF Mono', 'Consolas', monospace;}
         .col-ind { width: 45px; text-align: center; color: var(--text-secondary); font-size: 13px; font-weight: 600; }
-        .row-action-td { width: 70px; text-align: center; } /* Dibesarkan sedikit untuk muat butang */
+        .row-action-td { width: 70px; text-align: center; }
         
         .btn-row-copy {
             background: #ffffff; border: 1px solid #d2d2d7; border-radius: 6px;
@@ -212,7 +209,6 @@
             display: flex; flex-direction: column;
         }
 
-        /* Animasi Nadi (Pulse) */
         @keyframes pulse-light-aqua {
             0% { box-shadow: 0 0 0 0 rgba(0, 122, 255, 0.4); }
             70% { box-shadow: 0 0 0 10px rgba(0, 122, 255, 0); }
@@ -220,7 +216,7 @@
         }
         .animate-pulse-aqua { animation: pulse-light-aqua 2s infinite; }
 
-        /* Komponen Spesifik Modal (Preset & Grid) */
+        /* Modal Preset */
         .preset-box { 
             background: rgba(245, 245, 247, 0.6); padding: 16px; border-radius: 12px; 
             border: 1px solid rgba(0,0,0,0.05); margin-bottom: 20px; 
@@ -239,39 +235,42 @@
             background: transparent;
         }
         
-        /* GAYA CHECKBOX TERKINI (NORMAL & ACTIVE) */
         .checkbox-item {
             display: flex; align-items: flex-start; padding: 10px; cursor: pointer;
             background: white; border-radius: 10px; border: 1px solid rgba(0,0,0,0.06);
             transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.02);
         }
-        .checkbox-item:hover { 
-            transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.04); border-color: rgba(0,122,255,0.3); 
-        }
-        
-        /* Keadaan Kotak Dipilih (Active / Checked) - Kelabu Gelap Invert */
-        .checkbox-item.active {
-            background-color: #374151;
-            border-color: #1f2937;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
+        .checkbox-item:hover { transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.04); border-color: rgba(0,122,255,0.3); }
+        .checkbox-item.active { background-color: #374151; border-color: #1f2937; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
         .checkbox-item.active .tag-name { color: #ffffff; }
         .checkbox-item.active .tag-desc { color: #d1d5db; }
 
-        .checkbox-item input[type="checkbox"] { 
-            margin-top: 3px; margin-right: 12px; width: 16px; height: 16px; 
-            accent-color: var(--accent-color); cursor: pointer;
-        }
-        
+        .checkbox-item input[type="checkbox"] { margin-top: 3px; margin-right: 12px; width: 16px; height: 16px; accent-color: var(--accent-color); cursor: pointer; }
         .tag-name { font-weight: bold; color: var(--accent-color); font-family: 'SF Mono', 'Consolas', monospace; display: block; transition: color 0.2s; }
         .tag-desc { font-size: 11px; color: var(--text-secondary); display: block; margin-top: 2px; transition: color 0.2s; }
 
-        .red-dot {
-            display: none; position: absolute; top: -4px; right: -4px;
-            width: 12px; height: 12px; background-color: #ff3b30;
-            border: 2px solid white; border-radius: 50%; box-shadow: 0 2px 4px rgba(255,59,48,0.4);
-        }
+        .red-dot { display: none; position: absolute; top: -4px; right: -4px; width: 12px; height: 12px; background-color: #ff3b30; border: 2px solid white; border-radius: 50%; box-shadow: 0 2px 4px rgba(255,59,48,0.4); }
         .red-dot.active { display: block; }
+        
+        /* 7. Gaya Editor Nota */
+        .editor-toolbar button {
+            background: #ffffff; border: 1px solid #d2d2d7; border-radius: 6px;
+            padding: 6px 10px; font-size: 13px; font-weight: 600; cursor: pointer;
+            transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center;
+        }
+        .editor-toolbar button:hover { background: #f5f5f7; border-color: var(--accent-color); color: var(--accent-color); }
+        
+        #notaEditor {
+            min-height: 250px; outline: none; font-size: 14px; font-weight: normal; font-family: 'Segoe UI', sans-serif;
+            background: #ffffff; border: 1px solid #d2d2d7; border-radius: 10px; padding: 16px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.03); overflow-y: auto; max-height: 400px;
+        }
+        #notaEditor:focus { border-color: var(--accent-color); box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15); }
+        #notaEditor ul { list-style-type: disc; padding-left: 24px; margin-bottom: 8px; }
+        #notaEditor ol { list-style-type: decimal; padding-left: 24px; margin-bottom: 8px; }
+        #notaEditor table { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
+        #notaEditor td, #notaEditor th { border: 1px solid #d2d2d7; padding: 8px; }
+        #notaEditor strike { text-decoration: line-through; }
         
         .app-footer { text-align: center; padding: 20px; font-size: 12px; font-weight: 500; color: var(--text-secondary); opacity: 0.8; }
     </style>
@@ -317,15 +316,11 @@
                     </div>
                 </div>
                 
-                <!-- Label Dinamik (Berubah mengikut MARC raw di ruangan input) -->
                 <p id="tajukBukuSemasa" class="text-sm font-bold text-gray-700 mb-4 ml-4 leading-tight transition-colors duration-300">Tampal teks MARC mentah ke ruangan ini untuk bermula.</p>
                 
-                <!-- Kotak Input dengan font kecil dan bold -->
                 <textarea id="inputData" class="mac-input font-mono flex-grow mb-4" spellcheck="false" placeholder="LEADER 00000pam a22000008i 4500&#10;001 1393005&#10;..." oninput="ekstrakTajukSemasa()"></textarea>
                 
-                <!-- Kumpulan Butang Bawah (Proses & Padam) -->
                 <div class="flex gap-3">
-                    <!-- Butang Animasi Widget Mac/XP -->
                     <button class="btn-process relative overflow-hidden group flex-1 !mt-0 !w-auto" onclick="prosesMARC()">
                         <div class="relative z-10 transition-all duration-300 transform group-hover:-translate-y-10 flex items-center justify-center gap-2">
                             <span>🚀</span> Mula Memproses
@@ -334,8 +329,6 @@
                             <span>⚡</span> Terjemah ke Jadual
                         </div>
                     </button>
-
-                    <!-- Butang Padam Ruangan -->
                     <button class="mac-btn-secondary !p-0 w-[55px] flex-shrink-0 flex items-center justify-center text-xl text-red-500 hover:!bg-red-50 hover:!border-red-400 transition-colors" onclick="padamInputMARC()" title="Padam Sumber Data">
                         🗑️
                     </button>
@@ -362,6 +355,9 @@
                         </div>
                         <button class="mac-btn-primary animate-pulse-aqua gap-2" id="btnCopy" onclick="copyTable()">
                             📋 Salin Keseluruhan
+                        </button>
+                        <button class="mac-btn-secondary gap-2 text-indigo-600 border-indigo-200 bg-indigo-50 hover:bg-indigo-100" onclick="bukaNota()" title="Buka Editor Nota">
+                            📝 Nota
                         </button>
                     </div>
                 </div>
@@ -398,7 +394,69 @@
 
     </main>
 
-    <!-- Modal Sejarah Terjemahan (Gaya Tetingkap Kaca) -->
+    <!-- Modal Nota Editor -->
+    <div id="notaModal" class="modal-overlay">
+        <div class="mac-modal-content modal-animate-pop !max-w-[700px]">
+            <div class="mac-titlebar">
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <span class="font-bold text-sm text-gray-800">📝 Editor Nota</span>
+                </div>
+                <button class="btn-close-minimal" onclick="tutupNota()" title="Tutup">✕</button>
+            </div>
+            
+            <div class="p-5 flex flex-col gap-3">
+                <div class="text-xs text-gray-500 px-1">Gunakan editor ini untuk membuat catatan tambahan. Data disimpan secara automatik.</div>
+                
+                <!-- Toolbar Format Nota -->
+                <div class="editor-toolbar flex flex-wrap gap-2 p-2 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
+                    <button onclick="formatNota('bold')" title="Tebal (Bold)"><span class="font-bold">B</span></button>
+                    <button onclick="formatNota('italic')" title="Italic"><span class="italic">I</span></button>
+                    <button onclick="formatNota('underline')" title="Garis Bawah"><span class="underline">U</span></button>
+                    <button onclick="formatNota('strikeThrough')" title="Garis Tengah (Strikethrough)"><span class="line-through">S</span></button>
+                    
+                    <div class="w-px h-6 bg-gray-300 mx-1 self-center"></div>
+                    
+                    <label class="flex items-center gap-1 cursor-pointer hover:bg-gray-100 p-1 rounded" title="Warna Font">
+                        🎨 <input type="color" id="notaWarna" onchange="formatNota('foreColor', this.value)" class="w-6 h-6 border-0 p-0 bg-transparent cursor-pointer">
+                    </label>
+                    
+                    <div class="relative">
+                        <button onclick="toggleEmojiPicker()" title="Emoticon">😀</button>
+                        <!-- Popup Palet Emoji -->
+                        <div id="emojiPickerBox" class="hidden absolute top-full left-0 mt-1 bg-white border border-gray-200 p-2 rounded-lg shadow-lg flex flex-wrap gap-1 w-48 z-50">
+                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('😀')">😀</span>
+                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('😂')">😂</span>
+                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('😊')">😊</span>
+                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('😍')">😍</span>
+                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('🙏')">🙏</span>
+                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('👍')">👍</span>
+                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('💡')">💡</span>
+                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('📌')">📌</span>
+                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('📚')">📚</span>
+                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('📝')">📝</span>
+                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('⚠️')">⚠️</span>
+                            <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('✅')">✅</span>
+                        </div>
+                    </div>
+
+                    <div class="w-px h-6 bg-gray-300 mx-1 self-center"></div>
+                    
+                    <button onclick="formatNota('insertUnorderedList')" title="Senarai (Bullet)">• Bullet</button>
+                    <button onclick="insertTableNota()" title="Masukkan Jadual">Tabel ▦</button>
+                </div>
+                
+                <!-- Ruang Editor Rich Text -->
+                <div id="notaEditor" contenteditable="true" placeholder="Mula menaip nota di sini..."></div>
+            </div>
+            
+            <div class="bg-gray-50/80 backdrop-blur-md p-4 border-t border-gray-200 flex justify-end gap-3">
+                <span id="notaStatus" class="self-center text-xs font-bold text-green-600 mr-auto"></span>
+                <button class="mac-btn-primary" onclick="simpanNotaTutup()">💾 Simpan & Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Sejarah Terjemahan -->
     <div id="sejarahModal" class="modal-overlay">
         <div class="mac-modal-content modal-animate-pop !max-w-[600px]">
             <div class="mac-titlebar">
@@ -410,19 +468,14 @@
             
             <div class="p-6 overflow-y-auto" style="max-height: 70vh;">
                 <p class="text-xs text-gray-500 mb-4">Menyimpan 20 rekod terakhir yang pernah diproses. Data ini disimpan secara berpusat di Awan Firebase.</p>
-                
-                <!-- Bekas senarai sejarah -->
-                <div id="sejarahContainer" class="space-y-3">
-                    <!-- Item sejarah akan dijana oleh JS -->
-                </div>
+                <div id="sejarahContainer" class="space-y-3"></div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Tetapan Tag (Gaya Tetingkap Kaca) -->
+    <!-- Modal Tetapan Tag -->
     <div id="tetapanModal" class="modal-overlay">
         <div class="mac-modal-content modal-animate-pop">
-            <!-- Header Tetingkap -->
             <div class="mac-titlebar">
                 <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <span class="font-bold text-sm text-gray-800">🎛️ Penapis & Profil MARC</span>
@@ -434,21 +487,15 @@
                 <!-- Kotak Preset -->
                 <div class="preset-box">
                     <div class="preset-title flex items-center gap-2"><span class="text-blue-500">☁️</span> Profil Simpanan Pintar</div>
-                    
-                    <!-- Dinamik Preset Profile List -->
                     <div id="presetContainer" class="space-y-2">
-                        <!-- Profile 1 (Kekal / Hardcoded) -->
                         <div class="preset-item border border-blue-200" style="background: #f0f7ff;">
-                            <div class="flex items-center gap-2 flex-1 min-w-0">
-                                <span class="preset-name-text text-blue-700 font-black">MARC Ilmu (Kekal)</span>
-                            </div>
+                            <div class="flex items-center gap-2 flex-1 min-w-0"><span class="preset-name-text text-blue-700 font-black">MARC Ilmu (Kekal)</span></div>
                             <div class="flex items-center gap-2 flex-shrink-0">
                                 <span id="status-preset-1" class="text-[10px] font-bold text-blue-600 mr-2"></span>
                                 <button id="btn-muat-1" class="mac-btn-primary !text-xs !py-1 !px-3" onclick="muatPreset(1)">⬇️ Muat</button>
                             </div>
                         </div>
 
-                        <!-- Profile 2 -->
                         <div class="preset-item">
                             <div class="flex items-center gap-2 flex-1 min-w-0">
                                 <span id="preset-name-display-2" class="preset-name-text">Preset 2</span>
@@ -462,7 +509,6 @@
                             </div>
                         </div>
 
-                        <!-- Profile 3 -->
                         <div class="preset-item">
                             <div class="flex items-center gap-2 flex-1 min-w-0">
                                 <span id="preset-name-display-3" class="preset-name-text">Preset 3</span>
@@ -489,9 +535,7 @@
                     </div>
                 </div>
 
-                <div id="tagCheckboxContainer" class="checkbox-grid">
-                    <!-- Checkboxes dijana menggunakan JS -->
-                </div>
+                <div id="tagCheckboxContainer" class="checkbox-grid"></div>
             </div>
             
             <div class="bg-gray-50/80 backdrop-blur-md p-4 border-t border-gray-200 flex justify-end">
@@ -509,11 +553,9 @@
                 </div>
                 <button class="btn-close-minimal" onclick="tutupTetapanAplikasi()" title="Tutup">✕</button>
             </div>
-            
             <div class="p-6">
                 <label class="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Nama Paparan Sistem</label>
                 <input type="text" id="inputAppTitle" class="mac-input w-full mb-6" placeholder="Contoh: Pustaka Pintar">
-                
                 <button class="mac-btn-primary w-full" onclick="simpanTetapanAplikasi()">💾 Kemaskini Sistem</button>
             </div>
         </div>
@@ -552,8 +594,9 @@
         window.userPresets = JSON.parse(localStorage.getItem('local_presets')) || {};
         window.isSubfieldFilterActive = true;
         
-        // Pangkalan Data Sejarah
+        // Data Tambahan (Sejarah & Nota)
         window.marcHistory = JSON.parse(localStorage.getItem('local_history')) || [];
+        window.appNota = localStorage.getItem('local_nota') || "";
         
         window.presetNames = JSON.parse(localStorage.getItem('local_presetNames')) || {
             2: "P. Sumber MTIB 2", 3: "Profil Baharu"
@@ -596,6 +639,7 @@
                     window.userPresets = data.presets || window.userPresets;
                     window.presetNames = data.presetNames || window.presetNames;
                     window.marcHistory = data.history || window.marcHistory;
+                    window.appNota = data.nota || window.appNota; // Muat Nota
                 }
                 
                 isCloudActive = true;
@@ -609,10 +653,15 @@
                         window.userPresets = data.presets || window.userPresets;
                         window.appCustomTitle = data.appCustomTitle || window.appCustomTitle;
                         window.marcHistory = data.history || window.marcHistory;
+                        window.appNota = data.nota || window.appNota;
+                        
                         window.muatTajukAplikasi();
                         window.muatNamaPreset();
                         if(document.getElementById('sejarahModal').classList.contains('active')) {
                             window.renderSejarah();
+                        }
+                        if(document.getElementById('notaEditor') && document.getElementById('notaEditor').innerHTML !== window.appNota) {
+                            document.getElementById('notaEditor').innerHTML = window.appNota;
                         }
                     }
                 });
@@ -627,6 +676,9 @@
                 window.muatTajukAplikasi();
                 window.paparTarikhSemasa();
                 window.muatNamaPreset();
+                if(document.getElementById('notaEditor')) {
+                    document.getElementById('notaEditor').innerHTML = window.appNota;
+                }
             }
         }
 
@@ -636,6 +688,7 @@
             if (dataObj.presets !== undefined) localStorage.setItem('local_presets', JSON.stringify(dataObj.presets));
             if (dataObj.presetNames !== undefined) localStorage.setItem('local_presetNames', JSON.stringify(dataObj.presetNames));
             if (dataObj.history !== undefined) localStorage.setItem('local_history', JSON.stringify(dataObj.history));
+            if (dataObj.nota !== undefined) localStorage.setItem('local_nota', dataObj.nota);
 
             if (isCloudActive && authUid) {
                 try {
@@ -649,7 +702,69 @@
             return false;
         }
 
-        // --- FUNGSI GLOBAL ---
+        // --- FUNGSI EDITOR NOTA ---
+        window.bukaNota = function() {
+            document.getElementById('notaModal').classList.add('active');
+            document.getElementById('notaEditor').focus();
+        }
+
+        window.tutupNota = function() {
+            document.getElementById('notaModal').classList.remove('active');
+            document.getElementById('emojiPickerBox').classList.add('hidden');
+        }
+
+        window.formatNota = function(command, value = null) {
+            document.execCommand(command, false, value);
+            document.getElementById('notaEditor').focus();
+        }
+
+        window.toggleEmojiPicker = function() {
+            const picker = document.getElementById('emojiPickerBox');
+            picker.classList.toggle('hidden');
+        }
+
+        window.insertEmoji = function(emoji) {
+            document.execCommand('insertText', false, emoji);
+            document.getElementById('emojiPickerBox').classList.add('hidden');
+            document.getElementById('notaEditor').focus();
+        }
+
+        window.insertTableNota = function() {
+            const tableHTML = `
+                <br>
+                <table style="width:100%; border-collapse:collapse;">
+                    <tr>
+                        <th style="border: 1px solid #d2d2d7; padding: 6px;">Tajuk 1</th>
+                        <th style="border: 1px solid #d2d2d7; padding: 6px;">Tajuk 2</th>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #d2d2d7; padding: 6px;">Data A</td>
+                        <td style="border: 1px solid #d2d2d7; padding: 6px;">Data B</td>
+                    </tr>
+                </table>
+                <br>
+            `;
+            document.execCommand('insertHTML', false, tableHTML);
+            document.getElementById('notaEditor').focus();
+        }
+
+        window.simpanNotaTutup = async function() {
+            const statusLabel = document.getElementById('notaStatus');
+            statusLabel.textContent = "Menyimpan...";
+            
+            const htmlNota = document.getElementById('notaEditor').innerHTML;
+            window.appNota = htmlNota;
+            
+            await simpanDataTerpusat({ nota: window.appNota });
+            
+            statusLabel.textContent = "✓ Disimpan ke Awan";
+            setTimeout(() => {
+                statusLabel.textContent = "";
+                window.tutupNota();
+            }, 800);
+        }
+
+        // --- FUNGSI GLOBAL LAIN ---
         window.paparTarikhSemasa = function() {
             const el = document.getElementById('tarikhSemasa');
             const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
@@ -681,7 +796,7 @@
         }
 
         window.editNamaPreset = function(nombor) {
-            if (nombor === 1) return; // Lindungi preset 1
+            if (nombor === 1) return;
 
             const display = document.getElementById(`preset-name-display-${nombor}`);
             const input = document.getElementById(`preset-name-input-${nombor}`);
@@ -710,10 +825,9 @@
         window.masukkanContoh = function() {
             const contohData = `LEADER 00000pam a22000008i 4500\n001 1393005\n005 20251229124111.0\n008 251118s2025    my      g     f000 0 eng\n020    $a 9789672810940 $q hardback\n035    $a 1392915\n040    $a BNM $b eng $c BNM $e rda\n049    $a mal\n082 04 $a 582.160959521 $2 23\n245 00 $a TREE FLORA of SABAH AND SARAWAK. $n Volume Nine / $c edited by R.C.K. Chung, R. Kiew, L.G. Saw, Y.H. Cheah and E. Soepadmo\n264  1 $a Kepong, Selangor : $b Forest Research Institute Malaysia, $c 2025\n336    $a text $2 rdacontent\n337    $a unmediated $2 rdamedia\n338    $a volume $2 rdacarrier\n594    $a DALAM PROSES PENERBITAN\n650 10 $a Trees $z Sabah $x Identification\n650 20 $a Trees $z Sarawak $x Identification\n650 20 $a Government publications $z Malaysia\n700  1 $a Chung, R. C. K., $e editor.\n700  1 $a Kiew, R., $e editor.\n700  1 $a Saw, L. G., $e editor.\n700  1 $a Cheah, Y. H., $e editor.\n700  1 $a Soepadmo, E., $e editor\n710  2 $a Institut Penyelidikan Perhutanan Malaysia, $e issuing body.\n997    $a PNM\n998    $d 1 $p 582.160959521`;
             document.getElementById('inputData').value = contohData;
-            window.ekstrakTajukSemasa(); // Panggil fungsi supaya tajuk sentiasa terkini
+            window.ekstrakTajukSemasa(); 
         }
 
-        // --- FUNGSI EKSTRAK TAJUK BUKU SECARA LANGSUNG (LIVE) ---
         window.ekstrakTajukSemasa = function() {
             const teks = document.getElementById('inputData').value;
             const paparTajuk = document.getElementById('tajukBukuSemasa');
@@ -741,7 +855,7 @@
             }
             
             if(tajukBuku) {
-                tajukBuku = tajukBuku.replace(/[\/\\]/g, '').trim(); // Buang garisan condong dihujung jika ada
+                tajukBuku = tajukBuku.replace(/[\/\\]/g, '').trim();
                 paparTajuk.textContent = "📖 " + tajukBuku;
                 paparTajuk.className = "text-sm font-bold text-gray-800 mb-4 ml-4 leading-tight transition-colors duration-300";
             } else {
@@ -750,24 +864,20 @@
             }
         }
 
-        // --- FUNGSI PADAM INPUT & JADUAL ---
         window.padamInputMARC = function() {
             document.getElementById('inputData').value = '';
-            window.ekstrakTajukSemasa(); // Akan mereset semula ke teks lalai
+            window.ekstrakTajukSemasa();
             document.getElementById('tableBody').innerHTML = '<tr><td colspan="5" class="py-20 text-center text-gray-400"><div class="text-4xl mb-3 opacity-50">📊</div><div class="font-medium text-sm">Jadual akan dipaparkan di sini.</div></td></tr>';
             window.tsvData = "";
             document.getElementById('inputData').focus();
         }
 
-        // --- FUNGSI SEJARAH TERJEMAHAN ---
         window.bukaSejarah = function() {
             window.renderSejarah();
             document.getElementById('sejarahModal').classList.add('active');
         }
 
-        window.tutupSejarah = function() {
-            document.getElementById('sejarahModal').classList.remove('active');
-        }
+        window.tutupSejarah = function() { document.getElementById('sejarahModal').classList.remove('active'); }
 
         window.renderSejarah = function() {
             const container = document.getElementById('sejarahContainer');
@@ -800,7 +910,6 @@
         window.simpanSejarah = async function(teks) {
             if(!teks || !teks.trim()) return;
             
-            // Ekstrak tajuk dari Tag 245 untuk paparan sejarah
             const lines = teks.split('\n');
             let tajukBuku = "Koleksi Tanpa Tajuk";
             
@@ -816,7 +925,6 @@
                 }
             }
 
-            // Halang pertindihan spam jika teks yang sama diproses berturut-turut
             if(window.marcHistory.length > 0 && window.marcHistory[0].rawData === teks) return;
 
             const rekodBaru = {
@@ -826,9 +934,9 @@
                 date: new Date().getTime()
             };
 
-            window.marcHistory.unshift(rekodBaru); // Masukkan ke bahagian teratas
+            window.marcHistory.unshift(rekodBaru);
             if (window.marcHistory.length > 20) {
-                window.marcHistory.pop(); // Buang yang paling lama jika lebih 20
+                window.marcHistory.pop();
             }
 
             await simpanDataTerpusat({ history: window.marcHistory });
@@ -838,7 +946,7 @@
             const item = window.marcHistory.find(h => h.id === id);
             if (item) {
                 document.getElementById('inputData').value = item.rawData;
-                window.ekstrakTajukSemasa(); // Kemaskini tajuk di luar
+                window.ekstrakTajukSemasa();
                 window.tutupSejarah();
                 window.prosesMARC();
             }
@@ -846,11 +954,10 @@
 
         window.padamSejarah = async function(id) {
             window.marcHistory = window.marcHistory.filter(h => h.id !== id);
-            window.renderSejarah(); // Kemaskini UI serta merta
-            await simpanDataTerpusat({ history: window.marcHistory }); // Sinkronkan ke awan
+            window.renderSejarah();
+            await simpanDataTerpusat({ history: window.marcHistory });
         }
 
-        // FUNGSI TOGGLE PENAPIS SUBMEDAN (FORMAT ILMU)
         window.toggleSubfieldFilter = function() {
             window.isSubfieldFilterActive = !window.isSubfieldFilterActive;
             const btn = document.getElementById('btnSubfieldFilter');
@@ -867,7 +974,6 @@
                 btn.style.color = '';
             }
 
-            // Memproses semula data jika kotak teks tidak kosong
             if (document.getElementById('inputData').value.trim() !== '') {
                 window.prosesMARC();
             }
@@ -879,7 +985,6 @@
             
             if (!inputText.trim()) { alert("Sila masukkan teks data MARC."); return; }
 
-            // Panggil pengekstrakan tajuk dinamik jika belum
             window.ekstrakTajukSemasa();
 
             const lines = inputText.split('\n');
@@ -897,7 +1002,7 @@
                 const tag = tagMatch[1];
                 if (window.hiddenTags.includes(tag)) return;
 
-                const tagDesc = marcDescriptions[tag] || "Tag Tersuai"; // Tarik deskripsi tag untuk tooltip
+                const tagDesc = marcDescriptions[tag] || "Tag Tersuai"; 
 
                 let ind1Clean = ''; let ind2Clean = ''; let detailClean = ''; let formattedDetail = '';
                 const firstDollarIdx = trimmedEndLine.indexOf('$');
@@ -932,24 +1037,16 @@
                                 const subCode = part.charAt(0);
                                 const subValue = part.substring(1).trim(); 
                                 
-                                // LOGIK PENAPIS SUBMEDAN (Hanya jalankan jika ia aktif)
                                 const formatIlmuRules = {
-                                    "020": ['a', 'c', 'z'],
-                                    "040": ['a', 'b'],
-                                    "090": ['a'],
-                                    "100": ['a'],
-                                    "245": ['a', 'c'],
-                                    "246": ['a'],
-                                    "260": ['a', 'b', 'c'],
-                                    "300": ['a'],
-                                    "500": ['a'],
-                                    "650": ['a', 'v', 'x', 'y', 'z'],
-                                    "700": ['a']
+                                    "020": ['a', 'c', 'z'], "040": ['a', 'b'], "090": ['a'],
+                                    "100": ['a'], "245": ['a', 'c'], "246": ['a'],
+                                    "260": ['a', 'b', 'c'], "300": ['a'], "500": ['a'],
+                                    "650": ['a', 'v', 'x', 'y', 'z'], "700": ['a']
                                 };
 
                                 if (window.isSubfieldFilterActive && formatIlmuRules[tag]) {
                                     if (!formatIlmuRules[tag].includes(subCode)) {
-                                        return; // Jika subkod ini tiada dalam senarai yang dibenarkan, abaikan.
+                                        return; 
                                     }
                                 }
 
@@ -991,7 +1088,6 @@
                 htmlRows = '<tr><td colspan="5" class="empty-state">Tiada data MARC yang sah.</td></tr>';
                 window.tsvData = "";
             } else if (validRowsCount > 0) {
-                // Simpan sejarah hanya jika terdapat data yang berjaya di proses
                 window.simpanSejarah(inputText);
             }
             tbody.innerHTML = htmlRows;
@@ -1122,7 +1218,7 @@
         }
 
         window.simpanPreset = async function(nombor) {
-            if (nombor === 1) return; // Perlindungan Preset 1
+            if (nombor === 1) return; 
 
             const btn = document.getElementById(`btn-simpan-${nombor}`);
             const originalText = btn.innerHTML;
@@ -1156,7 +1252,6 @@
             
             await new Promise(resolve => setTimeout(resolve, 300));
 
-            // Logik KHAS untuk Profil 1 (MARC Ilmu)
             if (nombor === 1) {
                 const marcIlmuTags = ["008", "020", "040", "090", "100", "245", "246", "260", "300", "500", "650", "700"];
                 document.querySelectorAll('.tag-checkbox').forEach(cb => { 
@@ -1168,9 +1263,7 @@
                     }
                 });
                 window.paparStatusPreset(nombor, "✓ Dimuat");
-            } 
-            // Logik untuk Profil 2 & 3
-            else {
+            } else {
                 const hiddenForPreset = window.userPresets[`preset${nombor}`];
                 if (hiddenForPreset) {
                     document.querySelectorAll('.tag-checkbox').forEach(cb => { 
