@@ -170,7 +170,8 @@
         tbody tr:hover td { background: rgba(255,255,255,0.9); }
         
         .col-tag { width: 60px; text-align: center; color: var(--accent-color); font-weight: 800; font-family: 'SF Mono', 'Consolas', monospace;}
-        .col-ind { width: 45px; text-align: center; color: var(--text-secondary); font-size: 13px; font-weight: 600; }
+        /* DIKEMASKINI: Font Biru untuk Lajur Indikator */
+        .col-ind { width: 45px; text-align: center; color: #007aff; font-size: 13px; font-weight: 700; }
         .row-action-td { width: 70px; text-align: center; }
         
         .btn-row-copy {
@@ -1202,10 +1203,11 @@
                     };
 
                     const ilmuInds = {
-                        "020": ['0', '0'], "100": ['1', '0'], "245": ['1', '0'], "250": ['0', '0'],
-                        "260": ['0', '0'], "504": ['0', '0'], "650": ['0', '0'], "700": ['1', '1']
+                        "020": ['0', '0'], "022": ['0', '0'], "090": ['0', '0'], "100": ['1', '0'], 
+                        "245": ['1', '0'], "250": ['0', '0'], "260": ['0', '0'], "440": ['0', '0'], 
+                        "504": ['0', '0'], "650": ['0', '0'], "700": ['1', '1'], "710": ['1', '1']
                     };
-                    const ilmuBlankInds = ["040", "090", "246", "300", "500"];
+                    const ilmuBlankInds = ["040", "246", "300", "500"];
 
                     if (standardMarcInds[tag]) {
                         ind1Clean = standardMarcInds[tag][0];
@@ -1238,11 +1240,11 @@
                                 const subValue = part.substring(1).trim(); 
                                 
                                 const formatIlmuRules = {
-                                    "020": ['a', 'c', 'z'], "040": ['a', 'b'], "090": ['a'],
+                                    "020": ['a'], "022": ['a'], "040": ['a'], "090": ['a'],
                                     "100": ['a'], "245": ['a', 'c'], "246": ['a'],
                                     "250": ['a'], "260": ['a', 'b', 'c'], 
-                                    "300": ['a'], "500": ['a'], "504": ['a'],
-                                    "650": ['a', 'x', 'y', 'z'], "700": ['a']
+                                    "300": ['a'], "440": ['a'], "500": ['a'], "504": ['a'],
+                                    "650": ['a', 'x', 'y', 'z'], "700": ['a'], "710": ['a']
                                 };
 
                                 if (window.isSubfieldFilterActive && formatIlmuRules[tag]) {
@@ -1463,7 +1465,7 @@
             await new Promise(resolve => setTimeout(resolve, 300));
 
             if (nombor === 1) {
-                const marcIlmuTags = ["008", "020", "040", "090", "100", "245", "246", "250", "260", "300", "500", "504", "650", "700"];
+                const marcIlmuTags = ["008", "020", "022", "040", "090", "100", "245", "246", "250", "260", "300", "440", "500", "504", "650", "700", "710"];
                 document.querySelectorAll('.tag-checkbox').forEach(cb => { 
                     cb.checked = marcIlmuTags.includes(cb.value);
                     if(cb.checked) {
