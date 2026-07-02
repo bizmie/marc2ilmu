@@ -1243,7 +1243,7 @@
                                     "020": ['a'], "022": ['a'], "040": ['a'], "090": ['a'],
                                     "100": ['a'], "245": ['a', 'c'], "246": ['a'],
                                     "250": ['a'], "260": ['a', 'b', 'c'], 
-                                    "300": ['a'], "440": ['a'], "500": ['a'], "504": ['a'],
+                                    "300": ['a', 'c'], "440": ['a'], "500": ['a'], "504": ['a'],
                                     "650": ['a', 'x', 'y', 'z'], "700": ['a'], "710": ['a']
                                 };
 
@@ -1333,12 +1333,21 @@
                 document.execCommand('copy');
                 const originalText = btnElement.innerHTML;
                 btnElement.innerHTML = '✓';
+                
+                // Menambah outline dan warna hijau untuk menandakan berjaya disalin
                 btnElement.style.color = 'var(--success-color)';
                 btnElement.style.borderColor = 'var(--success-color)';
+                btnElement.style.outline = '2px solid var(--success-color)';
+                btnElement.style.outlineOffset = '1px';
+                btnElement.style.backgroundColor = '#f0fdf4'; 
+
                 setTimeout(() => {
                     btnElement.innerHTML = originalText;
                     btnElement.style.color = '';
                     btnElement.style.borderColor = '';
+                    btnElement.style.outline = '';
+                    btnElement.style.outlineOffset = '';
+                    btnElement.style.backgroundColor = '';
                 }, 1500);
             } catch (err) {}
             document.body.removeChild(tempTextArea);
