@@ -1331,7 +1331,12 @@
             
             try {
                 document.execCommand('copy');
-                const originalText = btnElement.innerHTML;
+                
+                // Elakkan ikon asal tertindih jika diklik berkali-kali
+                if (!btnElement.dataset.originalText) {
+                    btnElement.dataset.originalText = btnElement.innerHTML;
+                }
+                
                 btnElement.innerHTML = '✓';
                 
                 // Menambah outline dan warna hijau untuk menandakan berjaya disalin
@@ -1341,13 +1346,10 @@
                 btnElement.style.outlineOffset = '1px';
                 btnElement.style.backgroundColor = '#f0fdf4'; 
 
+                // KEMASKINI: Hanya kembalikan ikon, tetapi kekalkan warna hijau sebagai penanda
                 setTimeout(() => {
-                    btnElement.innerHTML = originalText;
-                    btnElement.style.color = '';
-                    btnElement.style.borderColor = '';
-                    btnElement.style.outline = '';
-                    btnElement.style.outlineOffset = '';
-                    btnElement.style.backgroundColor = '';
+                    btnElement.innerHTML = btnElement.dataset.originalText;
+                    // Style warna hijau tidak dipadam supaya ia kekal menyala
                 }, 1500);
             } catch (err) {}
             document.body.removeChild(tempTextArea);
