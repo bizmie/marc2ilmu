@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Penukar Data MARC</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
-            /* Warna Tema Teras (Diinspirasi oleh Luna XP tetapi diringankan untuk Mac Style) */
             --bg-gradient-start: #eaeff5; 
             --bg-gradient-end: #d8e2ed;
             --accent-color: #007aff; 
@@ -17,12 +15,10 @@
             --text-main: #1d1d1f;
             --text-secondary: #86868b;
             
-            /* XP Start Button Green */
             --btn-process-bg: linear-gradient(to bottom, #4cb034 0%, #3a9c22 100%);
             --btn-process-hover: linear-gradient(to bottom, #54c23a 0%, #40ad26 100%);
         }
 
-        /* 1. Tipografi */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI Variable", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
@@ -34,7 +30,6 @@
 
         .font-mono { font-family: 'SF Mono', 'Consolas', 'Courier New', monospace; font-size: 13px; }
 
-        /* 2. Kotak Tetingkap Kaca (Glassmorphism Mac OS Style) */
         .mac-window {
             background: rgba(255, 255, 255, 0.75);
             backdrop-filter: blur(24px);
@@ -52,7 +47,6 @@
             background: rgba(255, 255, 255, 0.85);
         }
 
-        /* 3. Bar Tajuk (Titlebar) */
         .mac-titlebar {
             background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(245,245,247,0.8) 100%);
             padding: 12px 20px;
@@ -72,9 +66,8 @@
         }
         .btn-close-minimal:hover { background: #f2f2f7; color: #ff3b30; }
 
-        .app-title-text { font-weight: 700; font-size: 15px; letter-spacing: -0.3px; color: #1d1d1f; cursor: pointer; }
+        .app-title-text { font-weight: 700; font-size: 15px; letter-spacing: -0.3px; color: #1d1d1f; }
 
-        /* 4. Butang Asas */
         .mac-btn-primary {
             background-color: var(--accent-color);
             color: white;
@@ -104,7 +97,6 @@
         .mac-btn-secondary:hover { background-color: #f5f5f7; border-color: #c6c6c8; }
         .mac-btn-secondary:active { transform: scale(0.97); }
 
-        /* Butang Khas: Proses */
         .btn-process {
             background: var(--btn-process-bg);
             border: 1px solid #2f801a;
@@ -121,7 +113,6 @@
         .btn-process:hover { background: var(--btn-process-hover); transform: translateY(-2px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.4), 0 6px 12px rgba(76, 176, 52, 0.3); }
         .btn-process:active { transform: translateY(1px); box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
 
-        /* 5. Inputs & Borang */
         .mac-input {
             background: rgba(255, 255, 255, 0.9);
             border: 1px solid #d2d2d7;
@@ -136,7 +127,6 @@
         }
         .mac-input:focus { border-color: var(--accent-color); box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15); background: #ffffff; }
 
-        /* Kawasan Jadual (DataGrid) */
         .table-container {
             height: 480px;
             overflow: auto;
@@ -181,10 +171,9 @@
         }
         .btn-row-copy:hover { transform: scale(1.1); border-color: var(--accent-color); color: var(--accent-color); }
         
-        .subfield-code { color: var(--accent-color); font-weight: bold; opacity: 0.8; }
+        .subfield-code { color: var(--accent-color); font-weight: bold; background-color: #e0f2fe; padding: 0 2px; border-radius: 3px; margin-right: 2px; }
 
-        /* 6. Animasi Khas & Modal */
-        .modal-animate-pop { animation: modalPopIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .modal-animate-pop { animation: modalPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes modalPopIn {
             0% { opacity: 0; transform: scale(0.95) translateY(10px); }
             100% { opacity: 1; transform: scale(1) translateY(0); }
@@ -192,7 +181,7 @@
 
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(4px); z-index: 50;
+            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px); z-index: 50;
             justify-content: center; align-items: center;
         }
         .modal-overlay.active { display: flex; }
@@ -214,7 +203,6 @@
         }
         .animate-pulse-aqua { animation: pulse-light-aqua 2s infinite; }
 
-        /* Modal Preset & Tab */
         .preset-box { 
             background: rgba(245, 245, 247, 0.6); padding: 16px; border-radius: 12px; 
             border: 1px solid rgba(0,0,0,0.05); margin-bottom: 20px; 
@@ -250,7 +238,6 @@
         .red-dot { display: none; position: absolute; top: -4px; right: -4px; width: 12px; height: 12px; background-color: #ff3b30; border: 2px solid white; border-radius: 50%; box-shadow: 0 2px 4px rgba(255,59,48,0.4); }
         .red-dot.active { display: block; }
         
-        /* 7. Gaya Index Divider & Editor Nota */
         .nota-tab {
             padding: 12px 14px; cursor: pointer; border-left: 5px solid transparent; border-bottom: 1px solid #e5e7eb;
             background: #f9fafb; display: flex; align-items: center; justify-content: space-between; transition: all 0.2s; position: relative;
@@ -267,7 +254,7 @@
         }
         .editor-toolbar button:hover { background: #f5f5f7; border-color: var(--accent-color); color: var(--accent-color); }
         
-        #notaEditor { outline: none; }
+        #notaEditor { outline: none; transition: border-color 0.2s; }
         #notaEditor:focus { border-color: var(--accent-color); box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15); }
         #notaEditor ul { list-style-type: disc; padding-left: 24px; margin-bottom: 8px; }
         #notaEditor ol { list-style-type: decimal; padding-left: 24px; margin-bottom: 8px; }
@@ -276,198 +263,313 @@
         #notaEditor strike { text-decoration: line-through; }
         
         .app-footer { text-align: center; padding: 20px; font-size: 12px; font-weight: 500; color: var(--text-secondary); opacity: 0.8; }
+
+        /* Sistem Tab Navigation Baru */
+        .nav-tab-btn {
+            padding: 10px 24px; font-weight: 700; font-size: 14px; color: #4b5563;
+            border-radius: 20px; transition: all 0.2s ease; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 8px;
+            background: transparent; border: 1px solid transparent;
+        }
+        .nav-tab-btn:hover { background: rgba(0,0,0,0.05); }
+        .nav-tab-btn.active { background: var(--accent-color); color: white; box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3); }
+        
+        .tab-content { display: none; animation: fadeIn 0.3s ease forwards; }
+        .tab-content.active { display: block; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .view-only-mode #notaEditor { background-color: #f9fafb; cursor: not-allowed; }
+        .view-only-mode .editor-toolbar { opacity: 0.5; pointer-events: none; }
+        
+        /* Dialog Custom */
+        .custom-dialog-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px);
+            z-index: 9999; display: none; justify-content: center; align-items: center;
+        }
+        .custom-dialog-overlay.active { display: flex; }
+        .custom-dialog-box {
+            background: white; border-radius: 16px; padding: 24px; width: 90%; max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); animation: modalPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            text-align: center;
+        }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
-    <main class="max-w-[1400px] mx-auto space-y-6">
+    <main class="max-w-[1400px] mx-auto space-y-2">
         
-        <!-- Header Utama -->
-        <header class="mac-window mac-window-hover flex justify-between items-center px-6 py-4">
-            <div class="flex items-center gap-3" onclick="bukaTetapanAplikasi()">
-                <div class="text-2xl drop-shadow-md">📚</div>
-                <div>
-                    <div class="flex items-center gap-2">
-                        <h1 id="appTitleDisplay" class="app-title-text" title="Klik untuk ubah nama aplikasi">Sistem Penukar Data MARC</h1>
-                        <!-- Lencana Versi Digital Baru Disini -->
-                        <span class="bg-blue-100 text-blue-700 text-[10px] font-black px-2 py-0.5 rounded shadow-sm border border-blue-200">v2.5</span>
+        <!-- Header & Navigasi Gabungan -->
+        <header class="mac-window relative z-20 flex flex-col">
+            <!-- Bahagian Atas: Maklumat Sistem & Admin -->
+            <div class="flex justify-between items-center px-6 py-4">
+                <div class="flex items-center gap-3">
+                    <div class="text-2xl drop-shadow-md">📚</div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h1 id="appTitleDisplay" class="app-title-text">Sistem Penukar Data MARC</h1>
+                            <span class="bg-blue-100 text-blue-700 text-[10px] font-black px-2 py-0.5 rounded shadow-sm border border-blue-200">v3.7</span>
+                            <button id="btnAdminSettingTitle" onclick="bukaTetapanTajuk()" class="hidden text-gray-400 hover:text-blue-500 transition-colors ml-1" title="Tukar Tajuk Sistem">⚙️</button>
+                        </div>
+                        <div class="text-[11px] text-gray-500 font-medium mt-0.5" id="tarikhSemasa">Memuat tarikh...</div>
                     </div>
-                    <div class="text-[11px] text-gray-500 font-medium mt-0.5" id="tarikhSemasa">Memuat tarikh...</div>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <div class="flex flex-col items-end">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-gray-500">Status Awan</span>
+                        <span id="cloudStatus" class="text-xs font-bold text-amber-500">⏳ Menyambung...</span>
+                    </div>
+                    <div id="adminBadge" class="hidden bg-purple-100 text-purple-700 text-[10px] font-black px-2 py-1 rounded shadow-sm border border-purple-200">ADMIN</div>
+                    <button id="btnAdminGate" class="mac-btn-secondary !rounded-full !w-10 !h-10 !p-0 shadow-sm relative group" onclick="toggleAdminLogin()" title="Log Masuk Admin">
+                        <span class="group-hover:scale-110 transition-transform duration-300 drop-shadow text-gray-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        </span>
+                    </button>
                 </div>
             </div>
-            
-            <div class="flex items-center gap-4">
-                <div class="flex flex-col items-end">
-                    <span class="text-[10px] font-bold uppercase tracking-wider text-gray-500">Status Awan</span>
-                    <span id="cloudStatus" class="text-xs font-bold text-amber-500">⏳ Menyambung...</span>
-                </div>
-                <!-- Butang Tetapan Admin -->
-                <button class="mac-btn-secondary !rounded-full !w-10 !h-10 !p-0 shadow-sm relative group" onclick="bukaTetapanAplikasi()" title="Tetapan Admin">
-                    <span class="text-xl group-hover:scale-110 transition-transform duration-300 drop-shadow">🔐</span>
+
+            <!-- Bahagian Bawah: Navigasi Tab -->
+            <div class="px-4 pb-4 pt-1 flex justify-center gap-2 relative z-10 border-t border-gray-200/40 bg-white/30">
+                <button class="nav-tab-btn active" onclick="tukarTab('dashboard', this)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                    Dashboard
+                </button>
+                <button class="nav-tab-btn" onclick="tukarTab('perbandingan', this)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"></path><path d="M3 7h18"></path><path d="M3 7l-2 5a2 2 0 0 0 4 0l-2-5z"></path><path d="M21 7l-2 5a2 2 0 0 0 4 0l-2-5z"></path></svg>
+                    Perbandingan
+                </button>
+                <button class="nav-tab-btn" onclick="tukarTab('nota', this)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    Editor Nota
                 </button>
             </div>
         </header>
 
-        <!-- Container Utama (Grid Kiri Kanan) -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            
-            <!-- Bahagian Kiri: Input -->
-            <div class="lg:col-span-5 mac-window flex flex-col p-5">
-                <div class="flex justify-between items-center mb-2">
-                    <div class="flex items-center gap-2">
-                        <div class="w-2 h-6 bg-blue-500 rounded-full"></div>
-                        <h2 class="text-sm font-bold text-gray-800 tracking-tight">1. SUMBER DATA MARC</h2>
-                    </div>
-                    <div class="flex gap-2">
-                        <button class="mac-btn-secondary !text-[11px] !py-1 !px-3" onclick="bukaSejarah()">🕒 Sejarah</button>
-                    </div>
-                </div>
-                
-                <p id="tajukBukuSemasa" class="text-sm font-bold text-gray-700 mb-4 ml-4 leading-tight transition-colors duration-300">Tampal teks MARC mentah ke ruangan ini untuk bermula.</p>
-                
-                <textarea id="inputData" class="mac-input font-mono flex-grow mb-4" spellcheck="false" placeholder="LEADER 00000pam a22000008i 4500&#10;001 1393005&#10;..." oninput="ekstrakTajukSemasa()"></textarea>
-                
-                <div class="flex gap-3">
-                    <button class="btn-process relative overflow-hidden group flex-1 !mt-0 !w-auto" onclick="prosesMARC()">
-                        <div class="relative z-10 transition-all duration-300 transform group-hover:-translate-y-10 flex items-center justify-center gap-2">
-                            <span>🚀</span> Mula Memproses
+        <!-- AREA KANDUNGAN TAB -->
+        <div class="relative">
+            <!-- TAB 1: DASHBOARD -->
+            <div id="tab-dashboard" class="tab-content active">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Bahagian Kiri: Input -->
+                    <div class="lg:col-span-5 mac-window flex flex-col p-5">
+                        <div class="flex justify-between items-center mb-2">
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-6 bg-blue-500 rounded-full"></div>
+                                <h2 class="text-sm font-bold text-gray-800 tracking-tight">1. SUMBER DATA MARC</h2>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="mac-btn-secondary !text-[11px] !py-1 !px-3 gap-1.5" onclick="bukaSejarah()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                    Sejarah
+                                </button>
+                            </div>
                         </div>
-                        <div class="absolute inset-0 z-20 flex items-center justify-center transform translate-y-10 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 text-white">
-                            <span>⚡</span> Terjemah ke Jadual
-                        </div>
-                    </button>
-                    <button class="mac-btn-secondary !p-0 w-[55px] flex-shrink-0 flex items-center justify-center text-xl text-red-500 hover:!bg-red-50 hover:!border-red-400 transition-colors" onclick="padamInputMARC()" title="Padam Sumber Data">
-                        🗑️
-                    </button>
-                </div>
-            </div>
-
-            <!-- Bahagian Kanan: Output -->
-            <div class="lg:col-span-7 mac-window flex flex-col p-5">
-                <div class="flex flex-wrap justify-between items-center mb-2 gap-3">
-                    <div class="flex items-center gap-2">
-                        <div class="w-2 h-6 bg-green-500 rounded-full"></div>
-                        <h2 class="text-sm font-bold text-gray-800 tracking-tight">2. JADUAL BIBLIOGRAFI</h2>
-                    </div>
-                    
-                    <div class="flex gap-2 flex-wrap justify-end">
-                        <button id="btnSubfieldFilter" class="mac-btn-secondary gap-2 transition-all duration-300 bg-blue-50 border-blue-300 text-blue-700" onclick="toggleSubfieldFilter()" title="Hanya paparkan submedan tertentu mengikut format ILMU Lama">
-                            ✂️ Submedan Ilmu
-                        </button>
-                        <div class="relative">
-                            <button class="mac-btn-secondary gap-2" onclick="bukaTetapan()" title="Penapis Tag MARC">
-                                🎛️ Penapis Tag
-                                <span class="red-dot" id="dotTetapan"></span>
+                        
+                        <p id="tajukBukuSemasa" class="text-sm font-bold text-gray-700 mb-4 ml-4 leading-tight transition-colors duration-300">Tampal teks MARC mentah ke ruangan ini untuk bermula.</p>
+                        
+                        <textarea id="inputData" class="mac-input font-mono flex-grow mb-4" spellcheck="false" placeholder="LEADER 00000pam a22000008i 4500&#10;001 1393005&#10;..." oninput="ekstrakTajukSemasa()"></textarea>
+                        
+                        <div class="flex gap-3">
+                            <button class="btn-process relative overflow-hidden group flex-1 !mt-0 !w-auto" onclick="prosesMARC('inputData', 'tableBody')">
+                                <div class="relative z-10 transition-all duration-300 transform group-hover:-translate-y-10 flex items-center justify-center gap-2">
+                                    <span>🚀</span> Mula Memproses
+                                </div>
+                                <div class="absolute inset-0 z-20 flex items-center justify-center transform translate-y-10 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 text-white">
+                                    <span>⚡</span> Terjemah ke Jadual
+                                </div>
+                            </button>
+                            <button class="mac-btn-secondary !p-0 w-[55px] flex-shrink-0 flex items-center justify-center text-xl text-red-500 hover:!bg-red-50 hover:!border-red-400 transition-colors" onclick="padamInputMARC()" title="Padam Sumber Data">
+                                🗑️
                             </button>
                         </div>
-                        <button class="mac-btn-primary animate-pulse-aqua gap-2" id="btnCopy" onclick="copyTable()">
-                            📋 Salin Keseluruhan
-                        </button>
-                        <button class="mac-btn-secondary gap-2 text-indigo-600 border-indigo-200 bg-indigo-50 hover:bg-indigo-100" onclick="bukaNota()" title="Buka Editor Nota">
-                            📝 Nota
-                        </button>
                     </div>
-                </div>
-                <p class="text-xs text-gray-500 mb-4 ml-4">Jadual terjemahan. Klik ikon salin pada setiap baris untuk salinan spesifik.</p>
-                
-                <div class="table-container">
-                    <table id="outputTable">
-                        <thead>
-                            <tr>
-                                <th class="col-tag">Tag</th>
-                                <th class="col-ind">Ind1</th>
-                                <th class="col-ind">Ind2</th>
-                                <th>Maklumat Bibliografi</th>
-                                <th class="row-action-td">Tindakan</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody" class="font-mono text-sm">
-                            <tr>
-                                <td colspan="5" class="py-20 text-center text-gray-400">
-                                    <div class="text-4xl mb-3 opacity-50">📊</div>
-                                    <div class="font-medium text-sm">Jadual akan dipaparkan di sini.</div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+
+                    <!-- Bahagian Kanan: Output Dashboard -->
+                    <div class="lg:col-span-7 mac-window flex flex-col p-5">
+                        <div class="flex flex-wrap justify-between items-center mb-2 gap-3">
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-6 bg-green-500 rounded-full"></div>
+                                <h2 class="text-sm font-bold text-gray-800 tracking-tight">2. JADUAL BIBLIOGRAFI</h2>
+                            </div>
+                            
+                            <div class="flex gap-2 flex-wrap justify-end">
+                                <button id="btnSubfieldFilter" class="mac-btn-secondary gap-1.5 transition-all duration-300 bg-blue-50 border-blue-300 text-blue-700" onclick="toggleSubfieldFilter()" title="Hanya paparkan submedan tertentu mengikut format ILMU Lama">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><line x1="20" y1="4" x2="8.12" y2="15.88"></line><line x1="14.47" y1="14.48" x2="20" y2="20"></line><line x1="8.12" y1="8.12" x2="12" y2="12"></line></svg>
+                                    Submedan Ilmu
+                                </button>
+                                <div class="relative">
+                                    <button class="mac-btn-secondary gap-1.5" onclick="bukaTetapan()" title="Penapis Tag MARC">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+                                        Penapis Tag
+                                        <span class="red-dot" id="dotTetapan"></span>
+                                    </button>
+                                </div>
+                                <button class="mac-btn-primary animate-pulse-aqua gap-2" id="btnCopy" onclick="copyTable()">
+                                    📋 Salin Keseluruhan
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 mb-4 ml-4">Jadual terjemahan. Klik ikon salin pada setiap baris untuk salinan spesifik.</p>
+                        
+                        <div class="table-container">
+                            <table id="outputTable">
+                                <thead>
+                                    <tr>
+                                        <th class="col-tag">Tag</th>
+                                        <th class="col-ind">Ind1</th>
+                                        <th class="col-ind">Ind2</th>
+                                        <th>Maklumat Bibliografi</th>
+                                        <th class="row-action-td">Tindakan</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableBody" class="font-mono text-sm">
+                                    <tr>
+                                        <td colspan="5" class="py-20 text-center text-gray-400">
+                                            <div class="text-4xl mb-3 opacity-50">📊</div>
+                                            <div class="font-medium text-sm">Jadual akan dipaparkan di sini.</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-        </div>
-
-        <div class="app-footer">
-            Dibina dengan antaramuka Glassmorphism (Mac OS + Win11)
-        </div>
-
-    </main>
-
-    <!-- Modal Nota Editor dengan Index Divider Layout -->
-    <div id="notaModal" class="modal-overlay">
-        <div class="mac-modal-content modal-animate-pop !max-w-[95vw] lg:!max-w-[1200px] flex flex-col h-[85vh]">
-            <div class="mac-titlebar flex-shrink-0">
-                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <span class="font-bold text-sm text-gray-800">📝 Editor Nota</span>
-                </div>
-                <button class="btn-close-minimal" onclick="tutupNota()" title="Tutup">✕</button>
-            </div>
-            
-            <div class="flex flex-col sm:flex-row flex-1 overflow-hidden relative bg-white">
-                <div class="w-full sm:w-[240px] bg-gray-50 border-b sm:border-b-0 sm:border-r border-gray-200 flex flex-col flex-shrink-0 z-10 h-[150px] sm:h-auto">
-                    <div class="p-3 text-[11px] font-bold text-gray-500 uppercase tracking-wider border-b border-gray-200 bg-gray-100 flex-shrink-0">Indeks Nota</div>
-                    <div id="notaTabsList" class="flex-1 overflow-y-auto"></div>
-                    <div class="p-3 border-t border-gray-200 bg-gray-50 flex-shrink-0">
-                        <button class="w-full py-2 bg-white border border-gray-300 rounded text-sm font-bold text-blue-600 hover:bg-blue-50 transition-colors shadow-sm" onclick="tambahNota()">+ Nota Baru</button>
+            <!-- TAB 2: PERBANDINGAN -->
+            <div id="tab-perbandingan" class="tab-content">
+                <div class="mac-window p-5">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-6 bg-purple-500 rounded-full"></div>
+                            <h2 class="text-sm font-bold text-gray-800 tracking-tight">PERBANDINGAN REKOD</h2>
+                        </div>
+                        <div class="flex gap-2">
+                            <button id="btnSubfieldFilterCmp" class="mac-btn-secondary gap-1.5 transition-all duration-300 bg-blue-50 border-blue-300 text-blue-700" onclick="toggleSubfieldFilter()" title="Hanya paparkan submedan tertentu mengikut format ILMU Lama">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><line x1="20" y1="4" x2="8.12" y2="15.88"></line><line x1="14.47" y1="14.48" x2="20" y2="20"></line><line x1="8.12" y1="8.12" x2="12" y2="12"></line></svg>
+                                Submedan Ilmu
+                            </button>
+                            <button class="mac-btn-secondary gap-1.5" onclick="bukaTetapan()" title="Penapis Tag MARC">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+                                Penapis Tag
+                                <span class="red-dot" id="dotTetapanCmp"></span>
+                            </button>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="flex-1 flex flex-col p-4 sm:p-6 relative z-0 overflow-hidden">
-                    <div class="text-xs text-gray-500 px-1 mb-2 flex-shrink-0">Data ini disimpan secara automatik ke Awan Firebase mengikut tab pilihan.</div>
-                    
-                    <div class="editor-toolbar flex flex-wrap gap-2 p-2 bg-gray-50 rounded-lg border border-gray-200 shadow-sm mb-3 flex-shrink-0">
-                        <button onclick="formatNota('bold')" title="Tebal (Bold)"><span class="font-bold">B</span></button>
-                        <button onclick="formatNota('italic')" title="Italic"><span class="italic">I</span></button>
-                        <button onclick="formatNota('underline')" title="Garis Bawah"><span class="underline">U</span></button>
-                        <button onclick="formatNota('strikeThrough')" title="Garis Tengah (Strikethrough)"><span class="line-through">S</span></button>
-                        
-                        <div class="w-px h-6 bg-gray-300 mx-1 self-center"></div>
-                        
-                        <label class="flex items-center gap-1 cursor-pointer hover:bg-gray-100 p-1 rounded" title="Warna Font">
-                            🎨 <input type="color" id="notaWarna" onchange="formatNota('foreColor', this.value)" class="w-6 h-6 border-0 p-0 bg-transparent cursor-pointer">
-                        </label>
-                        
-                        <div class="relative">
-                            <button onclick="toggleEmojiPicker()" title="Emoticon">😀</button>
-                            <div id="emojiPickerBox" class="hidden absolute top-full left-0 mt-1 bg-white border border-gray-200 p-2 rounded-lg shadow-lg flex flex-wrap gap-1 w-48 z-50">
-                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('😀')">😀</span>
-                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('😂')">😂</span>
-                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('😊')">😊</span>
-                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('😍')">😍</span>
-                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('🙏')">🙏</span>
-                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('👍')">👍</span>
-                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('💡')">💡</span>
-                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('📌')">📌</span>
-                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('📚')">📚</span>
-                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('📝')">📝</span>
-                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('⚠️')">⚠️</span>
-                                <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('✅')">✅</span>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Kolum Kiri -->
+                        <div class="flex flex-col border border-gray-200 rounded-xl overflow-hidden bg-white">
+                            <div class="p-3 bg-gray-50 border-b border-gray-200">
+                                <label class="text-xs font-bold text-gray-500 mb-1 block">Rekod A (Kiri):</label>
+                                <select id="compareSelect1" class="mac-input w-full !py-2 !text-sm cursor-pointer" onchange="muatPerbandingan(this.value, 'compareData1', 'compareTable1')">
+                                    <option value="">-- Pilih dari Sejarah --</option>
+                                </select>
+                            </div>
+                            <textarea id="compareData1" class="hidden"></textarea>
+                            <div class="table-container !h-[500px] !border-0 !rounded-none">
+                                <table>
+                                    <thead><tr><th class="col-tag">Tag</th><th class="col-ind">I1</th><th class="col-ind">I2</th><th>Maklumat</th></tr></thead>
+                                    <tbody id="compareTable1" class="font-mono text-sm">
+                                        <tr><td colspan="4" class="py-10 text-center text-gray-400 text-sm">Pilih rekod di atas.</td></tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
-                        <div class="w-px h-6 bg-gray-300 mx-1 self-center"></div>
-                        <button onclick="formatNota('insertUnorderedList')" title="Senarai (Bullet)">• Bullet</button>
-                        <button onclick="insertTableNota()" title="Masukkan Jadual">Tabel ▦</button>
+                        <!-- Kolum Kanan -->
+                        <div class="flex flex-col border border-gray-200 rounded-xl overflow-hidden bg-white">
+                            <div class="p-3 bg-gray-50 border-b border-gray-200">
+                                <label class="text-xs font-bold text-gray-500 mb-1 block">Rekod B (Kanan):</label>
+                                <select id="compareSelect2" class="mac-input w-full !py-2 !text-sm cursor-pointer" onchange="muatPerbandingan(this.value, 'compareData2', 'compareTable2')">
+                                    <option value="">-- Pilih dari Sejarah --</option>
+                                </select>
+                            </div>
+                            <textarea id="compareData2" class="hidden"></textarea>
+                            <div class="table-container !h-[500px] !border-0 !rounded-none">
+                                <table>
+                                    <thead><tr><th class="col-tag">Tag</th><th class="col-ind">I1</th><th class="col-ind">I2</th><th>Maklumat</th></tr></thead>
+                                    <tbody id="compareTable2" class="font-mono text-sm">
+                                        <tr><td colspan="4" class="py-10 text-center text-gray-400 text-sm">Pilih rekod di atas.</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div id="notaEditor" contenteditable="true" placeholder="Mula menaip nota di sini..." class="flex-1 w-full text-[14px] font-sans p-4 border border-gray-200 rounded-lg shadow-inner overflow-y-auto bg-white text-gray-800"></div>
                 </div>
             </div>
-            
-            <div class="px-6 py-4 border-t border-gray-200 bg-white/50 flex justify-end gap-3 flex-shrink-0">
-                <span id="notaStatus" class="self-center text-xs font-bold text-green-600 mr-auto"></span>
-                <button class="mac-btn-primary" onclick="simpanNotaTutup()">💾 Simpan & Tutup</button>
+
+            <!-- TAB 3: NOTA EDITOR -->
+            <div id="tab-nota" class="tab-content">
+                <div class="mac-window flex flex-col sm:flex-row h-[70vh] min-h-[500px] bg-white view-only-mode" id="notaContainer">
+                    
+                    <!-- Panel Indeks Kiri -->
+                    <div class="w-full sm:w-[260px] bg-gray-50 border-b sm:border-b-0 sm:border-r border-gray-200 flex flex-col flex-shrink-0 z-10 h-[150px] sm:h-auto">
+                        <div class="p-4 flex items-center justify-between border-b border-gray-200 bg-gray-100 flex-shrink-0">
+                            <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Indeks Nota</span>
+                        </div>
+                        <div id="notaTabsList" class="flex-1 overflow-y-auto"></div>
+                        <div class="p-4 border-t border-gray-200 bg-gray-50 flex-shrink-0" id="adminNotaControls">
+                            <button class="w-full py-2.5 bg-white border border-gray-300 rounded-lg text-sm font-bold text-blue-600 hover:bg-blue-50 transition-colors shadow-sm" onclick="tambahNota()">+ Nota Baru</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Panel Editor Kanan -->
+                    <div class="flex-1 flex flex-col p-4 sm:p-6 relative z-0 overflow-hidden bg-white">
+                        <div class="flex justify-between items-center mb-3 flex-shrink-0">
+                            <div class="text-xs text-gray-500">Nota disimpan secara automatik ke Awan Firebase.</div>
+                            <span id="notaStatusIndicator" class="text-xs font-bold text-green-600"></span>
+                        </div>
+                        
+                        <div class="editor-toolbar flex flex-wrap gap-2 p-2 bg-gray-50 rounded-lg border border-gray-200 mb-4 flex-shrink-0 items-center">
+                            <button onclick="formatNota('bold')" title="Tebal (Bold)"><span class="font-bold">B</span></button>
+                            <button onclick="formatNota('italic')" title="Italic"><span class="italic">I</span></button>
+                            <button onclick="formatNota('underline')" title="Garis Bawah"><span class="underline">U</span></button>
+                            <button onclick="formatNota('strikeThrough')" title="Garis Tengah (Strikethrough)"><span class="line-through">S</span></button>
+                            
+                            <div class="w-px h-6 bg-gray-300 mx-1"></div>
+                            
+                            <label class="flex items-center gap-1 cursor-pointer hover:bg-gray-200 p-1 rounded" title="Warna Font">
+                                🎨 <input type="color" id="notaWarna" onchange="formatNota('foreColor', this.value)" class="w-6 h-6 border-0 p-0 bg-transparent cursor-pointer">
+                            </label>
+                            
+                            <div class="relative">
+                                <button onclick="toggleEmojiPicker()" title="Emoticon">😀</button>
+                                <div id="emojiPickerBox" class="hidden absolute top-full left-0 mt-1 bg-white border border-gray-200 p-2 rounded-lg shadow-lg flex flex-wrap gap-1 w-48 z-50">
+                                    <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('😀')">😀</span>
+                                    <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('😂')">😂</span>
+                                    <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('😊')">😊</span>
+                                    <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('😍')">😍</span>
+                                    <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('🙏')">🙏</span>
+                                    <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('👍')">👍</span>
+                                    <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('💡')">💡</span>
+                                    <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('📌')">📌</span>
+                                    <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('📚')">📚</span>
+                                    <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('📝')">📝</span>
+                                    <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('⚠️')">⚠️</span>
+                                    <span class="cursor-pointer text-lg hover:scale-125 transition-transform" onclick="insertEmoji('✅')">✅</span>
+                                </div>
+                            </div>
+
+                            <div class="w-px h-6 bg-gray-300 mx-1"></div>
+                            <button onclick="formatNota('insertUnorderedList')" title="Senarai (Bullet)">• Bullet</button>
+                            <button onclick="insertTableNota()" title="Masukkan Jadual">Tabel ▦</button>
+                            
+                            <div class="ml-auto" id="adminOnlyWarning">
+                                <span class="bg-gray-200 text-gray-600 text-[10px] font-bold px-2 py-1 rounded">Mod Paparan (Sila Login)</span>
+                            </div>
+                        </div>
+                        
+                        <div id="notaEditor" contenteditable="false" placeholder="Mula menaip nota di sini..." class="flex-1 w-full text-[14px] font-sans p-5 border border-blue-200 rounded-xl shadow-inner overflow-y-auto text-gray-800" oninput="simpanNotaPantas()"></div>
+                    </div>
+                </div>
             </div>
+
         </div>
-    </div>
+
+    </main>
 
     <!-- Modal Sejarah Terjemahan -->
     <div id="sejarahModal" class="modal-overlay">
@@ -479,8 +581,12 @@
                 <button class="btn-close-minimal" onclick="tutupSejarah()" title="Tutup">✕</button>
             </div>
             
-            <div class="p-6 overflow-y-auto" style="max-height: 70vh;">
-                <p class="text-xs text-gray-500 mb-4">Menyimpan 20 rekod terakhir yang pernah diproses. Data ini disimpan secara berpusat di Awan Firebase.</p>
+            <div class="p-4 border-b border-gray-100 bg-gray-50">
+                <input type="text" id="carianSejarah" class="mac-input w-full !py-2 !text-sm" placeholder="🔍 Cari judul, pengarang, ISBN atau tag..." oninput="tapisSejarah()">
+            </div>
+
+            <div class="p-6 overflow-y-auto" style="max-height: 60vh;">
+                <p class="text-xs text-gray-500 mb-4">Menyimpan 50 rekod terakhir. Klik muat untuk papar di Dashboard.</p>
                 <div id="sejarahContainer" class="space-y-3"></div>
             </div>
         </div>
@@ -553,30 +659,42 @@
         </div>
     </div>
 
-    <!-- Modal Tetapan Aplikasi / Admin -->
-    <div id="tetapanAplikasiModal" class="modal-overlay">
-        <div class="mac-modal-content modal-animate-pop !max-w-[500px]">
+    <!-- Modal Tetapan Tajuk Sistem (Admin) -->
+    <div id="tetapanTajukModal" class="modal-overlay">
+        <div class="mac-modal-content modal-animate-pop !max-w-[400px]">
             <div class="mac-titlebar">
                 <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <span class="font-bold text-sm text-gray-800">🔐 Tetapan Admin</span>
+                    <span class="font-bold text-sm text-gray-800">⚙️ Tetapan Sistem</span>
                 </div>
-                <button class="btn-close-minimal" onclick="tutupTetapanAplikasi()" title="Tutup">✕</button>
+                <button class="btn-close-minimal" onclick="tutupTetapanTajuk()" title="Tutup">✕</button>
             </div>
             <div class="p-6">
-                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Nama Paparan Sistem</label>
+                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Nama Paparan Aplikasi</label>
                 <input type="text" id="inputAppTitle" class="mac-input w-full mb-6" placeholder="Contoh: Pustaka Pintar">
-
-                <button class="mac-btn-primary w-full" onclick="simpanTetapanAplikasi()">💾 Kemaskini Sistem</button>
+                <button class="mac-btn-primary w-full" onclick="simpanTetapanTajuk()">💾 Kemaskini Tajuk</button>
             </div>
         </div>
     </div>
 
-    <!-- Skrip Aplikasi Utama & Firebase -->
+    <!-- Custom Dialog Box (Ganti Alert/Confirm/Prompt) -->
+    <div id="customDialog" class="custom-dialog-overlay">
+        <div class="custom-dialog-box">
+            <div id="dialogIcon" class="text-4xl mb-3">⚠️</div>
+            <h3 id="dialogTitle" class="text-lg font-bold text-gray-800 mb-2">Perhatian</h3>
+            <p id="dialogMessage" class="text-sm text-gray-600 mb-5"></p>
+            <input type="password" id="dialogInput" class="mac-input w-full mb-5 hidden text-center" placeholder="Masukkan kata laluan">
+            <input type="text" id="dialogInputText" class="mac-input w-full mb-5 hidden text-center" placeholder="Taip di sini...">
+            <div class="flex gap-3 justify-center">
+                <button id="dialogBtnCancel" class="mac-btn-secondary hidden" onclick="closeCustomDialog(false)">Batal</button>
+                <button id="dialogBtnOK" class="mac-btn-primary" onclick="closeCustomDialog(true)">OK</button>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDSqblFdWXAIg9IFV3EZN-iLKXhfkL0c2g",
@@ -584,31 +702,25 @@
             projectId: "mysmartapps",
             storageBucket: "mysmartapps.firebasestorage.app",
             messagingSenderId: "329775742642",
-            appId: "1:329775742642:web:9beac36a9bdac940bcd3ab",
-            measurementId: "G-K4BGGB72TS"
+            appId: "1:329775742642:web:9beac36a9bdac940bcd3ab"
         };
 
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app); 
         const db = getFirestore(app);
         const auth = getAuth(app);
-
-        const appIdParam = typeof __app_id !== 'undefined' ? __app_id : 'marc-converter-app';
+        const appIdParam = 'marc-converter-app';
         let isCloudActive = false;
-        let authUid = null; 
 
         window.tsvData = "";
         window.hiddenTags = JSON.parse(localStorage.getItem('local_hiddenTags')) || [];
         window.appCustomTitle = localStorage.getItem('local_appTitle') || "Sistem Penukar Data MARC";
         window.userPresets = JSON.parse(localStorage.getItem('local_presets')) || {};
-        window.isSubfieldFilterActive = true;
-        
+        window.presetNames = JSON.parse(localStorage.getItem('local_presetNames')) || { 2: "Preset 2", 3: "Preset 3" };
         window.marcHistory = JSON.parse(localStorage.getItem('local_history')) || [];
-        window.presetNames = JSON.parse(localStorage.getItem('local_presetNames')) || {
-            2: "P. Sumber MTIB 2", 3: "Profil Baharu"
-        };
+        window.isSubfieldFilterActive = true;
+        window.isAdminLogged = false; 
 
-        // --- SISTEM INDEKS NOTA ---
+        // Sistem Nota
         const tabColors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#06b6d4', '#3b82f6', '#8b5cf6', '#ec4899'];
         window.appNotaLama = localStorage.getItem('local_nota') || "";
         window.appNotes = JSON.parse(localStorage.getItem('local_notes')) || [];
@@ -638,12 +750,75 @@
 
         const getGlobalSettingsRef = () => doc(db, 'artifacts', appIdParam, 'public', 'data', 'tetapan_koleksi', 'marc_preset');
 
+        let dialogResolve = null;
+        window.showCustomDialog = function(options) {
+            return new Promise((resolve) => {
+                dialogResolve = resolve;
+                const overlay = document.getElementById('customDialog');
+                document.getElementById('dialogIcon').textContent = options.icon || '⚠️';
+                document.getElementById('dialogTitle').textContent = options.title || 'Mesej';
+                document.getElementById('dialogMessage').textContent = options.message || '';
+                
+                const btnCancel = document.getElementById('dialogBtnCancel');
+                if(options.type === 'confirm' || options.type === 'prompt_password' || options.type === 'prompt_text') {
+                    btnCancel.classList.remove('hidden');
+                } else { btnCancel.classList.add('hidden'); }
+
+                const inputPw = document.getElementById('dialogInput');
+                const inputText = document.getElementById('dialogInputText');
+                inputPw.classList.add('hidden'); inputPw.value = '';
+                inputText.classList.add('hidden'); inputText.value = '';
+
+                if(options.type === 'prompt_password') { inputPw.classList.remove('hidden'); setTimeout(() => inputPw.focus(), 100); }
+                if(options.type === 'prompt_text') { 
+                    inputText.classList.remove('hidden'); 
+                    if(options.defaultValue) inputText.value = options.defaultValue;
+                    setTimeout(() => inputText.focus(), 100); 
+                }
+
+                overlay.classList.add('active');
+            });
+        }
+        window.closeCustomDialog = function(isOK) {
+            document.getElementById('customDialog').classList.remove('active');
+            if(dialogResolve) {
+                const inputPw = document.getElementById('dialogInput');
+                const inputText = document.getElementById('dialogInputText');
+                if(!isOK) dialogResolve(false);
+                else if(!inputPw.classList.contains('hidden')) dialogResolve(inputPw.value);
+                else if(!inputText.classList.contains('hidden')) dialogResolve(inputText.value);
+                else dialogResolve(true);
+                dialogResolve = null;
+            }
+        }
+
+        window.tukarTab = function(tabId, btnElement) {
+            document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+            document.querySelectorAll('.nav-tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            btnElement.classList.add('active');
+
+            if(tabId === 'dashboard') window.ekstrakTajukSemasa();
+            if(tabId === 'perbandingan') { window.kemaskiniIndikatorTetapanCmp(); window.kemaskiniDropdownPerbandingan(); }
+            if(tabId !== 'nota') {
+                const notaSemasa = window.appNotes.find(n => n.id === window.activeNoteId);
+                const notaEditor = document.getElementById('notaEditor');
+                if(notaSemasa && notaEditor && window.isAdminLogged) {
+                    notaSemasa.content = notaEditor.innerHTML;
+                    simpanDataTerpusat({ notes: window.appNotes });
+                }
+            } else {
+                window.renderNotaTabs();
+                const aktif = window.appNotes.find(n => n.id === window.activeNoteId);
+                const notaEditor = document.getElementById('notaEditor');
+                if(aktif && notaEditor) notaEditor.innerHTML = aktif.content || "";
+            }
+        }
+
         async function initFirebase() {
             const statusEl = document.getElementById('cloudStatus');
             try {
-                const userCredential = await signInAnonymously(auth);
-                authUid = userCredential.user.uid;
-
+                await signInAnonymously(auth);
                 const docSnap = await getDoc(getGlobalSettingsRef());
 
                 if (docSnap.exists()) {
@@ -654,62 +829,41 @@
                     window.presetNames = data.presetNames || window.presetNames;
                     window.marcHistory = data.history || window.marcHistory;
                     
-                    if (data.notes) {
-                        window.appNotes = data.notes;
-                    } else if (data.nota) {
-                        window.appNotes = [{ id: Date.now().toString(), title: "Nota Utama", color: tabColors[0], content: data.nota }];
-                    }
-                    if (!window.appNotes.find(n => n.id === window.activeNoteId) && window.appNotes.length > 0) {
-                        window.activeNoteId = window.appNotes[0].id;
-                    }
+                    if (data.notes) window.appNotes = data.notes;
+                    else if (data.nota) window.appNotes = [{ id: Date.now().toString(), title: "Nota Utama", color: tabColors[0], content: data.nota }];
                 }
                 
                 isCloudActive = true;
-                if (statusEl) {
-                    statusEl.innerHTML = 'Awan Aktif 🟢';
-                    statusEl.className = 'text-xs font-bold text-green-700 bg-green-100 px-2 py-1 rounded-md shadow-inner';
-                }
+                if (statusEl) { statusEl.innerHTML = 'Awan Aktif 🟢'; statusEl.className = 'text-xs font-bold text-green-700 bg-green-100 px-2 py-1 rounded-md shadow-inner'; }
 
                 onSnapshot(getGlobalSettingsRef(), (docSnapshot) => {
                     if(docSnapshot.exists()) {
                         const data = docSnapshot.data();
+                        window.hiddenTags = data.hiddenTags || window.hiddenTags;
                         window.presetNames = data.presetNames || window.presetNames;
                         window.userPresets = data.presets || window.userPresets;
                         window.appCustomTitle = data.appCustomTitle || window.appCustomTitle;
                         window.marcHistory = data.history || window.marcHistory;
                         
                         if (data.notes) window.appNotes = data.notes;
-                        if (!window.appNotes.find(n => n.id === window.activeNoteId) && window.appNotes.length > 0) {
-                            window.activeNoteId = window.appNotes[0].id;
-                        }
+                        window.muatTajukAplikasi(); window.muatNamaPreset(); window.kemaskiniIndikatorTetapan(); window.kemaskiniIndikatorTetapanCmp();
+                        
+                        if(document.getElementById('sejarahModal').classList.contains('active')) window.renderSejarah();
+                        window.kemaskiniDropdownPerbandingan();
 
-                        window.muatTajukAplikasi();
-                        window.muatNamaPreset();
-                        if(document.getElementById('sejarahModal') && document.getElementById('sejarahModal').classList.contains('active')) {
-                            window.renderSejarah();
-                        }
-                        if(document.getElementById('notaModal') && document.getElementById('notaModal').classList.contains('active')) {
+                        if(!window.isAdminLogged) {
                             window.renderNotaTabs();
                             const aktif = window.appNotes.find(n => n.id === window.activeNoteId);
-                            if(aktif && document.getElementById('notaEditor') && document.getElementById('notaEditor').innerHTML !== aktif.content) {
-                                document.getElementById('notaEditor').innerHTML = aktif.content || "";
-                            }
+                            if(aktif && document.getElementById('notaEditor')) document.getElementById('notaEditor').innerHTML = aktif.content || "";
                         }
                     }
                 });
-                
             } catch (error) {
-                console.warn("Ralat Firebase:", error);
                 isCloudActive = false;
-                if (statusEl) {
-                    statusEl.innerHTML = 'Lokal (Awan Gagal) 🔴';
-                    statusEl.className = 'text-xs font-bold text-red-700 bg-red-100 px-2 py-1 rounded-md shadow-inner';
-                }
+                if (statusEl) { statusEl.innerHTML = 'Lokal 🔴'; statusEl.className = 'text-xs font-bold text-red-700 bg-red-100 px-2 py-1 rounded-md shadow-inner'; }
             } finally {
-                window.kemaskiniIndikatorTetapan();
-                window.muatTajukAplikasi();
-                window.paparTarikhSemasa();
-                window.muatNamaPreset();
+                window.kemaskiniIndikatorTetapan(); window.muatTajukAplikasi(); window.muatNamaPreset(); window.paparTarikhSemasa();
+                window.renderNotaTabs(); window.updateAdminUI(); window.kemaskiniDropdownPerbandingan();
             }
         }
 
@@ -721,176 +875,142 @@
             if (dataObj.history !== undefined) localStorage.setItem('local_history', JSON.stringify(dataObj.history));
             if (dataObj.notes !== undefined) localStorage.setItem('local_notes', JSON.stringify(dataObj.notes));
 
-            if (isCloudActive && authUid) {
-                try { await setDoc(getGlobalSettingsRef(), dataObj, { merge: true }); return true;
-                } catch (e) { console.error("Gagal tulis ke Cloud:", e); return false; }
-            }
+            if (isCloudActive) { try { await setDoc(getGlobalSettingsRef(), dataObj, { merge: true }); return true; } catch (e) { return false; } }
             return false;
         }
 
+        window.toggleAdminLogin = async function() {
+            if(window.isAdminLogged) { window.isAdminLogged = false; window.updateAdminUI(); return; }
+            const pw = await window.showCustomDialog({ type: 'prompt_password', icon: '🔐', title: 'Akses Admin', message: 'Sila masukkan kata laluan untuk membuka fungsi suntingan:' });
+            if(pw === 'pustakaMtib') { window.isAdminLogged = true; window.updateAdminUI(); } 
+            else if (pw !== false) { await window.showCustomDialog({ icon: '❌', title: 'Akses Ditolak', message: 'Kata laluan salah!' }); }
+        }
 
-        // --- PENGURUSAN EDITOR NOTA BERBILANG TAB ---
+        window.updateAdminUI = function() {
+            const container = document.getElementById('notaContainer');
+            const adminControls = document.getElementById('adminNotaControls');
+            const warningLabel = document.getElementById('adminOnlyWarning');
+            const editor = document.getElementById('notaEditor');
+            const gateBtn = document.getElementById('btnAdminGate');
+            const badge = document.getElementById('adminBadge');
+            const btnTitleSetting = document.getElementById('btnAdminSettingTitle');
+
+            if(window.isAdminLogged) {
+                container.classList.remove('view-only-mode');
+                adminControls.classList.remove('hidden');
+                warningLabel.classList.add('hidden');
+                editor.setAttribute('contenteditable', 'true');
+                gateBtn.innerHTML = '<span class="group-hover:scale-110 transition-transform drop-shadow text-red-500"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></span>';
+                gateBtn.title = "Log Keluar";
+                badge.classList.remove('hidden');
+                btnTitleSetting.classList.remove('hidden');
+            } else {
+                container.classList.add('view-only-mode');
+                adminControls.classList.add('hidden');
+                warningLabel.classList.remove('hidden');
+                editor.setAttribute('contenteditable', 'false');
+                gateBtn.innerHTML = '<span class="group-hover:scale-110 transition-transform drop-shadow text-gray-600"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>';
+                gateBtn.title = "Log Masuk Admin";
+                badge.classList.add('hidden');
+                btnTitleSetting.classList.add('hidden');
+                
+                const notaSemasa = window.appNotes.find(n => n.id === window.activeNoteId);
+                if(notaSemasa && editor.innerHTML !== (notaSemasa.content||"")) editor.innerHTML = notaSemasa.content || "";
+            }
+            window.renderNotaTabs();
+        }
+
+        window.paparTarikhSemasa = function() { const el = document.getElementById('tarikhSemasa'); if(el) el.textContent = new Date().toLocaleDateString('ms-MY', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }); }
+        window.muatTajukAplikasi = function() { const el = document.getElementById('appTitleDisplay'); if(el) el.textContent = window.appCustomTitle; }
+        window.muatNamaPreset = function() { for (let i = 2; i <= 3; i++) { const disp = document.getElementById(`preset-name-display-${i}`); if(disp) disp.textContent = window.presetNames[i] || `Preset ${i}`; } }
+
+        window.bukaTetapanTajuk = function() { const input = document.getElementById('inputAppTitle'); if(input) input.value = window.appCustomTitle; document.getElementById('tetapanTajukModal').classList.add('active'); }
+        window.tutupTetapanTajuk = function() { document.getElementById('tetapanTajukModal').classList.remove('active'); }
+        window.simpanTetapanTajuk = async function() { 
+            const input = document.getElementById('inputAppTitle');
+            if(input) window.appCustomTitle = input.value.trim() || "Sistem Penukar Data MARC"; 
+            await simpanDataTerpusat({ appCustomTitle: window.appCustomTitle }); window.muatTajukAplikasi(); window.tutupTetapanTajuk(); 
+        }
+
         window.renderNotaTabs = function() {
-            const list = document.getElementById('notaTabsList');
-            if (!list) return;
-            
+            const list = document.getElementById('notaTabsList'); if (!list) return;
             let htmlStr = '';
             window.appNotes.forEach(nota => {
-                const isActive = nota.id === window.activeNoteId;
-                const activeClass = isActive ? 'active' : '';
-                htmlStr += `
-                    <div class="nota-tab ${activeClass}" style="border-left-color: ${nota.color};" onclick="pilihNota('${nota.id}')">
-                        <div class="nota-tab-title" title="${nota.title}">${nota.title}</div>
-                    </div>
-                `;
+                const isActive = nota.id === window.activeNoteId ? 'active' : '';
+                let actionBtns = '';
+                if(window.isAdminLogged) { actionBtns = `<div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity"><button class="text-xs hover:text-blue-500" onclick="editTajukNota('${nota.id}', event)">✏️</button><button class="text-xs hover:text-red-500" onclick="padamNota('${nota.id}', event)">✕</button></div>`; }
+                htmlStr += `<div class="nota-tab group ${isActive}" style="border-left-color: ${nota.color};" onclick="pilihNota('${nota.id}')"><div class="nota-tab-title" title="${nota.title}">${nota.title}</div>${actionBtns}</div>`;
             });
             list.innerHTML = htmlStr;
         }
 
         window.pilihNota = function(id) {
-            const notaSemasa = window.appNotes.find(n => n.id === window.activeNoteId);
-            const notaEditor = document.getElementById('notaEditor');
-            if (notaSemasa && notaEditor) notaSemasa.content = notaEditor.innerHTML;
-            
-            window.activeNoteId = id;
+            if(window.isAdminLogged) {
+                const notaSemasa = window.appNotes.find(n => n.id === window.activeNoteId);
+                const notaEditor = document.getElementById('notaEditor');
+                if (notaSemasa && notaEditor) { notaSemasa.content = notaEditor.innerHTML; simpanDataTerpusat({ notes: window.appNotes }); }
+            }
+            window.activeNoteId = id; window.renderNotaTabs();
             const notaBaru = window.appNotes.find(n => n.id === id);
-            if(notaEditor) notaEditor.innerHTML = notaBaru ? (notaBaru.content || "") : "";
-            window.renderNotaTabs();
+            const editor = document.getElementById('notaEditor');
+            if(editor) editor.innerHTML = notaBaru ? (notaBaru.content || "") : "";
         }
 
         window.tambahNota = function() {
+            if(!window.isAdminLogged) return;
             const notaSemasa = window.appNotes.find(n => n.id === window.activeNoteId);
             const notaEditor = document.getElementById('notaEditor');
             if (notaSemasa && notaEditor) notaSemasa.content = notaEditor.innerHTML;
-
-            const newId = Date.now().toString();
-            const color = tabColors[window.appNotes.length % tabColors.length];
-            const newTitle = "Nota " + (window.appNotes.length + 1);
-            
-            window.appNotes.push({ id: newId, title: newTitle, color: color, content: "" });
-            window.activeNoteId = newId;
-            
-            window.renderNotaTabs();
-            if(notaEditor) {
-                notaEditor.innerHTML = "";
-                notaEditor.focus();
-            }
+            const newId = Date.now().toString(); const color = tabColors[window.appNotes.length % tabColors.length];
+            window.appNotes.push({ id: newId, title: "Nota " + (window.appNotes.length + 1), color: color, content: "" });
+            window.activeNoteId = newId; window.renderNotaTabs();
+            if(notaEditor) { notaEditor.innerHTML = ""; notaEditor.focus(); }
             simpanDataTerpusat({ notes: window.appNotes });
         }
 
-        window.padamNota = function(id, event) {
-            event.stopPropagation();
-            if(confirm("Anda pasti mahu memadam rekod nota ini secara kekal?")) {
+        window.padamNota = async function(id, event) {
+            event.stopPropagation(); if(!window.isAdminLogged) return;
+            const confirmPadam = await window.showCustomDialog({ type: 'confirm', icon: '🗑️', title: 'Padam Nota', message: 'Padam rekod ini secara kekal?' });
+            if(confirmPadam) {
                 window.appNotes = window.appNotes.filter(n => n.id !== id);
                 if(window.appNotes.length === 0) window.appNotes.push({ id: Date.now().toString(), title: "Nota Utama", color: tabColors[0], content: "" });
-                if(window.activeNoteId === id) {
-                    window.activeNoteId = window.appNotes[0].id;
-                    const editor = document.getElementById('notaEditor');
-                    if(editor) editor.innerHTML = window.appNotes[0].content || "";
-                }
-                window.renderNotaTabs();
-                simpanDataTerpusat({ notes: window.appNotes });
+                if(window.activeNoteId === id) { window.activeNoteId = window.appNotes[0].id; document.getElementById('notaEditor').innerHTML = window.appNotes[0].content || ""; }
+                window.renderNotaTabs(); simpanDataTerpusat({ notes: window.appNotes });
             }
         }
 
-        window.editTajukNota = function(id, event) {
-            event.stopPropagation();
+        window.editTajukNota = async function(id, event) {
+            event.stopPropagation(); if(!window.isAdminLogged) return;
             const nota = window.appNotes.find(n => n.id === id);
             if(nota) {
-                const newTitle = prompt("Masukkan nama baharu untuk nota ini:", nota.title);
-                if(newTitle && newTitle.trim() !== "") {
-                    nota.title = newTitle.trim();
-                    window.renderNotaTabs();
-                    simpanDataTerpusat({ notes: window.appNotes });
+                const newTitle = await window.showCustomDialog({ type: 'prompt_text', icon: '✏️', title: 'Ubah Tajuk', message: 'Masukkan nama baharu:', defaultValue: nota.title });
+                if(newTitle && newTitle.trim() !== "") { nota.title = newTitle.trim(); window.renderNotaTabs(); simpanDataTerpusat({ notes: window.appNotes }); }
+            }
+        }
+
+        let typingTimer;
+        window.simpanNotaPantas = function() {
+            if(!window.isAdminLogged) return;
+            clearTimeout(typingTimer);
+            const ind = document.getElementById('notaStatusIndicator');
+            if(ind) ind.textContent = "Menyimpan...";
+            typingTimer = setTimeout(() => {
+                const notaSemasa = window.appNotes.find(n => n.id === window.activeNoteId);
+                const notaEditor = document.getElementById('notaEditor');
+                if (notaSemasa && notaEditor) {
+                    notaSemasa.content = notaEditor.innerHTML;
+                    simpanDataTerpusat({ notes: window.appNotes }).then(() => { if(ind) { ind.textContent = "✓ Tersimpan"; setTimeout(() => ind.textContent = "", 2000); }});
                 }
-            }
+            }, 1000);
         }
 
-        window.bukaNota = function() {
-            window.renderNotaTabs();
-            const notaSemasa = window.appNotes.find(n => n.id === window.activeNoteId);
-            const notaEditor = document.getElementById('notaEditor');
-            if(notaEditor) notaEditor.innerHTML = notaSemasa ? (notaSemasa.content || "") : "";
-            document.getElementById('notaModal').classList.add('active');
-            setTimeout(() => { if(document.getElementById('notaEditor')) document.getElementById('notaEditor').focus(); }, 300);
-        }
-
-        window.tutupNota = function() {
-            const notaSemasa = window.appNotes.find(n => n.id === window.activeNoteId);
-            const notaEditor = document.getElementById('notaEditor');
-            if (notaSemasa && notaEditor) { notaSemasa.content = notaEditor.innerHTML; simpanDataTerpusat({ notes: window.appNotes }); }
-            document.getElementById('notaModal').classList.remove('active');
-            const emojiPicker = document.getElementById('emojiPickerBox');
-            if(emojiPicker) emojiPicker.classList.add('hidden');
-        }
-
-        window.simpanNotaTutup = async function() {
-            const statusLabel = document.getElementById('notaStatus');
-            if(statusLabel) statusLabel.textContent = "Menyimpan...";
-            const notaSemasa = window.appNotes.find(n => n.id === window.activeNoteId);
-            const notaEditor = document.getElementById('notaEditor');
-            if (notaSemasa && notaEditor) notaSemasa.content = notaEditor.innerHTML;
-            await simpanDataTerpusat({ notes: window.appNotes });
-            if(statusLabel) statusLabel.textContent = "✓ Disimpan ke Awan";
-            setTimeout(() => { if(statusLabel) statusLabel.textContent = ""; window.tutupNota(); }, 800);
-        }
-
-        window.formatNota = function(command, value = null) { document.execCommand(command, false, value); const editor = document.getElementById('notaEditor'); if(editor) editor.focus(); }
-        window.toggleEmojiPicker = function() { const picker = document.getElementById('emojiPickerBox'); if(picker) picker.classList.toggle('hidden'); }
-        window.insertEmoji = function(emoji) { document.execCommand('insertText', false, emoji); const picker = document.getElementById('emojiPickerBox'); if(picker) picker.classList.add('hidden'); const editor = document.getElementById('notaEditor'); if(editor) editor.focus(); }
-        window.insertTableNota = function() {
-            const tableHTML = `<br><table style="width:100%; border-collapse:collapse;"><tr><th style="border: 1px solid #d2d2d7; padding: 6px; background-color: #f9fafb;">Tajuk 1</th><th style="border: 1px solid #d2d2d7; padding: 6px; background-color: #f9fafb;">Tajuk 2</th></tr><tr><td style="border: 1px solid #d2d2d7; padding: 6px;">Data A</td><td style="border: 1px solid #d2d2d7; padding: 6px;">Data B</td></tr></table><br>`;
-            document.execCommand('insertHTML', false, tableHTML); const editor = document.getElementById('notaEditor'); if(editor) editor.focus();
-        }
-
-        // --- FUNGSI GLOBAL LAIN ---
-        window.paparTarikhSemasa = function() { 
-            const el = document.getElementById('tarikhSemasa'); 
-            if(el) el.textContent = new Date().toLocaleDateString('ms-MY', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }); 
-        }
-        window.muatTajukAplikasi = function() { 
-            const el = document.getElementById('appTitleDisplay'); 
-            if(el) el.textContent = window.appCustomTitle; 
-        }
-        window.muatNamaPreset = function() { 
-            for (let i = 2; i <= 3; i++) { 
-                const display = document.getElementById(`preset-name-display-${i}`); 
-                if (display) display.textContent = window.presetNames[i] || `Preset ${i}`; 
-            } 
-        }
-        
-        window.bukaTetapanAplikasi = function() { 
-            const input = document.getElementById('inputAppTitle');
-            if(input) input.value = window.appCustomTitle; 
-            document.getElementById('tetapanAplikasiModal').classList.add('active'); 
-        }
-        window.tutupTetapanAplikasi = function() { document.getElementById('tetapanAplikasiModal').classList.remove('active'); }
-        window.simpanTetapanAplikasi = async function() { 
-            const input = document.getElementById('inputAppTitle');
-            if(input) window.appCustomTitle = input.value.trim() || "Sistem Penukar Data MARC"; 
-            await simpanDataTerpusat({ appCustomTitle: window.appCustomTitle }); 
-            window.muatTajukAplikasi(); 
-            window.tutupTetapanAplikasi(); 
-        }
-
-        window.editNamaPreset = function(nombor) {
-            if (nombor === 1) return;
-            const display = document.getElementById(`preset-name-display-${nombor}`);
-            const input = document.getElementById(`preset-name-input-${nombor}`);
-            const btn = document.getElementById(`btn-edit-name-${nombor}`);
-
-            if (input && input.classList.contains('hidden')) {
-                input.value = window.presetNames[nombor]; display.classList.add('hidden'); input.classList.remove('hidden'); input.focus(); btn.innerHTML = '💾';
-            } else if (input) {
-                window.presetNames[nombor] = input.value.trim() || `Preset ${nombor}`; display.textContent = window.presetNames[nombor];
-                display.classList.remove('hidden'); input.classList.add('hidden'); btn.innerHTML = '✏️';
-                simpanDataTerpusat({ presetNames: window.presetNames }); window.paparStatusPreset(nombor, "Nama Disimpan");
-            }
-        };
+        window.formatNota = function(command, value = null) { if(window.isAdminLogged) { document.execCommand(command, false, value); document.getElementById('notaEditor').focus(); } }
+        window.toggleEmojiPicker = function() { if(window.isAdminLogged) document.getElementById('emojiPickerBox').classList.toggle('hidden'); }
+        window.insertEmoji = function(emoji) { if(window.isAdminLogged) { document.execCommand('insertText', false, emoji); document.getElementById('emojiPickerBox').classList.add('hidden'); document.getElementById('notaEditor').focus(); } }
+        window.insertTableNota = function() { if(window.isAdminLogged) { document.execCommand('insertHTML', false, `<br><table style="width:100%; border-collapse:collapse;"><tr><th style="border: 1px solid #d2d2d7; padding: 6px; background-color: #f9fafb;">Tajuk 1</th><th style="border: 1px solid #d2d2d7; padding: 6px; background-color: #f9fafb;">Tajuk 2</th></tr><tr><td style="border: 1px solid #d2d2d7; padding: 6px;">Data A</td><td style="border: 1px solid #d2d2d7; padding: 6px;">Data B</td></tr></table><br>`); document.getElementById('notaEditor').focus(); } }
 
         window.ekstrakTajukSemasa = function() {
-            const input = document.getElementById('inputData');
-            const paparTajuk = document.getElementById('tajukBukuSemasa');
+            const input = document.getElementById('inputData'); const paparTajuk = document.getElementById('tajukBukuSemasa');
             if(!input || !paparTajuk) return;
             const teks = input.value;
             if(!teks || !teks.trim()) { paparTajuk.textContent = "Tampal teks MARC mentah ke ruangan ini untuk bermula."; return; }
@@ -900,96 +1020,62 @@
                     const bahagian = line.split('$');
                     const partA = bahagian.find(p => p.startsWith('a')); const partB = bahagian.find(p => p.startsWith('b'));
                     if (partA) tajukBuku += partA.substring(1).trim() + " ";
-                    if (partB) tajukBuku += partB.substring(1).trim() + " ";
-                    break;
+                    if (partB) tajukBuku += partB.substring(1).trim() + " "; break;
                 }
             }
-            if(tajukBuku) { paparTajuk.textContent = "📖 " + tajukBuku.replace(/[\/\\]/g, '').trim(); } 
-            else { paparTajuk.textContent = "⚠️ Tiada tajuk dikesan pada rekod ini"; }
+            if(tajukBuku) paparTajuk.textContent = "📖 " + tajukBuku.replace(/[\/\\]/g, '').trim();
+            else paparTajuk.textContent = "⚠️ Tiada tajuk dikesan pada rekod ini";
         }
 
         window.padamInputMARC = function() {
-            const input = document.getElementById('inputData');
-            if(input) input.value = ''; 
-            window.ekstrakTajukSemasa();
-            const tableBody = document.getElementById('tableBody');
-            if(tableBody) tableBody.innerHTML = '<tr><td colspan="5" class="py-20 text-center text-gray-400"><div class="text-4xl mb-3 opacity-50">📊</div><div class="font-medium text-sm">Jadual akan dipaparkan di sini.</div></td></tr>';
-            window.tsvData = ""; 
-            if(input) input.focus();
+            document.getElementById('inputData').value = ''; window.ekstrakTajukSemasa();
+            document.getElementById('tableBody').innerHTML = '<tr><td colspan="5" class="py-20 text-center text-gray-400"><div class="text-4xl mb-3 opacity-50">📊</div><div class="font-medium text-sm">Jadual akan dipaparkan di sini.</div></td></tr>';
+            window.tsvData = ""; document.getElementById('inputData').focus();
         }
-
-        window.bukaSejarah = function() { window.renderSejarah(); document.getElementById('sejarahModal').classList.add('active'); }
-        window.tutupSejarah = function() { document.getElementById('sejarahModal').classList.remove('active'); }
-
-        window.renderSejarah = function() {
-            const container = document.getElementById('sejarahContainer');
-            if (!container) return;
-            if (window.marcHistory.length === 0) { container.innerHTML = '<div class="text-center py-10 text-gray-400 text-sm">Tiada sejarah terjemahan direkodkan.</div>'; return; }
-            let htmlStr = '';
-            window.marcHistory.forEach(item => {
-                const formatTarikh = new Date(item.date).toLocaleDateString('ms-MY') + ' ' + new Date(item.date).toLocaleTimeString('ms-MY', {hour: '2-digit', minute:'2-digit'});
-                htmlStr += `<div class="preset-item hover:border-blue-300 transition-colors"><div class="flex-1 min-w-0 pr-4"><div class="font-bold text-gray-800 text-sm truncate" title="${item.title}">${item.title}</div><div class="text-[11px] text-gray-500">${formatTarikh}</div></div><div class="flex items-center gap-2 flex-shrink-0"><button class="mac-btn-secondary !text-[11px] !py-1 !px-3" onclick="muatSejarah('${item.id}')">⬇️ Muat Semula</button><button class="mac-btn-secondary !text-[11px] !py-1 !px-2 !text-red-500 hover:!bg-red-50" onclick="padamSejarah('${item.id}')">🗑️</button></div></div>`;
-            });
-            container.innerHTML = htmlStr;
-        }
-
-        window.simpanSejarah = async function(teks) {
-            if(!teks || !teks.trim()) return;
-            let tajukBuku = "Koleksi Tanpa Tajuk";
-            for (let line of teks.split('\n')) {
-                if (line.trim().startsWith('245 ')) {
-                    const partA = line.split('$').find(p => p.startsWith('a'));
-                    if (partA) { tajukBuku = partA.substring(1).replace(/[\/\\]/g, '').trim(); if (tajukBuku.length > 60) tajukBuku = tajukBuku.substring(0, 60) + '...'; }
-                    break;
-                }
-            }
-            if(window.marcHistory.length > 0 && window.marcHistory[0].rawData === teks) return;
-            window.marcHistory.unshift({ id: Date.now().toString(), title: tajukBuku, rawData: teks, date: new Date().getTime() });
-            if (window.marcHistory.length > 20) window.marcHistory.pop();
-            await simpanDataTerpusat({ history: window.marcHistory });
-        }
-
-        window.muatSejarah = function(id) {
-            const item = window.marcHistory.find(h => h.id === id);
-            if (item) { 
-                const input = document.getElementById('inputData');
-                if(input) input.value = item.rawData; 
-                window.ekstrakTajukSemasa(); 
-                window.tutupSejarah(); 
-                window.prosesMARC(); 
-            }
-        }
-
-        window.padamSejarah = async function(id) { window.marcHistory = window.marcHistory.filter(h => h.id !== id); window.renderSejarah(); await simpanDataTerpusat({ history: window.marcHistory }); }
 
         window.toggleSubfieldFilter = function(isRefresh = false) {
             if(!isRefresh) window.isSubfieldFilterActive = !window.isSubfieldFilterActive;
+            
             const btn = document.getElementById('btnSubfieldFilter');
+            const btnCmp = document.getElementById('btnSubfieldFilterCmp');
             
-            if (btn) {
+            const applyStyle = (el) => {
+                if(!el) return;
                 if (window.isSubfieldFilterActive) {
-                    btn.className = "mac-btn-secondary gap-2 transition-all duration-300 bg-blue-50 border-blue-300 text-blue-700";
-                    btn.style.backgroundColor = '#e0f2fe'; btn.style.borderColor = '#93c5fd'; btn.style.color = '#1d4ed8';
+                    el.className = "mac-btn-secondary gap-2 transition-all duration-300 bg-blue-50 border-blue-300 text-blue-700";
+                    el.style.backgroundColor = '#e0f2fe'; el.style.borderColor = '#93c5fd'; el.style.color = '#1d4ed8';
                 } else {
-                    btn.className = "mac-btn-secondary gap-2 transition-all duration-300";
-                    btn.style.backgroundColor = ''; btn.style.borderColor = ''; btn.style.color = '';
+                    el.className = "mac-btn-secondary gap-2 transition-all duration-300";
+                    el.style.backgroundColor = ''; el.style.borderColor = ''; el.style.color = '';
                 }
-            }
+            };
+            applyStyle(btn); applyStyle(btnCmp);
             
-            const input = document.getElementById('inputData');
-            if (!isRefresh && input && input.value.trim() !== '') window.prosesMARC();
+            if (!isRefresh) {
+                const input = document.getElementById('inputData');
+                if (input && input.value.trim() !== '') window.prosesMARC('inputData', 'tableBody');
+                
+                const val1 = document.getElementById('compareSelect1').value;
+                if(val1) window.prosesMARC('compareData1', 'compareTable1', true);
+                const val2 = document.getElementById('compareSelect2').value;
+                if(val2) window.prosesMARC('compareData2', 'compareTable2', true);
+            }
         }
 
-        window.prosesMARC = function() {
-            const inputElement = document.getElementById('inputData');
-            const tbody = document.getElementById('tableBody');
+        window.prosesMARC = async function(inputId, tableBodyId, isCompareMode = false) {
+            const inputElement = document.getElementById(inputId);
+            const tbody = document.getElementById(tableBodyId);
             if (!inputElement || !tbody) return;
             
             const inputText = inputElement.value;
-            if (!inputText.trim()) { alert("Sila masukkan teks data MARC."); return; }
+            if (!inputText.trim()) {
+                if(!isCompareMode) window.showCustomDialog({ icon: '⚠️', title: 'Data Kosong', message: 'Sila masukkan teks data MARC terlebih dahulu.' });
+                return; 
+            }
 
-            window.ekstrakTajukSemasa();
-            let htmlRows = ''; let validRowsCount = 0; window.tsvData = "Tag\tInd1\tInd2\tMaklumat Bibliografi\n";
+            if(!isCompareMode) window.ekstrakTajukSemasa();
+            let htmlRows = ''; let validRowsCount = 0; 
+            if(!isCompareMode) window.tsvData = "Tag\tInd1\tInd2\tMaklumat Bibliografi\n";
 
             inputText.split('\n').forEach(line => {
                 const trimmedEndLine = line.trimEnd();
@@ -1010,31 +1096,11 @@
                     if (afterTag.startsWith(' ') || afterTag.startsWith('\t')) afterTag = afterTag.substring(1);
                     
                     let ind1 = afterTag.charAt(0) || ' '; let ind2 = afterTag.charAt(1) || ' ';
-
-                    const standardMarcInds = {
-                        "010": ['', ''], "020": ['', ''], "022": ['', ''], "035": ['', ''],
-                        "040": ['', ''], "041": ['0', ''], "049": ['', ''], "050": ['', '4'], 
-                        "082": ['0', '4'], "090": ['', ''], "100": ['1', ''], "110": ['2', ''], 
-                        "130": ['0', ''], "240": ['1', '0'], "245": ['1', '0'], "246": ['1', ''], 
-                        "250": ['', ''], "260": ['', ''], "264": ['', '1'], "300": ['', ''], 
-                        "336": ['', ''], "337": ['', ''], "338": ['', ''], "490": ['1', ''], 
-                        "500": ['', ''], "504": ['', ''], "505": ['0', ''], "520": ['', ''], 
-                        "590": ['', ''], "594": ['', ''], "600": ['1', '0'], "610": ['2', '0'], 
-                        "630": ['0', '0'], "650": ['', '0'], "651": ['', '0'], "655": ['', '7'], 
-                        "700": ['1', ''], "710": ['2', ''], "720": ['', ''], "730": ['0', ''], 
-                        "740": ['0', '2'], "800": ['1', ''], "830": ['', '0'], "856": ['4', '0'],
-                        "900": ['', ''], "997": ['', ''], "998": ['', '']
-                    };
-
-                    const ilmuInds = {
-                        "020": ['0', '0'], "022": ['0', '0'], "090": ['0', '0'], "100": ['1', '0'], 
-                        "245": ['1', '0'], "250": ['0', '0'], "260": ['0', '0'], "440": ['0', '0'], 
-                        "504": ['0', '0'], "650": ['0', '0'], "700": ['1', '1'], "710": ['1', '1']
-                    };
+                    const standardMarcInds = { "010": ['', ''], "020": ['', ''], "022": ['', ''], "035": ['', ''], "040": ['', ''], "041": ['0', ''], "049": ['', ''], "050": ['', '4'], "082": ['0', '4'], "090": ['', ''], "100": ['1', ''], "110": ['2', ''], "130": ['0', ''], "240": ['1', '0'], "245": ['1', '0'], "246": ['1', ''], "250": ['', ''], "260": ['', ''], "264": ['', '1'], "300": ['', ''], "336": ['', ''], "337": ['', ''], "338": ['', ''], "490": ['1', ''], "500": ['', ''], "504": ['', ''], "505": ['0', ''], "520": ['', ''], "590": ['', ''], "594": ['', ''], "600": ['1', '0'], "610": ['2', '0'], "630": ['0', '0'], "650": ['', '0'], "651": ['', '0'], "655": ['', '7'], "700": ['1', ''], "710": ['2', ''], "720": ['', ''], "730": ['0', ''], "740": ['0', '2'], "800": ['1', ''], "830": ['', '0'], "856": ['4', '0'], "900": ['', ''], "997": ['', ''], "998": ['', ''] };
+                    const ilmuInds = { "020": ['0', '0'], "022": ['0', '0'], "090": ['0', '0'], "100": ['1', '0'], "245": ['1', '0'], "250": ['0', '0'], "260": ['0', '0'], "440": ['0', '0'], "504": ['0', '0'], "650": ['0', '0'], "700": ['1', '1'], "710": ['1', '1'] };
                     const ilmuBlankInds = ["040", "246", "300", "500"];
 
                     if (standardMarcInds[tag]) { ind1Clean = standardMarcInds[tag][0]; ind2Clean = standardMarcInds[tag][1]; }
-
                     if (window.isSubfieldFilterActive) {
                         if (ilmuInds[tag]) { ind1Clean = ilmuInds[tag][0]; ind2Clean = ilmuInds[tag][1]; } 
                         else if (ilmuBlankInds.includes(tag)) { ind1Clean = ''; ind2Clean = ''; }
@@ -1049,27 +1115,16 @@
                         } else {
                             if (part.length > 0) {
                                 const subCode = part.charAt(0); const subValue = part.substring(1).trim(); 
-                                const formatIlmuRules = {
-                                    "020": ['a'], "022": ['a'], "040": ['a'], "090": ['a'],
-                                    "100": ['a'], "245": ['a', 'c'], "246": ['a'],
-                                    "250": ['a'], "260": ['a', 'b', 'c'], 
-                                    "300": ['a', 'c'], "440": ['a'], "500": ['a'], "504": ['a'],
-                                    "650": ['a', 'x', 'y', 'z'], "700": ['a'], "710": ['a']
-                                };
+                                const formatIlmuRules = { "020": ['a'], "022": ['a'], "040": ['a'], "090": ['a'], "100": ['a'], "245": ['a', 'c'], "246": ['a'], "250": ['a'], "260": ['a', 'b', 'c'], "300": ['a', 'c'], "440": ['a'], "500": ['a'], "504": ['a'], "650": ['a', 'x', 'y', 'z'], "700": ['a'], "710": ['a'] };
 
-                                if (window.isSubfieldFilterActive && formatIlmuRules[tag]) {
-                                    if (!formatIlmuRules[tag].includes(subCode)) return; 
-                                }
-
+                                if (window.isSubfieldFilterActive && formatIlmuRules[tag]) { if (!formatIlmuRules[tag].includes(subCode)) return; }
                                 subfields.push(`|${subCode}${subValue}`);
                                 subfieldsHTML.push(`<span class="subfield-code">|${subCode}</span>${subValue}`);
                             }
                         }
                     });
                     detailClean = subfields.join(''); formattedDetail = subfieldsHTML.join('');
-                } else {
-                    detailClean = trimmedEndLine.substring(3).trim(); formattedDetail = detailClean;
-                }
+                } else { detailClean = trimmedEndLine.substring(3).trim(); formattedDetail = detailClean; }
 
                 if (window.isSubfieldFilterActive && tag === "008") {
                     const today = new Date();
@@ -1078,38 +1133,24 @@
                 }
 
                 const escapedDetailForCopy = detailClean.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                let actionTd = isCompareMode ? '' : `<td class="row-action-td"><div class="relative flex justify-center group"><button class="btn-row-copy relative" onclick="salinBaris(this, '${escapedDetailForCopy}')">📋</button><div class="absolute right-full mr-2 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 bg-[#e0f2fe] text-[#1d4ed8] text-[11px] font-bold px-3 py-1.5 rounded shadow-sm whitespace-nowrap z-50 border border-[#bfdbfe]">Salin: ${tagDesc}</div></div></td>`;
                 
-                htmlRows += `
-                    <tr>
-                        <td class="col-tag">${tag}</td>
-                        <td class="col-ind">${ind1Clean}</td>
-                        <td class="col-ind">${ind2Clean}</td>
-                        <td>${formattedDetail}</td>
-                        <td class="row-action-td">
-                            <div class="relative flex justify-center group">
-                                <button class="btn-row-copy relative" onclick="salinBaris(this, '${escapedDetailForCopy}')">📋</button>
-                                <div class="absolute right-full mr-2 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 bg-[#e0f2fe] text-[#1d4ed8] text-[11px] font-bold px-3 py-1.5 rounded shadow-sm whitespace-nowrap z-50 border border-[#bfdbfe]">Salin: ${tagDesc}</div>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-                window.tsvData += `${tag}\t${ind1Clean}\t${ind2Clean}\t${detailClean}\n`;
+                htmlRows += `<tr><td class="col-tag">${tag}</td><td class="col-ind">${ind1Clean}</td><td class="col-ind">${ind2Clean}</td><td>${formattedDetail}</td>${actionTd}</tr>`;
+                if(!isCompareMode) window.tsvData += `${tag}\t${ind1Clean}\t${ind2Clean}\t${detailClean}\n`;
                 validRowsCount++;
             });
 
             if (htmlRows === '') {
-                htmlRows = '<tr><td colspan="5" class="py-20 text-center text-gray-400"><div class="text-4xl mb-3 opacity-50">📊</div><div class="font-medium text-sm">Tiada data MARC yang sah.</div></td></tr>';
-                window.tsvData = "";
-            } else if (validRowsCount > 0) { window.simpanSejarah(inputText); }
+                htmlRows = `<tr><td colspan="${isCompareMode?4:5}" class="py-20 text-center text-gray-400"><div class="text-4xl mb-3 opacity-50">📊</div><div class="font-medium text-sm">Tiada data MARC yang sah.</div></td></tr>`;
+                if(!isCompareMode) window.tsvData = "";
+            } else if (!isCompareMode && validRowsCount > 0) { await window.simpanSejarah(inputText); }
             tbody.innerHTML = htmlRows;
         }
 
         window.copyTable = function() {
             if (!window.tsvData || window.tsvData === "Tag\tInd1\tInd2\tMaklumat Bibliografi\n") return;
-            const tempTextArea = document.createElement("textarea"); tempTextArea.value = window.tsvData;
-            document.body.appendChild(tempTextArea); tempTextArea.select();
-            try { document.execCommand('copy'); const btn = document.getElementById('btnCopy'); const originalText = btn.innerHTML; btn.innerHTML = '✓ Disalin'; setTimeout(() => { btn.innerHTML = originalText; }, 2000);
-            } catch (err) {} document.body.removeChild(tempTextArea);
+            const tempTextArea = document.createElement("textarea"); tempTextArea.value = window.tsvData; document.body.appendChild(tempTextArea); tempTextArea.select();
+            try { document.execCommand('copy'); const btn = document.getElementById('btnCopy'); const originalText = btn.innerHTML; btn.innerHTML = '✓ Disalin'; setTimeout(() => { btn.innerHTML = originalText; }, 2000); } catch (err) {} document.body.removeChild(tempTextArea);
         }
 
         window.salinBaris = function(btnElement, teksData) {
@@ -1117,106 +1158,144 @@
             try {
                 document.execCommand('copy');
                 if (!btnElement.dataset.originalText) btnElement.dataset.originalText = btnElement.innerHTML;
-                btnElement.innerHTML = '✓';
-                btnElement.style.color = 'var(--success-color)'; btnElement.style.borderColor = 'var(--success-color)';
+                btnElement.innerHTML = '✓'; btnElement.style.color = 'var(--success-color)'; btnElement.style.borderColor = 'var(--success-color)';
                 btnElement.style.outline = '2px solid var(--success-color)'; btnElement.style.outlineOffset = '1px';
                 btnElement.style.backgroundColor = 'rgba(240, 253, 244, 0.8)'; 
-                setTimeout(() => { btnElement.innerHTML = btnElement.dataset.originalText; }, 1500);
+                setTimeout(() => { btnElement.innerHTML = btnElement.dataset.originalText; btnElement.style = ''; }, 1500);
             } catch (err) {} document.body.removeChild(tempTextArea);
         }
 
-        window.toggleCheckboxStyle = function(cb) {
-            if(cb.checked) cb.closest('.checkbox-item').classList.add('active'); else cb.closest('.checkbox-item').classList.remove('active');
+        window.bukaSejarah = function() { window.renderSejarah(); document.getElementById('sejarahModal').classList.add('active'); setTimeout(()=> { document.getElementById('carianSejarah').focus(); }, 100); }
+        window.tutupSejarah = function() { document.getElementById('sejarahModal').classList.remove('active'); document.getElementById('carianSejarah').value = ''; }
+
+        window.renderSejarah = function(filterText = '') {
+            const container = document.getElementById('sejarahContainer'); if (!container) return;
+            let displayData = window.marcHistory;
+            if(filterText) {
+                const ft = filterText.toLowerCase();
+                displayData = window.marcHistory.filter(item => (item.title && item.title.toLowerCase().includes(ft)) || (item.rawData && item.rawData.toLowerCase().includes(ft)));
+            }
+            if (displayData.length === 0) { container.innerHTML = '<div class="text-center py-10 text-gray-400 text-sm">Tiada sejarah dijumpai.</div>'; return; }
+            let htmlStr = '';
+            displayData.forEach(item => {
+                const formatTarikh = new Date(item.date).toLocaleDateString('ms-MY') + ' ' + new Date(item.date).toLocaleTimeString('ms-MY', {hour: '2-digit', minute:'2-digit'});
+                htmlStr += `<div class="preset-item hover:border-blue-300 transition-colors"><div class="flex-1 min-w-0 pr-4"><div class="font-bold text-gray-800 text-sm truncate" title="${item.title}">${item.title}</div><div class="text-[11px] text-gray-500">${formatTarikh}</div></div><div class="flex items-center gap-2 flex-shrink-0"><button class="mac-btn-secondary !text-[11px] !py-1 !px-3" onclick="muatSejarah('${item.id}')">⬇️ Muat</button><button class="mac-btn-secondary !text-[11px] !py-1 !px-2 !text-red-500 hover:!bg-red-50" onclick="padamSejarah('${item.id}')">🗑️</button></div></div>`;
+            });
+            container.innerHTML = htmlStr;
+        }
+
+        window.tapisSejarah = function() { const v = document.getElementById('carianSejarah').value; window.renderSejarah(v); }
+
+        window.simpanSejarah = async function(teks) {
+            if(!teks || !teks.trim()) return;
+            let tajukBuku = "Koleksi Tanpa Tajuk";
+            for (let line of teks.split('\n')) {
+                if (line.trim().startsWith('245 ')) {
+                    const partA = line.split('$').find(p => p.startsWith('a'));
+                    if (partA) { tajukBuku = partA.substring(1).replace(/[\/\\]/g, '').trim(); if (tajukBuku.length > 60) tajukBuku = tajukBuku.substring(0, 60) + '...'; }
+                    break;
+                }
+            }
+            if(window.marcHistory.length > 0 && window.marcHistory[0].rawData === teks) return;
+            window.marcHistory.unshift({ id: Date.now().toString(), title: tajukBuku, rawData: teks, date: new Date().getTime() });
+            if (window.marcHistory.length > 50) window.marcHistory.pop();
+            await simpanDataTerpusat({ history: window.marcHistory });
+            window.kemaskiniDropdownPerbandingan();
+        }
+
+        window.muatSejarah = function(id) {
+            const item = window.marcHistory.find(h => h.id === id);
+            if (item) { 
+                const input = document.getElementById('inputData');
+                if(input) input.value = item.rawData; 
+                window.ekstrakTajukSemasa(); window.tutupSejarah(); window.prosesMARC('inputData', 'tableBody'); 
+            }
+        }
+        window.padamSejarah = async function(id) { 
+            const conf = await window.showCustomDialog({type: 'confirm', icon: '🗑️', title: 'Padam Sejarah', message: 'Yakin memadam sejarah ini?'});
+            if(conf) { window.marcHistory = window.marcHistory.filter(h => h.id !== id); window.renderSejarah(); await simpanDataTerpusat({ history: window.marcHistory }); window.kemaskiniDropdownPerbandingan(); }
+        }
+
+        window.kemaskiniDropdownPerbandingan = function() {
+            const sel1 = document.getElementById('compareSelect1'); const sel2 = document.getElementById('compareSelect2');
+            if(!sel1 || !sel2) return;
+            const v1 = sel1.value; const v2 = sel2.value;
+            let options = '<option value="">-- Pilih dari Sejarah --</option>';
+            window.marcHistory.forEach(h => { options += `<option value="${h.id}">${h.title} (${new Date(h.date).toLocaleDateString()})</option>`; });
+            sel1.innerHTML = options; sel2.innerHTML = options;
+            if(window.marcHistory.find(h => h.id === v1)) sel1.value = v1; if(window.marcHistory.find(h => h.id === v2)) sel2.value = v2;
+        }
+
+        window.muatPerbandingan = function(idSejarah, textAreaId, tableBodyId) {
+            const ta = document.getElementById(textAreaId); const item = window.marcHistory.find(h => h.id === idSejarah);
+            if(item) { ta.value = item.rawData; window.prosesMARC(textAreaId, tableBodyId, true); } 
+            else { ta.value = ''; document.getElementById(tableBodyId).innerHTML = '<tr><td colspan="4" class="py-10 text-center text-gray-400 text-sm">Sila pilih rekod.</td></tr>'; }
         }
 
         window.bukaTetapan = function() {
-            const input = document.getElementById('inputData');
-            if(!input) return;
             const tagsSet = new Set(Object.keys(marcDescriptions));
-            input.value.split('\n').forEach(line => { const match = line.trimEnd().match(/^(\d{3}) /); if (match) tagsSet.add(match[1]); });
+            const addFromInput = (id) => { const el=document.getElementById(id); if(el) el.value.split('\n').forEach(line => { const m = line.trimEnd().match(/^(\d{3}) /); if (m) tagsSet.add(m[1]); }); }
+            addFromInput('inputData'); addFromInput('compareData1'); addFromInput('compareData2');
             window.hiddenTags.forEach(t => tagsSet.add(t));
-            const container = document.getElementById('tagCheckboxContainer'); 
-            if(!container) return;
-            container.innerHTML = '';
             
+            const container = document.getElementById('tagCheckboxContainer'); if(!container) return;
+            container.innerHTML = '';
             Array.from(tagsSet).sort().forEach(tag => {
-                const isChecked = !window.hiddenTags.includes(tag);
-                const activeClass = isChecked ? 'active' : '';
-                container.innerHTML += `
-                    <label class="checkbox-item ${activeClass} flex items-start p-3 cursor-pointer bg-white/70 border border-gray-200 rounded-xl transition-all shadow-sm hover:shadow-md backdrop-blur-md">
-                        <input type="checkbox" value="${tag}" class="os-checkbox mt-1 mr-3 flex-shrink-0" ${isChecked ? 'checked' : ''} onchange="toggleCheckboxStyle(this)">
-                        <div>
-                            <span class="tag-name block font-bold text-blue-600 font-mono">${tag}</span>
-                            <span class="tag-desc block text-xs text-gray-500 mt-0.5">${marcDescriptions[tag] || "Tag Tersuai"}</span>
-                        </div>
-                    </label>
-                `;
+                const isChecked = !window.hiddenTags.includes(tag); const activeClass = isChecked ? 'active' : '';
+                container.innerHTML += `<label class="checkbox-item ${activeClass} flex items-start p-3 cursor-pointer bg-white/70 border border-gray-200 rounded-xl transition-all shadow-sm hover:shadow-md backdrop-blur-md"><input type="checkbox" value="${tag}" class="tag-checkbox mt-1 mr-3 flex-shrink-0" ${isChecked ? 'checked' : ''} onchange="this.checked ? this.closest('.checkbox-item').classList.add('active') : this.closest('.checkbox-item').classList.remove('active')"><div><span class="tag-name block font-bold text-blue-600 font-mono">${tag}</span><span class="tag-desc block text-xs text-gray-500 mt-0.5">${marcDescriptions[tag] || "Tag Tersuai"}</span></div></label>`;
             });
             document.getElementById('tetapanModal').classList.add('active');
         }
-
         window.tutupTetapan = function() { document.getElementById('tetapanModal').classList.remove('active'); }
 
         window.simpanTetapan = async function() {
             window.hiddenTags = []; document.querySelectorAll('.tag-checkbox').forEach(cb => { if (!cb.checked) window.hiddenTags.push(cb.value); });
             const saveBtn = document.getElementById('btn-simpan-tetapan'); const oriTxt = saveBtn.innerHTML; saveBtn.innerHTML = "Menyimpan...";
             await simpanDataTerpusat({ hiddenTags: window.hiddenTags });
-            saveBtn.innerHTML = oriTxt; window.tutupTetapan(); window.kemaskiniIndikatorTetapan();
-            const input = document.getElementById('inputData');
-            if (input && input.value.trim() !== '') window.prosesMARC();
+            saveBtn.innerHTML = oriTxt; window.tutupTetapan(); window.kemaskiniIndikatorTetapan(); window.kemaskiniIndikatorTetapanCmp();
+            
+            if(document.getElementById('inputData').value.trim() !== '') window.prosesMARC('inputData', 'tableBody');
+            if(document.getElementById('compareData1').value.trim() !== '') window.prosesMARC('compareData1', 'compareTable1', true);
+            if(document.getElementById('compareData2').value.trim() !== '') window.prosesMARC('compareData2', 'compareTable2', true);
         }
         
         window.pilihSemuaTag = function() { document.querySelectorAll('.tag-checkbox').forEach(cb => { cb.checked = true; cb.closest('.checkbox-item').classList.add('active'); }); }
         window.buangSemuaTag = function() { document.querySelectorAll('.tag-checkbox').forEach(cb => { cb.checked = false; cb.closest('.checkbox-item').classList.remove('active'); }); }
+        window.kemaskiniIndikatorTetapan = function() { const dot = document.getElementById('dotTetapan'); if (dot) dot.classList.toggle('active', window.hiddenTags.length > 0); }
+        window.kemaskiniIndikatorTetapanCmp = function() { const dot = document.getElementById('dotTetapanCmp'); if (dot) dot.classList.toggle('active', window.hiddenTags.length > 0); }
         
         window.paparStatusPreset = function(nombor, mesej) { const statusEl = document.getElementById(`status-preset-${nombor}`); if(statusEl) { statusEl.textContent = mesej; setTimeout(() => { statusEl.textContent = ""; }, 3000); } }
-
+        window.editNamaPreset = function(nombor) {
+            if (nombor === 1) return;
+            const display = document.getElementById(`preset-name-display-${nombor}`);
+            const input = document.getElementById(`preset-name-input-${nombor}`);
+            const btn = document.getElementById(`btn-edit-name-${nombor}`);
+            if (input && input.classList.contains('hidden')) { input.value = window.presetNames[nombor]; display.classList.add('hidden'); input.classList.remove('hidden'); input.focus(); btn.innerHTML = '💾';
+            } else if (input) { window.presetNames[nombor] = input.value.trim() || `Preset ${nombor}`; display.textContent = window.presetNames[nombor]; display.classList.remove('hidden'); input.classList.add('hidden'); btn.innerHTML = '✏️'; simpanDataTerpusat({ presetNames: window.presetNames }); window.paparStatusPreset(nombor, "Disimpan"); }
+        };
         window.simpanPreset = async function(nombor) {
             if (nombor === 1) return; 
             const btn = document.getElementById(`btn-simpan-${nombor}`); const originalText = btn.innerHTML; btn.innerHTML = '⏳...'; btn.disabled = true;
             let hiddenForPreset = []; document.querySelectorAll('.tag-checkbox').forEach(cb => { if (!cb.checked) hiddenForPreset.push(cb.value); });
             window.userPresets[`preset${nombor}`] = hiddenForPreset;
-            const berjayaAwan = await simpanDataTerpusat({ presets: window.userPresets });
-            window.paparStatusPreset(nombor, berjayaAwan ? "✓ Disimpan (Awan)" : "✓ Disimpan (Lokal)");
-            btn.innerHTML = originalText; btn.disabled = false;
+            const berjaya = await simpanDataTerpusat({ presets: window.userPresets }); window.paparStatusPreset(nombor, berjaya ? "Disimpan (Awan)" : "Disimpan (Lokal)"); btn.innerHTML = originalText; btn.disabled = false;
         }
-
         window.muatPreset = async function(nombor) {
             const btn = document.getElementById(`btn-muat-${nombor}`); const originalText = btn.innerHTML; btn.innerHTML = '⏳...'; btn.disabled = true;
             await new Promise(resolve => setTimeout(resolve, 300));
-
             if (nombor === 1) {
                 const marcIlmuTags = ["008", "020", "022", "040", "090", "100", "245", "246", "250", "260", "300", "440", "500", "504", "650", "700", "710"];
-                document.querySelectorAll('.tag-checkbox').forEach(cb => { 
-                    cb.checked = marcIlmuTags.includes(cb.value);
-                    if(cb.checked) cb.closest('.checkbox-item').classList.add('active'); else cb.closest('.checkbox-item').classList.remove('active');
-                });
-                window.paparStatusPreset(nombor, "✓ Dimuat");
+                document.querySelectorAll('.tag-checkbox').forEach(cb => { cb.checked = marcIlmuTags.includes(cb.value); cb.checked ? cb.closest('.checkbox-item').classList.add('active') : cb.closest('.checkbox-item').classList.remove('active'); });
+                window.paparStatusPreset(nombor, "Dimuat");
             } else {
                 const hiddenForPreset = window.userPresets[`preset${nombor}`];
-                if (hiddenForPreset) {
-                    document.querySelectorAll('.tag-checkbox').forEach(cb => { 
-                        cb.checked = !hiddenForPreset.includes(cb.value);
-                        if(cb.checked) cb.closest('.checkbox-item').classList.add('active'); else cb.closest('.checkbox-item').classList.remove('active');
-                    });
-                    window.paparStatusPreset(nombor, "✓ Dimuat");
+                if (hiddenForPreset) { document.querySelectorAll('.tag-checkbox').forEach(cb => { cb.checked = !hiddenForPreset.includes(cb.value); cb.checked ? cb.closest('.checkbox-item').classList.add('active') : cb.closest('.checkbox-item').classList.remove('active'); }); window.paparStatusPreset(nombor, "Dimuat");
                 } else { window.paparStatusPreset(nombor, "❌ Kosong"); }
             }
             btn.innerHTML = originalText; btn.disabled = false;
         }
-        
-        window.kemaskiniIndikatorTetapan = function() {
-            const dot = document.getElementById('dotTetapan');
-            if (dot) {
-                if (window.hiddenTags.length > 0) dot.classList.add('active'); 
-                else dot.classList.remove('active');
-            }
-        }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            initFirebase();
-            window.toggleSubfieldFilter(true); 
-        });
+        document.addEventListener('DOMContentLoaded', () => { initFirebase(); window.toggleSubfieldFilter(true); });
     </script>
 </body>
 </html>
