@@ -34,15 +34,15 @@
             background: rgba(255, 255, 255, 0.75);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05);
             overflow: hidden;
             transition: all 0.3s ease;
         }
         
         .mac-window-hover:hover {
-            box-shadow: 0 25px 50px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12), 0 3px 6px rgba(0,0,0,0.07);
             transform: translateY(-2px);
             background: rgba(255, 255, 255, 0.85);
         }
@@ -151,7 +151,7 @@
         td { 
             padding: 10px 12px; border-bottom: 1px solid rgba(0,0,0,0.05); 
             background: rgba(255,255,255,0.5);
-            transition: background 0.2s;
+            transition: background 0.2s, outline 0.1s;
             font-weight: 500; 
             font-family: 'Aptos', 'Segoe UI Semibold', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; 
             word-wrap: break-word; 
@@ -191,7 +191,8 @@
             backdrop-filter: blur(40px);
             width: 95%; max-width: 850px;
             border-radius: 16px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.4) inset;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.4) inset;
             overflow: hidden;
             display: flex; flex-direction: column;
         }
@@ -230,7 +231,6 @@
         .checkbox-item.active { background-color: #374151; border-color: #1f2937; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
         .checkbox-item.active .tag-name { color: #ffffff; }
         .checkbox-item.active .tag-desc { color: #d1d5db; }
-
         .checkbox-item input[type="checkbox"] { margin-top: 3px; margin-right: 12px; width: 16px; height: 16px; accent-color: var(--accent-color); cursor: pointer; }
         .tag-name { font-weight: bold; color: var(--accent-color); font-family: 'SF Mono', 'Consolas', monospace; display: block; transition: color 0.2s; }
         .tag-desc { font-size: 11px; color: var(--text-secondary); display: block; margin-top: 2px; transition: color 0.2s; }
@@ -264,7 +264,7 @@
         
         .app-footer { text-align: center; padding: 20px; font-size: 12px; font-weight: 500; color: var(--text-secondary); opacity: 0.8; }
 
-        /* Sistem Tab Navigation Baru */
+        /* Sistem Tab Navigation */
         .nav-tab-btn {
             padding: 10px 24px; font-weight: 700; font-size: 14px; color: #4b5563;
             border-radius: 20px; transition: all 0.2s ease; cursor: pointer;
@@ -282,7 +282,7 @@
         .view-only-mode #notaEditor { background-color: #f9fafb; cursor: not-allowed; }
         .view-only-mode .editor-toolbar { opacity: 0.5; pointer-events: none; }
         
-        /* Dialog Custom */
+        /* Custom Dialog Box */
         .custom-dialog-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px);
@@ -290,8 +290,8 @@
         }
         .custom-dialog-overlay.active { display: flex; }
         .custom-dialog-box {
-            background: white; border-radius: 16px; padding: 24px; width: 90%; max-width: 400px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2); animation: modalPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            background: white; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.5); padding: 24px; width: 90%; max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15); animation: modalPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             text-align: center;
         }
     </style>
@@ -300,7 +300,7 @@
 
     <main class="max-w-[1400px] mx-auto space-y-2">
         
-        <!-- Header & Navigasi Gabungan -->
+        <!-- Header & Navigasi Bersepadu (Kotak Tunggal) -->
         <header class="mac-window relative z-20 flex flex-col">
             <!-- Bahagian Atas: Maklumat Sistem & Admin -->
             <div class="flex justify-between items-center px-6 py-4">
@@ -310,7 +310,9 @@
                         <div class="flex items-center gap-2">
                             <h1 id="appTitleDisplay" class="app-title-text">Sistem Penukar Data MARC</h1>
                             <span class="bg-blue-100 text-blue-700 text-[10px] font-black px-2 py-0.5 rounded shadow-sm border border-blue-200">v3.7</span>
-                            <button id="btnAdminSettingTitle" onclick="bukaTetapanTajuk()" class="hidden text-gray-400 hover:text-blue-500 transition-colors ml-1" title="Tukar Tajuk Sistem">⚙️</button>
+                            <button id="btnAdminSettingTitle" onclick="bukaTetapanTajuk()" class="hidden text-gray-400 hover:text-blue-500 transition-colors ml-1" title="Tukar Tajuk Sistem">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                            </button>
                         </div>
                         <div class="text-[11px] text-gray-500 font-medium mt-0.5" id="tarikhSemasa">Memuat tarikh...</div>
                     </div>
@@ -323,6 +325,7 @@
                     </div>
                     <div id="adminBadge" class="hidden bg-purple-100 text-purple-700 text-[10px] font-black px-2 py-1 rounded shadow-sm border border-purple-200">ADMIN</div>
                     <button id="btnAdminGate" class="mac-btn-secondary !rounded-full !w-10 !h-10 !p-0 shadow-sm relative group" onclick="toggleAdminLogin()" title="Log Masuk Admin">
+                        <!-- Ikon Vektor Default (Padlock) -->
                         <span class="group-hover:scale-110 transition-transform duration-300 drop-shadow text-gray-600">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                         </span>
@@ -330,24 +333,23 @@
                 </div>
             </div>
 
-            <!-- Bahagian Bawah: Navigasi Tab -->
+            <!-- Bahagian Bawah: Navigasi Tab (Bersepadu) -->
             <div class="px-4 pb-4 pt-1 flex justify-center gap-2 relative z-10 border-t border-gray-200/40 bg-white/30">
                 <button class="nav-tab-btn active" onclick="tukarTab('dashboard', this)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
                     Dashboard
                 </button>
                 <button class="nav-tab-btn" onclick="tukarTab('perbandingan', this)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"></path><path d="M3 7h18"></path><path d="M3 7l-2 5a2 2 0 0 0 4 0l-2-5z"></path><path d="M21 7l-2 5a2 2 0 0 0 4 0l-2-5z"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"></path><path d="M8 3H3v5"></path><path d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3"></path><path d="m15.172 9.128L21 3"></path></svg>
                     Perbandingan
                 </button>
                 <button class="nav-tab-btn" onclick="tukarTab('nota', this)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                     Editor Nota
                 </button>
             </div>
         </header>
 
-        <!-- AREA KANDUNGAN TAB -->
         <div class="relative">
             <!-- TAB 1: DASHBOARD -->
             <div id="tab-dashboard" class="tab-content active">
@@ -374,10 +376,12 @@
                         <div class="flex gap-3">
                             <button class="btn-process relative overflow-hidden group flex-1 !mt-0 !w-auto" onclick="prosesMARC('inputData', 'tableBody')">
                                 <div class="relative z-10 transition-all duration-300 transform group-hover:-translate-y-10 flex items-center justify-center gap-2">
-                                    <span>🚀</span> Mula Memproses
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> 
+                                    Mula Memproses
                                 </div>
-                                <div class="absolute inset-0 z-20 flex items-center justify-center transform translate-y-10 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 text-white">
-                                    <span>⚡</span> Terjemah ke Jadual
+                                <div class="absolute inset-0 z-20 flex items-center justify-center transform translate-y-10 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 text-white gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 13 9 20 9"></polyline><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path></svg>
+                                    Terjemah ke Jadual
                                 </div>
                             </button>
                             <button class="mac-btn-secondary !p-0 w-[55px] flex-shrink-0 flex items-center justify-center text-xl text-red-500 hover:!bg-red-50 hover:!border-red-400 transition-colors" onclick="padamInputMARC()" title="Padam Sumber Data">
@@ -396,7 +400,7 @@
                             
                             <div class="flex gap-2 flex-wrap justify-end">
                                 <button id="btnSubfieldFilter" class="mac-btn-secondary gap-1.5 transition-all duration-300 bg-blue-50 border-blue-300 text-blue-700" onclick="toggleSubfieldFilter()" title="Hanya paparkan submedan tertentu mengikut format ILMU Lama">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><line x1="20" y1="4" x2="8.12" y2="15.88"></line><line x1="14.47" y1="14.48" x2="20" y2="20"></line><line x1="8.12" y1="8.12" x2="12" y2="12"></line></svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"></circle><path d="M8.12 8.12L12 12"></path><path d="M20 4L8.12 15.88"></path><circle cx="6" cy="18" r="3"></circle><path d="M14.8 14.8L20 20"></path></svg>
                                     Submedan Ilmu
                                 </button>
                                 <div class="relative">
@@ -448,7 +452,7 @@
                         </div>
                         <div class="flex gap-2">
                             <button id="btnSubfieldFilterCmp" class="mac-btn-secondary gap-1.5 transition-all duration-300 bg-blue-50 border-blue-300 text-blue-700" onclick="toggleSubfieldFilter()" title="Hanya paparkan submedan tertentu mengikut format ILMU Lama">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><line x1="20" y1="4" x2="8.12" y2="15.88"></line><line x1="14.47" y1="14.48" x2="20" y2="20"></line><line x1="8.12" y1="8.12" x2="12" y2="12"></line></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"></circle><path d="M8.12 8.12L12 12"></path><path d="M20 4L8.12 15.88"></path><circle cx="6" cy="18" r="3"></circle><path d="M14.8 14.8L20 20"></path></svg>
                                 Submedan Ilmu
                             </button>
                             <button class="mac-btn-secondary gap-1.5" onclick="bukaTetapan()" title="Penapis Tag MARC">
@@ -575,8 +579,9 @@
     <div id="sejarahModal" class="modal-overlay">
         <div class="mac-modal-content modal-animate-pop !max-w-[600px]">
             <div class="mac-titlebar">
-                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <span class="font-bold text-sm text-gray-800">🕒 Sejarah Terjemahan</span>
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-700"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <span class="font-bold text-sm text-gray-800">Sejarah Terjemahan</span>
                 </div>
                 <button class="btn-close-minimal" onclick="tutupSejarah()" title="Tutup">✕</button>
             </div>
@@ -596,8 +601,9 @@
     <div id="tetapanModal" class="modal-overlay">
         <div class="mac-modal-content modal-animate-pop">
             <div class="mac-titlebar">
-                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <span class="font-bold text-sm text-gray-800">🎛️ Penapis & Profil MARC</span>
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-700"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+                    <span class="font-bold text-sm text-gray-800">Penapis & Profil MARC</span>
                 </div>
                 <button class="btn-close-minimal" onclick="tutupTetapan()" title="Tutup">✕</button>
             </div>
@@ -663,8 +669,9 @@
     <div id="tetapanTajukModal" class="modal-overlay">
         <div class="mac-modal-content modal-animate-pop !max-w-[400px]">
             <div class="mac-titlebar">
-                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <span class="font-bold text-sm text-gray-800">⚙️ Tetapan Sistem</span>
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-700"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    <span class="font-bold text-sm text-gray-800">Tetapan Sistem</span>
                 </div>
                 <button class="btn-close-minimal" onclick="tutupTetapanTajuk()" title="Tutup">✕</button>
             </div>
@@ -679,7 +686,9 @@
     <!-- Custom Dialog Box (Ganti Alert/Confirm/Prompt) -->
     <div id="customDialog" class="custom-dialog-overlay">
         <div class="custom-dialog-box">
-            <div id="dialogIcon" class="text-4xl mb-3">⚠️</div>
+            <div id="dialogIcon" class="flex justify-center mb-4 text-blue-600">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            </div>
             <h3 id="dialogTitle" class="text-lg font-bold text-gray-800 mb-2">Perhatian</h3>
             <p id="dialogMessage" class="text-sm text-gray-600 mb-5"></p>
             <input type="password" id="dialogInput" class="mac-input w-full mb-5 hidden text-center" placeholder="Masukkan kata laluan">
@@ -755,7 +764,17 @@
             return new Promise((resolve) => {
                 dialogResolve = resolve;
                 const overlay = document.getElementById('customDialog');
-                document.getElementById('dialogIcon').textContent = options.icon || '⚠️';
+                const iconContainer = document.getElementById('dialogIcon');
+                
+                // Set Icon (Support SVG strings or text)
+                if(options.iconHtml) {
+                    iconContainer.innerHTML = options.iconHtml;
+                    iconContainer.className = 'flex justify-center mb-4 text-blue-600'; 
+                } else {
+                    iconContainer.innerHTML = `<span class="text-4xl">${options.icon || '⚠️'}</span>`;
+                    iconContainer.className = 'flex justify-center mb-3';
+                }
+
                 document.getElementById('dialogTitle').textContent = options.title || 'Mesej';
                 document.getElementById('dialogMessage').textContent = options.message || '';
                 
@@ -768,6 +787,20 @@
                 const inputText = document.getElementById('dialogInputText');
                 inputPw.classList.add('hidden'); inputPw.value = '';
                 inputText.classList.add('hidden'); inputText.value = '';
+
+                // Sokongan Kekunci Enter (Dinaik taraf)
+                inputPw.onkeydown = function(e) { 
+                    if(e.key === 'Enter') {
+                        e.preventDefault();
+                        document.getElementById('dialogBtnOK').click();
+                    } 
+                };
+                inputText.onkeydown = function(e) { 
+                    if(e.key === 'Enter') {
+                        e.preventDefault();
+                        document.getElementById('dialogBtnOK').click();
+                    } 
+                };
 
                 if(options.type === 'prompt_password') { inputPw.classList.remove('hidden'); setTimeout(() => inputPw.focus(), 100); }
                 if(options.type === 'prompt_text') { 
@@ -881,7 +914,9 @@
 
         window.toggleAdminLogin = async function() {
             if(window.isAdminLogged) { window.isAdminLogged = false; window.updateAdminUI(); return; }
-            const pw = await window.showCustomDialog({ type: 'prompt_password', icon: '🔐', title: 'Akses Admin', message: 'Sila masukkan kata laluan untuk membuka fungsi suntingan:' });
+            
+            const padlockSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>`;
+            const pw = await window.showCustomDialog({ type: 'prompt_password', iconHtml: padlockSvg, title: 'Akses Admin', message: 'Sila masukkan kata laluan untuk membuka fungsi suntingan:' });
             if(pw === 'pustakaMtib') { window.isAdminLogged = true; window.updateAdminUI(); } 
             else if (pw !== false) { await window.showCustomDialog({ icon: '❌', title: 'Akses Ditolak', message: 'Kata laluan salah!' }); }
         }
@@ -900,6 +935,7 @@
                 adminControls.classList.remove('hidden');
                 warningLabel.classList.add('hidden');
                 editor.setAttribute('contenteditable', 'true');
+                // Ikon Vektor Log Keluar (Merah)
                 gateBtn.innerHTML = '<span class="group-hover:scale-110 transition-transform drop-shadow text-red-500"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></span>';
                 gateBtn.title = "Log Keluar";
                 badge.classList.remove('hidden');
@@ -909,6 +945,7 @@
                 adminControls.classList.add('hidden');
                 warningLabel.classList.remove('hidden');
                 editor.setAttribute('contenteditable', 'false');
+                // Ikon Vektor Log Masuk (Kelabu)
                 gateBtn.innerHTML = '<span class="group-hover:scale-110 transition-transform drop-shadow text-gray-600"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>';
                 gateBtn.title = "Log Masuk Admin";
                 badge.classList.add('hidden');
@@ -1061,6 +1098,22 @@
                 if(val2) window.prosesMARC('compareData2', 'compareTable2', true);
             }
         }
+        
+        // Auto-Highlight function for Comparison Tab
+        window.highlightTag = function(tag, isHover) {
+            document.querySelectorAll('#compareTable1 tr, #compareTable2 tr').forEach(row => {
+                if (row.getAttribute('data-row-tag') === tag) {
+                    if (isHover) {
+                        row.classList.add('bg-blue-50');
+                        row.style.outline = '2px solid #60a5fa';
+                        row.style.outlineOffset = '-1px';
+                    } else {
+                        row.classList.remove('bg-blue-50');
+                        row.style.outline = '';
+                    }
+                }
+            });
+        }
 
         window.prosesMARC = async function(inputId, tableBodyId, isCompareMode = false) {
             const inputElement = document.getElementById(inputId);
@@ -1132,10 +1185,16 @@
                     formattedDetail = detailClean;
                 }
 
-                const escapedDetailForCopy = detailClean.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-                let actionTd = isCompareMode ? '' : `<td class="row-action-td"><div class="relative flex justify-center group"><button class="btn-row-copy relative" onclick="salinBaris(this, '${escapedDetailForCopy}')">📋</button><div class="absolute right-full mr-2 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 bg-[#e0f2fe] text-[#1d4ed8] text-[11px] font-bold px-3 py-1.5 rounded shadow-sm whitespace-nowrap z-50 border border-[#bfdbfe]">Salin: ${tagDesc}</div></div></td>`;
+                // Auto-Highlight Events for Comparison Tab
+                const rowAttrs = isCompareMode ? `data-row-tag="${tag}" onmouseenter="highlightTag('${tag}', true)" onmouseleave="highlightTag('${tag}', false)"` : ``;
                 
-                htmlRows += `<tr><td class="col-tag">${tag}</td><td class="col-ind">${ind1Clean}</td><td class="col-ind">${ind2Clean}</td><td>${formattedDetail}</td>${actionTd}</tr>`;
+                // Safe Escaping for inline copy function
+                const safeDetailForDOM = encodeURIComponent(detailClean);
+
+                let actionTd = isCompareMode ? '' : `<td class="row-action-td"><div class="relative flex justify-center group"><button class="btn-row-copy relative" onclick="salinBaris(this)" data-content="${safeDetailForDOM}">📋</button><div class="absolute right-full mr-2 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 bg-[#e0f2fe] text-[#1d4ed8] text-[11px] font-bold px-3 py-1.5 rounded shadow-sm whitespace-nowrap z-50 border border-[#bfdbfe]">Salin: ${tagDesc}</div></div></td>`;
+                
+                htmlRows += `<tr ${rowAttrs}><td class="col-tag">${tag}</td><td class="col-ind">${ind1Clean}</td><td class="col-ind">${ind2Clean}</td><td>${formattedDetail}</td>${actionTd}</tr>`;
+                
                 if(!isCompareMode) window.tsvData += `${tag}\t${ind1Clean}\t${ind2Clean}\t${detailClean}\n`;
                 validRowsCount++;
             });
@@ -1153,8 +1212,13 @@
             try { document.execCommand('copy'); const btn = document.getElementById('btnCopy'); const originalText = btn.innerHTML; btn.innerHTML = '✓ Disalin'; setTimeout(() => { btn.innerHTML = originalText; }, 2000); } catch (err) {} document.body.removeChild(tempTextArea);
         }
 
-        window.salinBaris = function(btnElement, teksData) {
-            const tempTextArea = document.createElement("textarea"); tempTextArea.value = teksData; document.body.appendChild(tempTextArea); tempTextArea.select();
+        window.salinBaris = function(btnElement) {
+            // Retrieve decoded data safely to prevent JS string parsing errors
+            const teksData = decodeURIComponent(btnElement.getAttribute('data-content'));
+            const tempTextArea = document.createElement("textarea"); 
+            tempTextArea.value = teksData; 
+            document.body.appendChild(tempTextArea); 
+            tempTextArea.select();
             try {
                 document.execCommand('copy');
                 if (!btnElement.dataset.originalText) btnElement.dataset.originalText = btnElement.innerHTML;
@@ -1162,7 +1226,8 @@
                 btnElement.style.outline = '2px solid var(--success-color)'; btnElement.style.outlineOffset = '1px';
                 btnElement.style.backgroundColor = 'rgba(240, 253, 244, 0.8)'; 
                 setTimeout(() => { btnElement.innerHTML = btnElement.dataset.originalText; btnElement.style = ''; }, 1500);
-            } catch (err) {} document.body.removeChild(tempTextArea);
+            } catch (err) {} 
+            document.body.removeChild(tempTextArea);
         }
 
         window.bukaSejarah = function() { window.renderSejarah(); document.getElementById('sejarahModal').classList.add('active'); setTimeout(()=> { document.getElementById('carianSejarah').focus(); }, 100); }
