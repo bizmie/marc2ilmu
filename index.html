@@ -163,25 +163,34 @@
         .col-ind { width: 45px; text-align: center; color: #007aff; font-size: 13px; font-weight: 700; }
         .row-action-td { width: 70px; text-align: center; }
         
+        /* Butang salin kini bersaiz statik untuk elak baris mengecut */
         .btn-row-copy {
             background: #ffffff; border: 1px solid #d2d2d7; border-radius: 6px;
-            color: #1d1d1f; padding: 6px; cursor: pointer; font-size: 13px;
+            color: #1d1d1f; cursor: pointer; font-size: 13px;
             transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center;
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            width: 32px; height: 32px; padding: 0; /* Dikunci saiznya */
         }
-        .btn-row-copy:hover { transform: scale(1.1); border-color: var(--accent-color); color: var(--accent-color); }
+        .btn-row-copy:hover { border-color: var(--accent-color); color: var(--accent-color); }
         
         .btn-copied-active, .btn-copied-active:hover {
             color: #16a34a !important;
             border-color: #4ade80 !important;
-            outline: 2px solid #22c55e !important;
-            outline-offset: 2px !important;
+            box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.3) !important; /* Guna box-shadow ganti outline */
             background-color: #f0fdf4 !important;
-            transform: scale(1.05) !important;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
         }
         
-        .subfield-code { color: var(--accent-color); font-weight: bold; background-color: #e0f2fe; padding: 0 2px; border-radius: 3px; margin-right: 2px; }
+        .subfield-code { color: var(--accent-color); font-weight: bold; background-color: #e0f2fe; padding: 0 2px; border-radius: 3px; margin-right: 2px; transition: all 0.3s ease; }
+
+        /* Gaya khas tulisan hijau untuk baris terakhir disalin */
+        .row-last-copied td {
+            color: #16a34a !important; /* Warna font hijau */
+            transition: color 0.3s ease;
+        }
+        .row-last-copied td .subfield-code {
+            color: #15803d !important;
+            background-color: #dcfce7 !important;
+        }
 
         .modal-animate-pop { animation: modalPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes modalPopIn {
@@ -274,7 +283,6 @@
         
         .app-footer { text-align: center; padding: 20px; font-size: 12px; font-weight: 500; color: var(--text-secondary); opacity: 0.8; }
 
-        /* Sistem Tab Navigation */
         .nav-tab-btn {
             padding: 10px 24px; font-weight: 700; font-size: 14px; color: #4b5563;
             border-radius: 20px; transition: all 0.2s ease; cursor: pointer;
@@ -292,7 +300,6 @@
         .view-only-mode #notaEditor { background-color: #f9fafb; cursor: not-allowed; }
         .view-only-mode .editor-toolbar { opacity: 0.5; pointer-events: none; }
         
-        /* Custom Dialog Box */
         .custom-dialog-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px);
@@ -310,16 +317,14 @@
 
     <main class="max-w-[1400px] mx-auto space-y-2">
         
-        <!-- Header & Navigasi Bersepadu (Kotak Tunggal) -->
         <header class="mac-window relative z-20 flex flex-col">
-            <!-- Bahagian Atas: Maklumat Sistem & Admin -->
             <div class="flex justify-between items-center px-6 py-4">
                 <div class="flex items-center gap-3">
                     <div class="text-2xl drop-shadow-md">📚</div>
                     <div>
                         <div class="flex items-center gap-2">
                             <h1 id="appTitleDisplay" class="app-title-text">Sistem Penukar Data MARC</h1>
-                            <span class="bg-blue-100 text-blue-700 text-[10px] font-black px-2 py-0.5 rounded shadow-sm border border-blue-200">v3.7</span>
+                            <span class="bg-blue-100 text-blue-700 text-[10px] font-black px-2 py-0.5 rounded shadow-sm border border-blue-200">v4.0</span>
                             <button id="btnAdminSettingTitle" onclick="bukaTetapanTajuk()" class="hidden text-gray-400 hover:text-blue-500 transition-colors ml-1" title="Tukar Tajuk Sistem">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                             </button>
@@ -335,7 +340,6 @@
                     </div>
                     <div id="adminBadge" class="hidden bg-purple-100 text-purple-700 text-[10px] font-black px-2 py-1 rounded shadow-sm border border-purple-200">ADMIN</div>
                     <button id="btnAdminGate" class="mac-btn-secondary !rounded-full !w-10 !h-10 !p-0 shadow-sm relative group" onclick="toggleAdminLogin()" title="Log Masuk Admin">
-                        <!-- Ikon Vektor Default (Padlock) -->
                         <span class="group-hover:scale-110 transition-transform duration-300 drop-shadow text-gray-600">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                         </span>
@@ -343,7 +347,6 @@
                 </div>
             </div>
 
-            <!-- Bahagian Bawah: Navigasi Tab (Bersepadu) -->
             <div class="px-4 pb-4 pt-1 flex justify-center gap-2 relative z-10 border-t border-gray-200/40 bg-white/30">
                 <button class="nav-tab-btn active" onclick="tukarTab('dashboard', this)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
@@ -361,10 +364,8 @@
         </header>
 
         <div class="relative">
-            <!-- TAB 1: DASHBOARD -->
             <div id="tab-dashboard" class="tab-content active">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    <!-- Bahagian Kiri: Input -->
                     <div class="lg:col-span-5 mac-window flex flex-col p-5">
                         <div class="flex justify-between items-center mb-2">
                             <div class="flex items-center gap-2">
@@ -395,12 +396,11 @@
                                 </div>
                             </button>
                             <button class="mac-btn-secondary !p-0 w-[55px] flex-shrink-0 flex items-center justify-center text-xl text-red-500 hover:!bg-red-50 hover:!border-red-400 transition-colors" onclick="padamInputMARC()" title="Padam Sumber Data">
-                                🗑️
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                             </button>
                         </div>
                     </div>
 
-                    <!-- Bahagian Kanan: Output Dashboard -->
                     <div class="lg:col-span-7 mac-window flex flex-col p-5">
                         <div class="flex flex-wrap justify-between items-center mb-2 gap-3">
                             <div class="flex items-center gap-2">
@@ -452,7 +452,6 @@
                 </div>
             </div>
 
-            <!-- TAB 2: PERBANDINGAN -->
             <div id="tab-perbandingan" class="tab-content">
                 <div class="mac-window p-5">
                     <div class="flex justify-between items-center mb-4">
@@ -474,7 +473,6 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Kolum Kiri -->
                         <div class="flex flex-col border border-gray-200 rounded-xl overflow-hidden bg-white">
                             <div class="p-3 bg-gray-50 border-b border-gray-200">
                                 <label class="text-xs font-bold text-gray-500 mb-1 block">Rekod A (Kiri):</label>
@@ -493,7 +491,6 @@
                             </div>
                         </div>
 
-                        <!-- Kolum Kanan -->
                         <div class="flex flex-col border border-gray-200 rounded-xl overflow-hidden bg-white">
                             <div class="p-3 bg-gray-50 border-b border-gray-200">
                                 <label class="text-xs font-bold text-gray-500 mb-1 block">Rekod B (Kanan):</label>
@@ -515,11 +512,8 @@
                 </div>
             </div>
 
-            <!-- TAB 3: NOTA EDITOR -->
             <div id="tab-nota" class="tab-content">
                 <div class="mac-window flex flex-col sm:flex-row h-[70vh] min-h-[500px] bg-white view-only-mode" id="notaContainer">
-                    
-                    <!-- Panel Indeks Kiri -->
                     <div class="w-full sm:w-[260px] bg-gray-50 border-b sm:border-b-0 sm:border-r border-gray-200 flex flex-col flex-shrink-0 z-10 h-[150px] sm:h-auto">
                         <div class="p-4 flex items-center justify-between border-b border-gray-200 bg-gray-100 flex-shrink-0">
                             <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Indeks Nota</span>
@@ -530,7 +524,6 @@
                         </div>
                     </div>
                     
-                    <!-- Panel Editor Kanan -->
                     <div class="flex-1 flex flex-col p-4 sm:p-6 relative z-0 overflow-hidden bg-white">
                         <div class="flex justify-between items-center mb-3 flex-shrink-0">
                             <div class="text-xs text-gray-500">Nota disimpan secara automatik ke Awan Firebase.</div>
@@ -580,7 +573,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
     </main>
@@ -693,7 +685,7 @@
         </div>
     </div>
 
-    <!-- Custom Dialog Box (Ganti Alert/Confirm/Prompt) -->
+    <!-- Custom Dialog Box -->
     <div id="customDialog" class="custom-dialog-overlay">
         <div class="custom-dialog-box">
             <div id="dialogIcon" class="flex justify-center mb-4 text-blue-600">
@@ -757,7 +749,7 @@
             "240": "Judul Seragam", "245": "Pernyataan Judul & Pengarang", "246": "Rupa Bentuk Judul Lain", 
             "250": "Pernyataan Edisi", "260": "Penerbitan (Format Lama)", "264": "Penerbitan, Pengedaran (RDA)", 
             "300": "Deskripsi Fizikal", "336": "Jenis Kandungan (RDA)", "337": "Jenis Media (RDA)", "338": "Jenis Pembawa (RDA)", 
-            "490": "Pernyataan Siri", "500": "Nota Umum", "504": "Nota Bibliografi / Rujukan", 
+            "490": "P Pernyataan Siri", "500": "Nota Umum", "504": "Nota Bibliografi / Rujukan", 
             "505": "Nota Kandungan Tersusun", "520": "Ringkasan / Anotasi", "590": "Nota Tempatan", 
             "594": "Status / Nota Dalaman", "600": "Subjek (Individu)", "610": "Subjek (Badan)", 
             "630": "Subjek (Judul Seragam)", "650": "Subjek (Topik Utama)", "651": "Subjek (Geografi)", 
@@ -776,7 +768,6 @@
                 const overlay = document.getElementById('customDialog');
                 const iconContainer = document.getElementById('dialogIcon');
                 
-                // Set Icon (Support SVG strings or text)
                 if(options.iconHtml) {
                     iconContainer.innerHTML = options.iconHtml;
                     iconContainer.className = 'flex justify-center mb-4 text-blue-600'; 
@@ -798,19 +789,9 @@
                 inputPw.classList.add('hidden'); inputPw.value = '';
                 inputText.classList.add('hidden'); inputText.value = '';
 
-                // Sokongan Kekunci Enter (Dinaik taraf)
-                inputPw.onkeydown = function(e) { 
-                    if(e.key === 'Enter') {
-                        e.preventDefault();
-                        document.getElementById('dialogBtnOK').click();
-                    } 
-                };
-                inputText.onkeydown = function(e) { 
-                    if(e.key === 'Enter') {
-                        e.preventDefault();
-                        document.getElementById('dialogBtnOK').click();
-                    } 
-                };
+                // Enable Enter key detection
+                inputPw.onkeydown = function(e) { if(e.key === 'Enter') { e.preventDefault(); document.getElementById('dialogBtnOK').click(); } };
+                inputText.onkeydown = function(e) { if(e.key === 'Enter') { e.preventDefault(); document.getElementById('dialogBtnOK').click(); } };
 
                 if(options.type === 'prompt_password') { inputPw.classList.remove('hidden'); setTimeout(() => inputPw.focus(), 100); }
                 if(options.type === 'prompt_text') { 
@@ -822,6 +803,7 @@
                 overlay.classList.add('active');
             });
         }
+        
         window.closeCustomDialog = function(isOK) {
             document.getElementById('customDialog').classList.remove('active');
             if(dialogResolve) {
@@ -945,7 +927,6 @@
                 adminControls.classList.remove('hidden');
                 warningLabel.classList.add('hidden');
                 editor.setAttribute('contenteditable', 'true');
-                // Ikon Vektor Log Keluar (Merah)
                 gateBtn.innerHTML = '<span class="group-hover:scale-110 transition-transform drop-shadow text-red-500"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></span>';
                 gateBtn.title = "Log Keluar";
                 badge.classList.remove('hidden');
@@ -955,7 +936,6 @@
                 adminControls.classList.add('hidden');
                 warningLabel.classList.remove('hidden');
                 editor.setAttribute('contenteditable', 'false');
-                // Ikon Vektor Log Masuk (Kelabu)
                 gateBtn.innerHTML = '<span class="group-hover:scale-110 transition-transform drop-shadow text-gray-600"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>';
                 gateBtn.title = "Log Masuk Admin";
                 badge.classList.add('hidden');
@@ -1109,7 +1089,6 @@
             }
         }
         
-        // Auto-Highlight function for Comparison Tab
         window.highlightTag = function(tag, isHover) {
             document.querySelectorAll('#compareTable1 tr, #compareTable2 tr').forEach(row => {
                 if (row.getAttribute('data-row-tag') === tag) {
@@ -1178,7 +1157,8 @@
                         } else {
                             if (part.length > 0) {
                                 const subCode = part.charAt(0); const subValue = part.substring(1).trim(); 
-                                const formatIlmuRules = { "020": ['a'], "022": ['a'], "040": ['a'], "090": ['a'], "100": ['a'], "245": ['a', 'c'], "246": ['a'], "250": ['a'], "260": ['a', 'b', 'c'], "300": ['a', 'c'], "440": ['a'], "500": ['a'], "504": ['a'], "650": ['a', 'x', 'y', 'z'], "700": ['a'], "710": ['a'] };
+                                // Benarkan submedan b untuk tag 245
+                                const formatIlmuRules = { "020": ['a'], "022": ['a'], "040": ['a'], "090": ['a'], "100": ['a'], "245": ['a', 'b', 'c'], "246": ['a'], "250": ['a'], "260": ['a', 'b', 'c'], "300": ['a', 'c'], "440": ['a'], "500": ['a'], "504": ['a'], "650": ['a', 'x', 'y', 'z'], "700": ['a'], "710": ['a'] };
 
                                 if (window.isSubfieldFilterActive && formatIlmuRules[tag]) { if (!formatIlmuRules[tag].includes(subCode)) return; }
                                 subfields.push(`|${subCode}${subValue}`);
@@ -1195,13 +1175,10 @@
                     formattedDetail = detailClean;
                 }
 
-                // Auto-Highlight Events for Comparison Tab
                 const rowAttrs = isCompareMode ? `data-row-tag="${tag}" onmouseenter="highlightTag('${tag}', true)" onmouseleave="highlightTag('${tag}', false)"` : ``;
-                
-                // Safe Escaping for inline copy function
                 const safeDetailForDOM = encodeURIComponent(detailClean);
 
-                let actionTd = isCompareMode ? '' : `<td class="row-action-td"><div class="relative flex justify-center group"><button class="btn-row-copy relative" onclick="salinBaris(this)" data-content="${safeDetailForDOM}">📋</button><div class="absolute right-full mr-2 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 bg-[#e0f2fe] text-[#1d4ed8] text-[11px] font-bold px-3 py-1.5 rounded shadow-sm whitespace-nowrap z-50 border border-[#bfdbfe]">Salin: ${tagDesc}</div></div></td>`;
+                let actionTd = isCompareMode ? '' : `<td class="row-action-td"><div class="relative flex justify-center group"><button class="btn-row-copy relative" onclick="salinBaris(this)" data-content="${safeDetailForDOM}">📋</button><div class="absolute right-full mr-2 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 bg-[#e0f2fe] text-[#1d4ed8] text-[11px] font-bold px-3 py-1.5 rounded shadow-sm whitespace-nowrap z-50 border border-[#bfdbfe]" data-tag-desc="${tagDesc}">Salin: ${tagDesc}</div></div></td>`;
                 
                 htmlRows += `<tr ${rowAttrs}><td class="col-tag">${tag}</td><td class="col-ind">${ind1Clean}</td><td class="col-ind">${ind2Clean}</td><td>${formattedDetail}</td>${actionTd}</tr>`;
                 
@@ -1223,28 +1200,45 @@
         }
 
         window.salinBaris = function(btnElement) {
-            // 1. Dapatkan data terlebih dahulu
             const teksData = decodeURIComponent(btnElement.getAttribute('data-content'));
             
-            // 2. TUKAR UI TERLEBIH DAHULU: Ubah ikon kepada Checkmark kekal
-            // Diletakkan di luar proses salin supaya UI dijamin berubah biarpun pelayar web menyekat sistem 'clipboard'
-            btnElement.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-green-600"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+            // 1. Padam penanda font hijau dari semua baris (jika ada)
+            document.querySelectorAll('#tableBody tr').forEach(tr => {
+                tr.classList.remove('row-last-copied');
+            });
+            // Reset butang yang sebelum ini aktif (hijau) kembali kepada asal (putih)
+            document.querySelectorAll('.btn-copied-active').forEach(btn => {
+                btn.classList.remove('btn-copied-active');
+                btn.innerHTML = '📋';
+                const tt = btn.nextElementSibling;
+                if(tt && tt.innerHTML.includes('Telah Disalin')) {
+                    tt.innerHTML = 'Salin: ' + (tt.getAttribute('data-tag-desc') || 'Maklumat');
+                    tt.className = 'absolute right-full mr-2 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 bg-[#e0f2fe] text-[#1d4ed8] text-[11px] font-bold px-3 py-1.5 rounded shadow-sm whitespace-nowrap z-50 border border-[#bfdbfe]';
+                }
+            });
+            
+            // 2. Tambah penanda font hijau (kelas khas) pada baris yang ditekan
+            const currentRow = btnElement.closest('tr');
+            if(currentRow) {
+                currentRow.classList.add('row-last-copied');
+            }
+
+            // 3. Tukar ikon butang ini kepada tanda SEMAK (hijau)
+            btnElement.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
             btnElement.classList.add('btn-copied-active');
             
             const tooltip = btnElement.nextElementSibling;
             if(tooltip) {
+                if(!tooltip.hasAttribute('data-tag-desc')) tooltip.setAttribute('data-tag-desc', tooltip.innerHTML.replace('Salin: ', ''));
                 tooltip.innerHTML = 'Telah Disalin ✓';
                 tooltip.className = 'absolute right-full mr-2 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 bg-green-100 text-green-800 text-[11px] font-bold px-3 py-1.5 rounded shadow-sm whitespace-nowrap z-50 border border-green-300';
             }
-            
-            // 3. PROSES SALINAN (Hibrid Moden & Tradisional)
+
             if (navigator.clipboard && window.isSecureContext) {
-                // Kaedah moden (Khas untuk GitHub Pages / HTTPS)
                 navigator.clipboard.writeText(teksData).catch(err => {
                     fallbackCopy(teksData);
                 });
             } else {
-                // Kaedah tradisional (Khas untuk Local PC / Iframe Canvas)
                 fallbackCopy(teksData);
             }
             
