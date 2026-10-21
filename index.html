@@ -1223,28 +1223,39 @@
         }
 
         window.salinBaris = function(btnElement) {
-            // Retrieve decoded data safely to prevent JS string parsing errors
+            // 1. Dapatkan data terlebih dahulu
             const teksData = decodeURIComponent(btnElement.getAttribute('data-content'));
-            const tempTextArea = document.createElement("textarea"); 
-            tempTextArea.value = teksData; 
-            document.body.appendChild(tempTextArea); 
-            tempTextArea.select();
-            try {
-                document.execCommand('copy');
-                
-                // 1. Tukar ikon kepada 'Checkmark' SVG dan tambah kelas kekal
-                btnElement.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-green-600"><polyline points="20 6 9 17 4 12"></polyline></svg>';
-                btnElement.classList.add('btn-copied-active');
-                
-                // 2. Kemas kini tooltip supaya pengguna tahu ia telah disalin
-                const tooltip = btnElement.nextElementSibling;
-                if(tooltip) {
-                    tooltip.innerHTML = 'Telah Disalin ✓';
-                    tooltip.className = 'absolute right-full mr-2 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 bg-green-100 text-green-800 text-[11px] font-bold px-3 py-1.5 rounded shadow-sm whitespace-nowrap z-50 border border-green-300';
-                }
-                
-            } catch (err) {} 
-            document.body.removeChild(tempTextArea);
+            
+            // 2. TUKAR UI TERLEBIH DAHULU: Ubah ikon kepada Checkmark kekal
+            // Diletakkan di luar proses salin supaya UI dijamin berubah biarpun pelayar web menyekat sistem 'clipboard'
+            btnElement.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-green-600"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+            btnElement.classList.add('btn-copied-active');
+            
+            const tooltip = btnElement.nextElementSibling;
+            if(tooltip) {
+                tooltip.innerHTML = 'Telah Disalin ✓';
+                tooltip.className = 'absolute right-full mr-2 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 bg-green-100 text-green-800 text-[11px] font-bold px-3 py-1.5 rounded shadow-sm whitespace-nowrap z-50 border border-green-300';
+            }
+            
+            // 3. PROSES SALINAN (Hibrid Moden & Tradisional)
+            if (navigator.clipboard && window.isSecureContext) {
+                // Kaedah moden (Khas untuk GitHub Pages / HTTPS)
+                navigator.clipboard.writeText(teksData).catch(err => {
+                    fallbackCopy(teksData);
+                });
+            } else {
+                // Kaedah tradisional (Khas untuk Local PC / Iframe Canvas)
+                fallbackCopy(teksData);
+            }
+            
+            function fallbackCopy(text) {
+                const tempTextArea = document.createElement("textarea"); 
+                tempTextArea.value = text; 
+                document.body.appendChild(tempTextArea); 
+                tempTextArea.select();
+                try { document.execCommand('copy'); } catch (err) { console.warn("Penyalinan disekat oleh pelayar", err); } 
+                document.body.removeChild(tempTextArea);
+            }
         }
 
         window.bukaSejarah = function() { window.renderSejarah(); document.getElementById('sejarahModal').classList.add('active'); setTimeout(()=> { document.getElementById('carianSejarah').focus(); }, 100); }
