@@ -324,7 +324,7 @@
                     <div>
                         <div class="flex items-center gap-2">
                             <h1 id="appTitleDisplay" class="app-title-text">Sistem Penukar Data MARC</h1>
-                            <span class="bg-blue-100 text-blue-700 text-[10px] font-black px-2 py-0.5 rounded shadow-sm border border-blue-200">v4.0</span>
+                            <span class="bg-blue-100 text-blue-700 text-[10px] font-black px-2 py-0.5 rounded shadow-sm border border-blue-200">v4.1</span>
                             <button id="btnAdminSettingTitle" onclick="bukaTetapanTajuk()" class="hidden text-gray-400 hover:text-blue-500 transition-colors ml-1" title="Tukar Tajuk Sistem">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                             </button>
@@ -1157,8 +1157,8 @@
                         } else {
                             if (part.length > 0) {
                                 const subCode = part.charAt(0); const subValue = part.substring(1).trim(); 
-                                // Benarkan submedan b untuk tag 245
-                                const formatIlmuRules = { "020": ['a'], "022": ['a'], "040": ['a'], "090": ['a'], "100": ['a'], "245": ['a', 'b', 'c'], "246": ['a'], "250": ['a'], "260": ['a', 'b', 'c'], "300": ['a', 'c'], "440": ['a'], "500": ['a'], "504": ['a'], "650": ['a', 'x', 'y', 'z'], "700": ['a'], "710": ['a'] };
+                                // Benarkan submedan b untuk tag tertentu
+                                const formatIlmuRules = { "020": ['a'], "022": ['a'], "040": ['a'], "090": ['a', 'b'], "100": ['a'], "245": ['a', 'b', 'c'], "246": ['a'], "250": ['a'], "260": ['a', 'b', 'c'], "300": ['a', 'c'], "440": ['a'], "500": ['a'], "504": ['a'], "650": ['a', 'x', 'y', 'z'], "700": ['a'], "710": ['a'] };
 
                                 if (window.isSubfieldFilterActive && formatIlmuRules[tag]) { if (!formatIlmuRules[tag].includes(subCode)) return; }
                                 subfields.push(`|${subCode}${subValue}`);
